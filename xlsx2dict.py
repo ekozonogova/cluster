@@ -1,48 +1,57 @@
 import xlrd
 
 # Открываем файл формата .xlsx в директории проекта
-excel_data_file = xlrd.open_workbook('./DATA.xlsx')
-sheet = excel_data_file.sheet_by_index(0)
 
-dictOut = {}
+def OpenXlsx():
+    excel_data_file = xlrd.open_workbook('./DATA.xlsx')
+    sheet = excel_data_file.sheet_by_index(0)
+    return sheet
 
-row_number = sheet.nrows
-col_number = sheet.ncols
+# Формируем многомерный словарь
 
-if row_number > 0 and col_number > 0:
-
-    # Формируем многомерный словарь
-    for i in range (0, row_number):
-        dictOut[i] = {}
-
-    # Выгружаем данные из ячеек
-    for i in range(0, row_number):
-        for j in range(0, col_number):
-            dictOut[i][j] = sheet.cell_value(i, j)
-else:
-    print("Excel файл с данными пустой или заполнен неверно")
+def FormDict():
+    sheet = OpenXlsx()
+    row_number = sheet.nrows
+    col_number = sheet.ncols
+    if row_number > 0 and col_number > 0:
+        dictOut = {}
+        numbers = []
+        for i in range(4, row_number):
+            numbers.append(int(sheet.cell_value(i, 0)))
+        k = 4
+        for i in numbers:
+            row_data = []
+            for j in range(1, col_number):
+                row_data.append(sheet.cell_value(k, j))
+            dictOut.update({i: row_data})
+            k += 1
+        return dictOut
+    else:
+        print("Excel файл с данными пустой или заполнен неверно")
 
 # Формируем список на удаление
-a = ['049', '084', '092', '093', '094', '095', '096', '097', '098', '099']
-for i in range (100, 140):
-    a.append(i)
-number = len(a)
+
+def DelNumbers():
+    a = [49, 84, 92]
+    for i in range (106, 141):
+    	a.append(i)
+    return a
 
 # Удаление элементов
 
-#print(dictOut[47])
+def UpdDict(delNumbers, dictOut):
+    for i in delNumbers:
+        try:
+            del dictOut[i]
+        except:
+            break
+    return dictOut
 
-newDictOut = {}
-newRowNumber = 0
-check = 0
-for i in range(0, number):
-    for j in range(0, row_number):
-        if check == j and a[i] != dictOut[j][0]:
-            print(dictOut[j][0])
-            newDictOut[newRowNumber] = {}
-            newDictOut[newRowNumber]=dictOut[j].copy()
-            newRowNumber += 1
-            check += 1
-    check+=1
+# Запуск
 
-#print(newDictOut[47])
+def Start():
+    newDict = FormDict()
+    delNumbers = DelNumbers()
+    newDict = UpdDict(delNumbers, newDict)
+
+Start()
