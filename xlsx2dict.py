@@ -2,15 +2,15 @@ import xlrd
 
 # Открываем файл формата .xlsx в директории проекта
 
-def OpenXlsx():
-    excel_data_file = xlrd.open_workbook('./DATA.xlsx')
+def OpenXlsx(_in = './DATA.xlsx'):
+    excel_data_file = xlrd.open_workbook(_in)
     sheet = excel_data_file.sheet_by_index(0)
     return sheet
 
 # Формируем многомерный словарь
 
-def FormDict():
-    sheet = OpenXlsx()
+def FormDict(_in = './DATA.xlsx'):
+    sheet = OpenXlsx(_in = './DATA.xlsx')
     row_number = sheet.nrows
     col_number = sheet.ncols
     if row_number > 0 and col_number > 0:
@@ -49,9 +49,10 @@ def UpdDict(delNumbers, dictOut):
 
 # Запуск
 
-def Start():
-    newDict = FormDict()
+def convert_data(_in = './DATA.xlsx'):
+    newDict = FormDict(_in = './DATA.xlsx')
     delNumbers = DelNumbers()
     newDict = UpdDict(delNumbers, newDict)
 
-Start()
+if __name__ == '__main__':
+	convert_data(_in = './DATA.xlsx')
