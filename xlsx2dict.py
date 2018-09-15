@@ -9,7 +9,7 @@ def OpenXlsx(_in = './DATA.xlsx'):
 
 # Формируем многомерный словарь
 
-def FormDict(_in = './DATA.xlsx'):
+def create_dict(_in = './DATA.xlsx'):
     sheet = OpenXlsx(_in = './DATA.xlsx')
     row_number = sheet.nrows
     col_number = sheet.ncols
@@ -31,7 +31,7 @@ def FormDict(_in = './DATA.xlsx'):
 
 # Формируем список на удаление
 
-def DelNumbers():
+def filter_dict():
     a = [49, 84, 92]
     for i in range (106, 141):
     	a.append(i)
@@ -39,7 +39,7 @@ def DelNumbers():
 
 # Удаление элементов
 
-def UpdDict(delNumbers, dictOut):
+def update_dict(delNumbers, dictOut):
     for i in delNumbers:
         try:
             del dictOut[i]
@@ -50,9 +50,9 @@ def UpdDict(delNumbers, dictOut):
 # Запуск
 
 def convert_data(_in = './DATA.xlsx'):
-    newDict = FormDict(_in = './DATA.xlsx')
-    delNumbers = DelNumbers()
-    newDict = UpdDict(delNumbers, newDict)
+    newDict = create_dict(_in = './DATA.xlsx')
+    delNumbers = filter_dict()
+    newDict = update_dict(delNumbers, newDict)
 
 if __name__ == '__main__':
 	convert_data(_in = './DATA.xlsx')
