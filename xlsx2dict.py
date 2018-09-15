@@ -20,9 +20,9 @@ def create_dict(_in = './DATA.xlsx'):
             numbers.append(int(sheet.cell_value(i, 0)))
         k = 4
         for i in numbers:
-            row_data = []
+            row_data = {}
             for j in range(1, col_number):
-                row_data.append(sheet.cell_value(k, j))
+                row_data.update({int(sheet.cell_value(k, 5)):sheet.cell_value(k, j)})
             dictOut.update({i: row_data})
             k += 1
         return dictOut
