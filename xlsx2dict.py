@@ -53,6 +53,7 @@ def convert_data(_in = './DATA.xlsx'):
     newDict = create_dict(_in = './DATA.xlsx')
     delNumbers = filter_dict()
     newDict = update_dict(delNumbers, newDict)
+    return newDict
 
 if __name__ == '__main__':
 	convert_data(_in = './DATA.xlsx')
