@@ -11,11 +11,13 @@ def OpenXlsx(_in = './DATA.xlsx'):
 def create_dict(_in, filter_list):
 	sheet = OpenXlsx(_in = './DATA.xlsx')
 	rez = {}
+	codes = {}
 	for row in range(sheet.nrows):
 		try:
 			nn = int(sheet.cell_value(row,0))
 			assert nn not in filter_list, '%s in filter %s' % (nn, str(filter_list))
 			rez.update({nn:None})
+			codes.update({nn:sheet.cell_value(row,1)})
 			rowdata = {}
 			for col in range(sheet.ncols):
 				try:
@@ -31,7 +33,8 @@ def create_dict(_in, filter_list):
 			print('ValueError', row, e, file = stderr)
 		except AssertionError  as e:
 			print('AssertionError', row, e, file = stderr)
-	return rez
+			
+	return rez, codes
 
 def convert_data(_in = './DATA.xlsx'):
 	filter_list = [49, 84, 92] + list(range(106, 141))
