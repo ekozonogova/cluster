@@ -1,5 +1,5 @@
 import xlrd
-
+from sys import stderr
 # Открываем файл формата .xlsx в директории проекта
 
 def OpenXlsx(_in = './DATA.xlsx'):
@@ -10,36 +10,31 @@ def OpenXlsx(_in = './DATA.xlsx'):
 # Формируем многомерный словарь
 def create_dict(_in, filter_list):
 	sheet = OpenXlsx(_in = './DATA.xlsx')
-	row_number = sheet.nrows
-	col_number = sheet.ncols
-	if row_number > 0 and col_number > 0:
-		dictOut = {}
-		numbers = []
-		for i in range(4, row_number):
-			numbers.append(int(sheet.cell_value(i, 0)))
-		k = 4
-		for i in numbers:
-			row_data = {}
-			for j in range(1, col_number):
-				if j not in filter_list:
-					row_data.update({int(sheet.cell_value(k, 5)):sheet.cell_value(k, j)})
-			if i not in filter_list:
-				dictOut.update({i: row_data})
-			k += 1
-		return dictOut
-	else:
-		print("Excel файл с данными пустой или заполнен неверно")
-
-# Формируем список на удаление
-
-def create_filter_list():
-	a = [49, 84, 92]
-	for i in range (106, 141):
-		a.append(i)
-	return a
+	rez = {}
+	for row in range(sheet.nrows):
+		try:
+			nn = int(sheet.cell_value(row,0))
+			assert nn not in filter_list, '%s in filter %s' % (nn, str(filter_list))
+			rez.update({nn:None})
+			rowdata = {}
+			for col in range(sheet.ncols):
+				try:
+					nnn = int(sheet.cell_value(3,col))
+					assert nnn not in filter_list, '%s in filter %s' % (nnn, str(filter_list))
+					rowdata.update({nnn:int(sheet.cell_value(row, col))})
+				except ValueError as e:
+					print('ValueError', col, e, file = stderr)
+				except AssertionError as e:
+					print('AssertionError', col, e, file = stderr)
+			rez[nn] = rowdata
+		except ValueError as e:
+			print('ValueError', row, e, file = stderr)
+		except AssertionError  as e:
+			print('AssertionError', row, e, file = stderr)
+	return rez
 
 def convert_data(_in = './DATA.xlsx'):
-	filter_list = create_filter_list()
+	filter_list = [49, 84, 92] + list(range(106, 141))
 	newDict = create_dict('./DATA.xlsx', filter_list)
 	return newDict
 
