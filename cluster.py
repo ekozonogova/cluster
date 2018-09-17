@@ -19,4 +19,7 @@ if __name__ == '__main__':
 	XY = get_xy(X, Y)
 	YX = get_xy(Y, X)
 	LV = get_lv(XX, YY, YX, XY)
-	print(X,'\n',Y, '\n', XX,  '\n', YY,  '\n', XY,  '\n', YX, '\n', LV)
+	A = get_AftLinks(LV)
+	B = get_PreLinks(LV)
+	M = get_ImpLinks(A, B)
+	print(M)
