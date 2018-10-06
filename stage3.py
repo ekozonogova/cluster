@@ -8,6 +8,12 @@ sample5x5 = np.array([
 [80,	12,	 74,	102,	  0],
 ])
 
+def get_ZeroDiag(X):
+    Z = np.ones(np.shape(X))
+    for i in range(len(Z)):
+        Z[i,i] = 0
+    return X * Z
+    
 def get_AftLinks(X):
     rez = np.zeros(np.shape(X))
     for i in range(len(rez)):
@@ -25,7 +31,6 @@ def get_PreLinks(X):
         for j in range(len(rez)):
             m = max(X90[j])
             s = sum(X90[j])
-            print(m,s)
             rez[i,j] = 1 if (X[i,j] == m) and (m > 0.15 * s) else 0
             
     return rez
