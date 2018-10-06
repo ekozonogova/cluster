@@ -26,12 +26,12 @@ def graph(LM, WM, idx, filename):
     f.write('digraph a {\n')
     for i in range(len(LM)):
         for j in range(len(LM[i])):
-            if i != j and LM[i,j] != 0:
+            if i != j and LM[i,j] > 0:
                 a = wrap(wpt, idx[i])
                 b = wrap(wpt, idx[j])
                 c = int(WM[i,j] * 100)
-                d = int(c / 10)
-                out = '\t"%s" -> "%s" [weight="%s", penwidth="%s"];\n' % (a, b, c, d)
+                d = abs(int(WM[i,j] * 10))
+                out = '\t"%s" -> "%s" [label="%s", penwidth="%s"];\n' % (a, b, c, d)
                 f.write(out)
     f.write('}\n')
     f.close()
