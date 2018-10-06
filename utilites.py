@@ -1,6 +1,7 @@
 from json import load as l
 from json import dump as d
 from sys import stderr
+from nltk.tokenize import WordPunctTokenizer
 
 def load(filename):
     ext = filename.split('.')[1]
@@ -19,13 +20,40 @@ def dump(object, filename):
     print('done', file = stderr)
 
 def graph(LM, WM, idx, filename):
+    
+    wpt = WordPunctTokenizer()
     for i in range(len(LM)):
         for j in range(len(LM[i])):
             if i != j and LM[i,j] != 0:
-                out = '"%s" -> "%s" [label="%s"];\n' % (idx[i], idx[j], WM[i,j])
+                a = wrap(idx[i])
+                b = wrap(idx[j])
+                out = '"%s" -> "%s" [weight="%s"];\n' % (a, b, WM[i,j])
                 print(out)
-    
+                
+def join(tokens = ['очень', 'длинная', 'строка', ',', 'с', 'пробелами', ',', 'и', 'знаками', 'препинания']):
+    PUNKT = list(".,:;-")
+    rez = []
+    for i in range(len(tokens)):
+        token = tokens[i]
+        if token in PUNKT:
+            rez[-1] += token
+        else:
+            rez += [token]
+    return rez
+
+def wrap(wpt, _str = "очень длинная строка,с пробелами, и знаками препинания"):
+    _len = 0
+    rez = ""
+    for token in join(wpt.tokenize(_str)):
+        _len += len(token)
+        rez += " " + token
+        if _len > 20:
+            rez += "\n"
+            _len = 0
+    return rez.strip()
+
 if __name__ == '__main__':
+    print(wrap())
     try:
         print(load('x'))
     except:
