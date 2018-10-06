@@ -1,7 +1,7 @@
 # ИДЕНТИФИКАЦИЯ КЛАСТЕРОВ НА МАКРО-УРОВНЕ
 # Елена Козоногова elenaa.semenovaa@gmail.com
 # Даниил Курушин kurushin.daniel@yandex.ru
-from utilites import dump, load
+from utilites import dump, load, graph
 
 from stage1 import download_data, convert_data, form_matrix
 from stage2 import *
@@ -15,7 +15,7 @@ if __name__ == '__main__':
 		try:
 			xlsx_file = load('xlsx_file.json')
 			dict_data, codes = load('xlsx_content.json')
-			nmpy_data = load('nmpy_data.json')
+			# nmpy_data = load('nmpy_data.json')
 			end = True
 		except FileNotFoundError as e:
 			if e.filename == 'xlsx_file.json':
@@ -26,18 +26,22 @@ if __name__ == '__main__':
 				dump((dict_data, codes), 'xlsx_content.json')
 			elif e.filename == 'nmpy_data.json':
 				nmpy_data = form_matrix(dict_data)
-				dump(nmpy_data, 'nmpy_data.json')
+				# dump(nmpy_data, 'nmpy_data.json')
+				end = True
 			
-	exit(0)
+	# exit(0)
 	
-	
+	nmpy_data, idx = form_matrix(dict_data, codes)
+	print(idx)
 	X, Y = get_XY(nmpy_data)
 	XX = get_r(X)
 	YY = get_r(Y)
 	XY = get_xy(X, Y)
 	YX = get_xy(Y, X)
 	LV = get_lv(XX, YY, YX, XY)
-	A = get_AftLinks(LV)
-	B = get_PreLinks(LV)
+	nmpy_data = get_ZeroDiag(nmpy_data)
+	A = get_AftLinks(nmpy_data)
+	B = get_PreLinks(nmpy_data)
 	M = get_ImpLinks(A, B)
+	graph(M, LV, idx, 'filename')
 	print(M)
