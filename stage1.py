@@ -48,12 +48,17 @@ def convert_data(_in = './DATA.xlsx'):
 	rez, codes = create_dict('./DATA.xlsx', filter_list)
 	return rez, codes
 
-def form_matrix(dict_data):
+def form_matrix(dict_data, word_data):
 	rez = []
+	idx = {}
+	n = 0
 	for i in dict_data.keys():
 		row = []
 		for j in dict_data[i].keys():
 			row += [dict_data[i][j]]
 		rez += [row]
-	return np.array(rez)
+		text = word_data[i]
+		idx.update({n: text})
+		n += 1
+	return np.array(rez), idx
 
