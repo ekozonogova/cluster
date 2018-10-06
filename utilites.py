@@ -22,13 +22,19 @@ def dump(object, filename):
 def graph(LM, WM, idx, filename):
     
     wpt = WordPunctTokenizer()
+    f = open(filename, 'w')
+    f.write('digraph a {\n')
     for i in range(len(LM)):
         for j in range(len(LM[i])):
             if i != j and LM[i,j] != 0:
-                a = wrap(idx[i])
-                b = wrap(idx[j])
-                out = '"%s" -> "%s" [weight="%s"];\n' % (a, b, WM[i,j])
-                print(out)
+                a = wrap(wpt, idx[i])
+                b = wrap(wpt, idx[j])
+                c = int(WM[i,j] * 100)
+                d = int(c / 10)
+                out = '\t"%s" -> "%s" [weight="%s", penwidth="%s"];\n' % (a, b, c, d)
+                f.write(out)
+    f.write('}\n')
+    f.close()
                 
 def join(tokens = ['очень', 'длинная', 'строка', ',', 'с', 'пробелами', ',', 'и', 'знаками', 'препинания']):
     PUNKT = list(".,:;-")
