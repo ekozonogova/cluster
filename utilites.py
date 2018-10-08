@@ -19,8 +19,13 @@ def dump(object, filename):
     d(object, open(filename, 'w'), ensure_ascii = 0, indent = 2)
     print('done', file = stderr)
 
-def graph(LM, WM, idx, filename):
-    
+"""
+LM - матрица связей
+WM - матрица весов
+CL - список кластеров
+idx - имена нод
+"""
+def graph(LM, WM, CL, idx, filename):
     wpt = WordPunctTokenizer()
     f = open(filename, 'w')
     f.write('digraph a {\n')
