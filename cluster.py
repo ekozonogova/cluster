@@ -43,5 +43,6 @@ if __name__ == '__main__':
 	A = get_AftLinks(nmpy_data)
 	B = get_PreLinks(nmpy_data)
 	M = get_ImpLinks(A, B)
-	graph(M, LV, idx, 'filename')
+	CL = make_clusters(A, B)
+	graph(M, LV, CL, idx, 'filename')
 	print(M)
