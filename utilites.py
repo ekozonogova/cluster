@@ -1,13 +1,18 @@
-from json import load as l
-from json import dump as d
 from sys import stderr
 from nltk.tokenize import WordPunctTokenizer
+from magic import Magick
+
+m = Magick(mime = True)
 
 def load(filename):
-    ext = filename.split('.')[1]
+    filetype = (filename.split('.')[1], m.from_file(filename))
     try:
         print('Loading %s ...' % filename, end = '', file = stderr)
-        rez = l(open(filename))
+        if filetype == ('json', 'text/plain'):
+            from json import load as l
+        elif filetype == ('dat', 'application/octet-stream'):
+            from numpy import load as l
+        rez = l(open(filename, 'rb'))
         print(' done', file = stderr)
         return rez
     except Exception as e:
@@ -15,8 +20,13 @@ def load(filename):
         raise e
     
 def dump(object, filename):
+    filetype = (filename.split('.')[1], m.from_file(filename))
     print('Saving %s ...' % filename, end = '', file = stderr)
-    d(object, open(filename, 'w'), ensure_ascii = 0, indent = 2)
+    if filetype == ('json', 'text/plain'):
+        from json import dump as d
+    elif filetype == ('dat', 'application/octet-stream'):
+        from numpy import save as d
+    d(object, open(filename, 'wb'))
     print('done', file = stderr)
 
 """
@@ -64,11 +74,14 @@ def wrap(wpt, _str = "очень длинная строка,с пробелам
     return rez.strip()
 
 if __name__ == '__main__':
-    print(wrap())
     try:
-        print(load('x'))
+        print(load('x.dat'))
+        print(load('x.json'))
     except:
         x = {1:2,2:3}
-        dump(x, 'x')
+        dump(x, 'x.json')
+        from numpy import array
+        x = array([1,2,3])
+        dump(x, 'x.dat')
         print(load('x'))
         
