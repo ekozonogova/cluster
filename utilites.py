@@ -1,16 +1,19 @@
 from sys import stderr
+from json import  load as jload
+from numpy import load as nload
+from json import  dump as jdump
+from numpy import save as ndump
 from nltk.tokenize import WordPunctTokenizer
 
 def load(filename):
     filetype = filename.split('.')[-1]
     try:
+        rez = None
         print('Loading %s ...' % filename, end = '', file = stderr)
         if filetype == 'json':
-            from json import load as l
-            rez = l(open(filename))
+            rez = jload(open(filename))
         elif filetype == 'dat':
-            from numpy import load as l
-            rez = l(open(filename, 'rb'))
+            rez = nload(open(filename, 'rb'))
         print(' done', file = stderr)
         return rez
     except Exception as e:
@@ -21,11 +24,9 @@ def dump(object, filename):
     filetype = filename.split('.')[-1]
     print('Saving %s ...' % filename, end = '', file = stderr)
     if filetype == 'json':
-        from json import dump as d
-        d(object, open(filename, 'w'), indent = 2, ensure_ascii = 1)
+        jdump(object, open(filename, 'w'), indent = 2, ensure_ascii = 1)
     elif filetype == 'dat':
-        from numpy import save as d
-        d(open(filename, 'wb'), object)
+        ndump(open(filename, 'wb'), object)
     print('done', file = stderr)
 
 """
