@@ -1,18 +1,16 @@
 from sys import stderr
 from nltk.tokenize import WordPunctTokenizer
-from magic import Magick
-
-m = Magick(mime = True)
 
 def load(filename):
-    filetype = (filename.split('.')[1], m.from_file(filename))
+    filetype = filename.split('.')[-1]
     try:
         print('Loading %s ...' % filename, end = '', file = stderr)
-        if filetype == ('json', 'text/plain'):
+        if filetype == 'json':
             from json import load as l
-        elif filetype == ('dat', 'application/octet-stream'):
+            rez = l(open(filename))
+        elif filetype == 'dat':
             from numpy import load as l
-        rez = l(open(filename, 'rb'))
+            rez = l(open(filename, 'rb'))
         print(' done', file = stderr)
         return rez
     except Exception as e:
@@ -20,13 +18,14 @@ def load(filename):
         raise e
     
 def dump(object, filename):
-    filetype = (filename.split('.')[1], m.from_file(filename))
+    filetype = filename.split('.')[-1]
     print('Saving %s ...' % filename, end = '', file = stderr)
-    if filetype == ('json', 'text/plain'):
+    if filetype == 'json':
         from json import dump as d
-    elif filetype == ('dat', 'application/octet-stream'):
+        d(object, open(filename, 'w'), indent = 2, ensure_ascii = 1)
+    elif filetype == 'dat':
         from numpy import save as d
-    d(object, open(filename, 'wb'))
+        d(open(filename, 'wb'), object)
     print('done', file = stderr)
 
 """
