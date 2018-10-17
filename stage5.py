@@ -49,37 +49,40 @@ k_industry = 'dim32155'
 employment_data = load(open(FNAME))['results']
 years = [ str(x) for x in range(2009, 2017) ]
 
-for item in employment_data:
-    # try
-    rez = {}
-    try:
-        assert item[k_industry] in okved
-        rez.update({'industry':item[k_industry]})
-        rez.update({'region':item[k_region]})
-        for year in years:
-            for key in item.keys():
-                try:
-                    key.index(year)
-                    rez.update({year:float(item[key])})
-                    break
-                except ValueError:
-                    rez.update({year:-1})
-        print(rez)
-    except AssertionError:
-        pass    
+industry = {}
+regions = set([ x[k_region] for x in employment_data ])
+for ind in okved:# сделать по другому!!!
+    industry_data = {}
+    for reg in regions:
+        region_data = {}
+        for item in employment_data:
+            rez = {}
+            if item[k_industry] == ind and \
+               item[k_region] == reg:
+                for year in years:
+                    for key in item.keys():
+                        try:
+                            key.index(year)
+                            rez.update({year:float(item[key])})
+                            break
+                        except ValueError:
+                            rez.update({year:0})
+            region_data.update({reg: rez})
+        industry_data.update({ind: region_data})
+
+print(industry)
         
-        
-industry = {
-     'стальное литье' : {
-         'Рязанская область' : {
-             2009:1017,
-             2010:1116,
-             2011:921,
-             2012:1015,
-             2013:1072,
-             2014:1017,
-             2015:975,
-             2016:920,
-         }
-     }
-}
+# industry = {
+#      'стальное литье' : {
+#          'Рязанская область' : {
+#              2009:1017,
+#              2010:1116,
+#              2011:921,
+#              2012:1015,
+#              2013:1072,
+#              2014:1017,
+#              2015:975,
+#              2016:920,
+#          }
+#      }
+# }
