@@ -5,6 +5,8 @@ from json import  dump as jdump
 from numpy import save as ndump
 from nltk.tokenize import WordPunctTokenizer
 
+from constants import MIN_WEIGHT
+
 def load(filename):
     filetype = filename.split('.')[-1]
     try:
@@ -39,13 +41,23 @@ def graph(LM, WM, CL, idx, filename):
     wpt = WordPunctTokenizer()
     f = open(filename, 'w')
     f.write('digraph a {\n')
+    n = 0
+    for cl in CL.keys():
+        n += 1
+        # f.write('\tsubgraph cluster_%s {\n' % n)
+        # f.write('\t\tcolor=lightgrey; style=filled;\n')
+        f.write('\t"%s" [cluster=%s];\n' % (wrap(wpt, cl), n))
+        for x in CL[cl]:
+            f.write('\t"%s" [cluster=%s];\n' % (wrap(wpt, x), n))
+        # f.write('\t};\n')
     for i in range(len(LM)):
         for j in range(len(LM[i])):
-            if i != j and LM[i,j] > 0:
-                a = wrap(wpt, idx[i])
-                b = wrap(wpt, idx[j])
+            if i != j and LM[i,j] > 0 and WM[i,j] > MIN_WEIGHT:
+                a = wrap(wpt, idx[str(i)])
+                b = wrap(wpt, idx[str(j)])
                 c = int(WM[i,j] * 100)
                 d = abs(int(WM[i,j] * 10))
+                if d == 0: d = 1
                 out = '\t"%s" -> "%s" [label="%s", penwidth="%s"];\n' % (a, b, c, d)
                 f.write(out)
     f.write('}\n')
