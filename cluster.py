@@ -19,7 +19,8 @@ if __name__ == '__main__':
 			nmpy_data = load('nmpy_data.dat')
 			idx = load('index.json')
 			LV = load('LV.dat')
-			CL = load('CL.dat')
+			CL = load('CL.json')
+			M = load('M.dat')
 			graph(M, LV, CL, idx, 'filename')
 
 			end = True
@@ -42,7 +43,7 @@ if __name__ == '__main__':
 				YX = get_xy(Y, X)
 				LV = get_lv(XX, YY, YX, XY)
 				dump(LV,'LV.dat')
-			elif e.filename == 'CL.dat':
+			elif e.filename == 'CL.json':
 				nmpy_data = get_ZeroDiag(nmpy_data)
 				A = get_AftLinks(nmpy_data)
 				B = get_PreLinks(nmpy_data)
@@ -50,8 +51,8 @@ if __name__ == '__main__':
 				dump(B, 'B.dat')
 				M = get_ImpLinks(A, B)
 				dump(M, 'M.dat')
-				CL = make_clusters(A, B)
-				dump(CL,'CL.dat')
+				CL = make_clusters(A, B, LV, idx)
+				dump(CL,'CL.json')
 				end = True
 			
 	exit(0)
