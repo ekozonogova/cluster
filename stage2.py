@@ -59,7 +59,7 @@ def get_lv(*M):
     rez = np.zeros(np.shape(M[0]))
     for i in range(len(rez)):
         for j in range(len(rez)):
-            rez[i,j] = max([ x[i,j] for x in M])
+            rez[i,j] = max([0] + [ x[i,j] for x in M])
     return rez
         
 if __name__ == '__main__':
