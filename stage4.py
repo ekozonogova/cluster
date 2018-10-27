@@ -17,19 +17,11 @@ def make_clusters(A,B,LV,index):
                 y += [(i,j,w)]
         y = sorted(y, key = lambda x: x[2])
         y.reverse()
-
-        x = linspace(0, len(y), len(y))
-        y = [ _[2] for _ in y ]
-        f = poly1d(polyfit(x,y,5))
-        x1 = symbols('x')
-        f1 = [ eval(str(diff(f(x1), x1, 1))) for x in x ]
-        f2 = [ eval(str(diff(f(x1), x1, 2))) for x in x ]
         n = 0
-        print(f1, f2)
-#        for _ in [ eval(str(f1)) for x in x ]:
-#            if abs(_) < 0.0002:
-#                break
-#            n += 1
+        for i, j, v in y:
+            if v < y[0][2] / 2:
+                break
+            n += 1
         if y[0] > 0.7:
             CL.update({i:x[0:n]})
 #            CL.update({i:x})
