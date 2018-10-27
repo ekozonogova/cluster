@@ -37,19 +37,24 @@ WM - матрица весов
 CL - список кластеров
 idx - имена нод
 """
-def graph(LM, WM, CL, idx, filename):
+def graph(LM, WM, CL, idx, filename, subgraphs = False):
     wpt = WordPunctTokenizer()
     f = open(filename, 'w')
     f.write('digraph a {\n')
     n = 0
-    for cl in CL.keys():
-        n += 1
-        # f.write('\tsubgraph cluster_%s {\n' % n)
-        # f.write('\t\tcolor=lightgrey; style=filled;\n')
-        f.write('\t"%s" [cluster=%s];\n' % (wrap(wpt, cl), n))
-        for x in CL[cl]:
-            f.write('\t"%s" [cluster=%s];\n' % (wrap(wpt, x), n))
-        # f.write('\t};\n')
+    if subgraphs:
+        for cl in CL:
+            n += 1
+            f.write('\tsubgraph cluster_%s {\n' % n)
+#            f.write('\t\tcolor=lightgrey; style=filled;\n')
+            for x in cl:
+                f.write('\t"%s";\n' % wrap(wpt, x))
+            f.write('\t};\n')
+    else:
+        for cl in CL:
+            n += 1
+            for x in cl:
+                f.write('\t"%s" [cluster="%s"];\n' % (wrap(wpt, x), n))
     for i in range(len(LM)):
         for j in range(len(LM[i])):
             if i != j and LM[i,j] > 0 and WM[i,j] > MIN_WEIGHT:
