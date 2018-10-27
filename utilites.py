@@ -26,7 +26,7 @@ def dump(object, filename):
     filetype = filename.split('.')[-1]
     print('Saving %s ...' % filename, end = '', file = stderr)
     if filetype == 'json':
-        jdump(object, open(filename, 'w'), indent = 2, ensure_ascii = 1)
+        jdump(object, open(filename, 'w'), indent = 2, ensure_ascii = 0)
     elif filetype == 'dat':
         ndump(open(filename, 'wb'), object)
     print('done', file = stderr)
@@ -79,19 +79,19 @@ def join(tokens = ['очень', 'длинная', 'строка', ',', 'с', '�
             rez += [token]
     return rez
 
-def wrap(a, b):
-    return b
+#def wrap(a, b):
+#    return b
 
-#def wrap(wpt, _str = "очень длинная строка,с пробелами, и знаками препинания"):
-#    _len = 0
-#    rez = ""
-#    for token in join(wpt.tokenize(_str)):
-#        _len += len(token)
-#        rez += " " + token
-#        if _len > 20:
-#            rez += "\n"
-#            _len = 0
-#    return rez.strip()
+def wrap(wpt, _str = "очень длинная строка,с пробелами, и знаками препинания"):
+    _len = 0
+    rez = ""
+    for token in join(wpt.tokenize(_str)):
+        _len += len(token)
+        rez += " " + token
+        if _len > 20:
+            rez += "\n"
+            _len = 0
+    return rez.strip()
 
 if __name__ == '__main__':
     try:
