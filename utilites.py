@@ -79,16 +79,19 @@ def join(tokens = ['очень', 'длинная', 'строка', ',', 'с', '�
             rez += [token]
     return rez
 
-def wrap(wpt, _str = "очень длинная строка,с пробелами, и знаками препинания"):
-    _len = 0
-    rez = ""
-    for token in join(wpt.tokenize(_str)):
-        _len += len(token)
-        rez += " " + token
-        if _len > 20:
-            rez += "\n"
-            _len = 0
-    return rez.strip()
+def wrap(a, b):
+    return b
+
+#def wrap(wpt, _str = "очень длинная строка,с пробелами, и знаками препинания"):
+#    _len = 0
+#    rez = ""
+#    for token in join(wpt.tokenize(_str)):
+#        _len += len(token)
+#        rez += " " + token
+#        if _len > 20:
+#            rez += "\n"
+#            _len = 0
+#    return rez.strip()
 
 if __name__ == '__main__':
     try:
