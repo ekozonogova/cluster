@@ -21,7 +21,7 @@ if __name__ == '__main__':
 			LV = load('LV.dat')
 			CL = load('CL.json')
 			M = load('M.dat')
-			graph(M, LV, CL, idx, 'filename')
+			graph(M, LV, CL, idx, 'filename', subgraphs=0)
 
 			end = True
 		except FileNotFoundError as e:
@@ -51,9 +51,8 @@ if __name__ == '__main__':
 				dump(B, 'B.dat')
 				M = get_ImpLinks(A, B)
 				dump(M, 'M.dat')
-				CL = make_clusters(A, B, LV, idx)
+				CL = filter_clusters(make_clusters(A, B, LV, idx))
 				dump(CL,'CL.json')
 				end = True
 			
-	exit(0)
 	
