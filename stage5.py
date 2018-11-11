@@ -3,7 +3,7 @@ from okpd2okved import okpd2okved, okved
 from rutermextract import TermExtractor as TE
 from requests import get, post
 from utilites import dump, load
-
+from regions import regions
 FNAME = 'out.4.json'
 te = TE()
 
@@ -26,18 +26,59 @@ def download_fedstat():
     return rez
     #print(dumps(loads(rez), ensure_ascii=1, indent=2))
     
+def filter_fedstat(FD = []):
+    for item in FD:
+        if item['dim32155'] in okved and \
+           item['dim32251'] in regions:
+            yield item
+        
+def make_structure(FD = []):
+    rez_reg = {}
+    rez_ind = {}
+    kyears = range(2009, 2017)
+    for item in FD:
+        region = item['dim32251']
+        industry = item['dim32155']
+        year_values = {}
+        for ky in kyears:
+            year_values.update({ky:0})
+            for k in item.keys():
+                if k.startswith("dim%s_" % ky):
+                    v = int(item[k].split(',')[0])
+                    year_values.update({ky:v})
+                    
+        try:
+            rez_reg[region].update({industry:year_values})
+        except KeyError:
+            rez_reg.update({region:{}})
+            rez_reg[region].update({industry:year_values})
+        try:
+            rez_ind[industry].update({region:year_values})
+        except KeyError:
+            rez_ind.update({industry:{}})
+            rez_ind[industry].update({region:year_values})
+    return {"По регионам": rez_reg, "По отраслям" : rez_ind }
+        
+    
 if __name__ == '__main__':
     end = False
     while not end:
         try:
             fedstat_data = load('fedstat_data.json')
-            print(dumps(fedstat_data, indent=4, ensure_ascii=0))
+            filtered_data = load('filtered_data.json')
+            structured_data = load('structured_data.json')
             end = True
         except FileNotFoundError as e:
             if e.filename == 'fedstat_data.json':
                 fedstat_data = download_fedstat()
                 dump(fedstat_data, 'fedstat_data.json')
-    
+            if e.filename == 'filtered_data.json':
+                filtered_data = filter_fedstat(fedstat_data['results'])
+                dump(list(filtered_data), 'filtered_data.json')
+            if e.filename == 'structured_data.json':
+                structured_data = make_structure(filtered_data)
+                dump(structured_data, 'structured_data.json')
+
 #exit(0)
     
 #    cookie = dict(
