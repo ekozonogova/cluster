@@ -1,0 +1,12 @@
+Host: www.fedstat.ru
+Connection: keep-alive
+Content-Length: 34086
+Accept: application/json, text/javascript, */*; q=0.01
+Origin: https://www.fedstat.ru
+X-Requested-With: XMLHttpRequest
+User-Agent: Mozilla/5.0 (X11; Linux i686) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.92 Safari/537.36
+Content-Type: application/x-www-form-urlencoded; charset=UTF-8
+Referer: https://www.fedstat.ru/indicator/43007
+Accept-Encoding: gzip, deflate, br
+Accept-Language: en-US,en;q=0.9,ru;q=0.8
+Cookie: JSESSIONID=A2A8AC313A28FAE8E5229D130CF22D78; __utma=63246520.2046463039.1541924963.1541924963.1541924963.1; __utmc=63246520; __utmz=63246520.1541924963.1.1.utmcsr=(direct)|utmccn=(direct)|utmcmd=(none); __utmt=1; __utmb=63246520.1.10.1541924963; _ym_uid=1541924968693818378; _ym_d=1541924968; _ym_isad=2
