@@ -57,7 +57,7 @@ def graph(LM, WM, CL, idx, filename, subgraphs = False):
                 f.write('\t"%s" [cluster="%s"];\n' % (wrap(wpt, x), n))
     for i in range(len(LM)):
         for j in range(len(LM[i])):
-            if i != j and LM[i,j] > 0 and WM[i,j] > MIN_WEIGHT:
+            if i != j and LM[i,j] > 0:# and WM[i,j] > MIN_WEIGHT:
                 a = wrap(wpt, idx[str(i)])
                 b = wrap(wpt, idx[str(j)])
                 c = int(WM[i,j] * 100)

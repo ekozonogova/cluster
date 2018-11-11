@@ -16,7 +16,7 @@ def filter_clusters(cluster_dict):
         rez.update({x:1})
     rex = []
     for r in rez:
-        if len(r) > 1:
+        if 1 or len(r) > 1:
             rex += [r]
     return rex
         
