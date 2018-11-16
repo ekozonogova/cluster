@@ -59,6 +59,27 @@ def make_structure(FD = []):
             rez_ind[industry].update({region:year_values})
     return {"По регионам": rez_reg, "По отраслям" : rez_ind }
         
+def clusters_from_dot(filename = 'clusters.dot'):
+    clustername = ''
+    for line in open(filename).readlines():
+        if line.count('->') == 0:
+            clustername += line.replace('\n', ' ').replace('\t', ' ')
+            if line.count('[cluster') == 1:
+                clustername = clustername.strip()
+                clustername = clustername.replace('"', ' ')
+                clustername = clustername.split('[')[0]
+                clustername = clustername.strip()
+                words1 = clustername.split()
+                for okpd in okpd2okved.keys():
+                    words2 = okpd.split()
+                    n = 0
+                    for word in words1:
+                        n += words2.count(word)
+                    if n/len(words1) > 0.9:
+                        yield okpd2okved[okpd]
+                        break
+                clustername = ''
+    
     
 if __name__ == '__main__':
     end = False
