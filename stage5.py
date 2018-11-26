@@ -58,6 +58,27 @@ def make_structure(FD = []):
             rez_ind.update({industry:{}})
             rez_ind[industry].update({region:year_values})
     return {"По регионам": rez_reg, "По отраслям" : rez_ind }
+
+def calc_sums(IN = []):
+    res = {}
+    for region in IN["По регионам"].keys():
+        y = {}
+        for year in range(2009, 2017):
+            y.update({str(year):None})
+        res.update({region:y})
+        for industry in IN["По регионам"][region].keys():
+            for year in IN["По регионам"][region][industry].keys():
+                yearv = IN["По регионам"][region][industry][year]
+                try:
+                    v = res[region][industry][year]
+                    res.update({region:res[region][year] + yearv})
+                    print(res)
+                except Exception as e:
+                    print(e)
+                    exit()
+                except (KeyError, TypeError):
+                    res.update({region:{year:yearv}})
+    return res
         
 def clusters_from_dot(filename = 'clusters.dot'):
     clustername = ''
@@ -88,6 +109,7 @@ if __name__ == '__main__':
             fedstat_data = load('fedstat_data.json')
             filtered_data = load('filtered_data.json')
             structured_data = load('structured_data.json')
+            calculated_sums = load('calculated_sums.json')
             end = True
         except FileNotFoundError as e:
             if e.filename == 'fedstat_data.json':
@@ -99,7 +121,9 @@ if __name__ == '__main__':
             if e.filename == 'structured_data.json':
                 structured_data = make_structure(filtered_data)
                 dump(structured_data, 'structured_data.json')
-
+            if e.filename == 'calculated_sums.json':
+                calculated_sums = calc_sums(structured_data)
+                dump(calculated_sums, 'calculated_sums.json')
 #exit(0)
     
 #    cookie = dict(
