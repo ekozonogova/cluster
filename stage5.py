@@ -4,6 +4,9 @@ from rutermextract import TermExtractor as TE
 from requests import get, post
 from utilites import dump, load
 from regions import regions
+
+import numpy as np
+
 FNAME = 'out.4.json'
 te = TE()
 
@@ -59,7 +62,7 @@ def make_structure(FD = []):
             rez_ind[industry].update({region:year_values})
     return {"По регионам": rez_reg, "По отраслям" : rez_ind }
 
-def calc_sums(IN = []):
+def calc_sums(IN = {}):
     rez_reg, rez_all, rez_ind = {}, {}, {}
     for year in range(2009, 2017):
         rez_all.update({str(year):0})
@@ -84,13 +87,39 @@ def calc_sums(IN = []):
                 rez_all[year] += yearv
     
     return {"По регионам": rez_reg, "По отраслям" : rez_ind, 'Всего': rez_all }
+
+def calc_lq(INA = {}, INB = {}):
+    rez = {}
+    for region in INA['По регионам']:
+        reg = {}
+        for industry in INA['По отраслям']:
+            ind = {}
+            for year in INA['Всего']:
+                try:
+                    B2  = INB["По регионам"][region][industry][year]
+                except KeyError:
+                    B2  = 0
+                G2  = INA['По регионам'][region][year]
+                B7  = INA['По отраслям'][industry][year]
+                B10 = INA['Всего'][year]
+                try:
+                    v = (B2/G2)/(B7/B10)
+                except ZeroDivisionError:
+                    v = 0
+                ind.update({year:v})
+            reg.update({industry:ind})
+        rez.update({region:reg})
+                
+    return rez
         
 def clusters_from_dot(filename = 'clusters.dot'):
     clustername = ''
+    rez = {}
     for line in open(filename).readlines():
         if line.count('->') == 0:
             clustername += line.replace('\n', ' ').replace('\t', ' ')
             if line.count('[cluster') == 1:
+                cnumber = line.split('="')[1].split('"')[0]
                 clustername = clustername.strip()
                 clustername = clustername.replace('"', ' ')
                 clustername = clustername.split('[')[0]
@@ -102,10 +131,11 @@ def clusters_from_dot(filename = 'clusters.dot'):
                     for word in words1:
                         n += words2.count(word)
                     if n/len(words1) > 0.9:
-                        yield okpd2okved[okpd]
+                        key = okpd2okved[okpd]
+                        rez.update({key:cnumber})
                         break
                 clustername = ''
-    
+    return rez
     
 if __name__ == '__main__':
     end = False
@@ -115,6 +145,9 @@ if __name__ == '__main__':
             filtered_data = load('filtered_data.json')
             structured_data = load('structured_data.json')
             calculated_sums = load('calculated_sums.json')
+            calculated_lq = load('calculated_lq.json')
+            clusters = load('clusters.json')
+            spec_data = load('spec_data.json')
             end = True
         except FileNotFoundError as e:
             if e.filename == 'fedstat_data.json':
@@ -129,6 +162,16 @@ if __name__ == '__main__':
             if e.filename == 'calculated_sums.json':
                 calculated_sums = calc_sums(structured_data)
                 dump(calculated_sums, 'calculated_sums.json')
+            if e.filename == 'calculated_lq.json':
+                calculated_lq = calc_lq(calculated_sums, structured_data)
+                dump(calculated_lq, 'calculated_lq.json')
+            if e.filename == 'clusters.json':
+                clusters = clusters_from_dot()
+                dump(clusters, 'clusters.json')
+            if e.filename == 'spec_data.json':
+                spec_data = make_spec_data(calculated_lq, clusters)
+                dump(spec_data, 'spec_data.json')
+            
 #exit(0)
     
 #    cookie = dict(
