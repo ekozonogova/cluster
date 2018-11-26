@@ -60,25 +60,30 @@ def make_structure(FD = []):
     return {"По регионам": rez_reg, "По отраслям" : rez_ind }
 
 def calc_sums(IN = []):
-    res = {}
+    rez_reg, rez_all, rez_ind = {}, {}, {}
+    for year in range(2009, 2017):
+        rez_all.update({str(year):0})
     for region in IN["По регионам"].keys():
         y = {}
         for year in range(2009, 2017):
-            y.update({str(year):None})
-        res.update({region:y})
+            y.update({str(year):0})
+        rez_reg.update({region:y})
         for industry in IN["По регионам"][region].keys():
             for year in IN["По регионам"][region][industry].keys():
                 yearv = IN["По регионам"][region][industry][year]
-                try:
-                    v = res[region][industry][year]
-                    res.update({region:res[region][year] + yearv})
-                    print(res)
-                except Exception as e:
-                    print(e)
-                    exit()
-                except (KeyError, TypeError):
-                    res.update({region:{year:yearv}})
-    return res
+                rez_reg[region].update({year:rez_reg[region][year] + yearv})
+    for industry in IN["По отраслям"].keys():
+        y = {}
+        for year in range(2009, 2017):
+            y.update({str(year):0})
+        rez_ind.update({industry:y})
+        for region   in IN["По отраслям"][industry].keys():
+            for year in IN["По отраслям"][industry][region].keys():
+                yearv = IN["По отраслям"][industry][region][year]
+                rez_ind[industry].update({year:rez_ind[industry][year] + yearv})
+                rez_all[year] += yearv
+    
+    return {"По регионам": rez_reg, "По отраслям" : rez_ind, 'Всего': rez_all }
         
 def clusters_from_dot(filename = 'clusters.dot'):
     clustername = ''
