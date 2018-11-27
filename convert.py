@@ -13,6 +13,6 @@ for key1 in x:
     subres = []
     for key2 in x[key1]:
         subres += [{"name": key2, "values": x[key1][key2]}]
-    res += [{"name": key1, "value": subres}]
+    res += [{"name": key1, "values": subres}]
   
 dump(obj=res, fp=open('specs2.json', 'w'), indent=4, ensure_ascii=False)
