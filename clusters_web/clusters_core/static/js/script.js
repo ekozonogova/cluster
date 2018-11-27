@@ -592,9 +592,9 @@ function scroll(url)
 	return false;
 }	
 	
-UVM = new UViewModel();
+UVM = new ViewModel();
 ko.applyBindings(UVM);
-UVM.waiter.show();
+// UVM.waiter.show();
 
 Date.prototype.toUserString = function () {
 	var strDate = this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate();

@@ -42,10 +42,26 @@
 {% endcomment %}
 <div class="container">
 	<div class="row">    		
-		<div class="col-sm-12">
+		<div class="col-sm-4">
 			<!-- <h2 class="title text-center">Свяжитесь с <strong>нами</strong></h2> -->
-			<input type="button" name="repaint" value="repaint1" id="repaint1">
-			<input type="button" name="repaint" value="repaint2" id="repaint2">
+			<!-- <input type="button" name="repaint" value="repaint1" id="repaint1"> -->
+			<!-- <input type="button" name="repaint" value="repaint2" id="repaint2"> -->
+			<select class="form-control" data-bind="options: availableSpecs,
+                       optionsText: 'name',
+                       value: selectedSpec,
+                       optionsCaption: 'Выберите специализацию'">
+			</select>
+		</div>
+		<div class="col-sm-4">
+			<select class="form-control" multiple data-bind="optionsCaption: 'Выберите отрасль', value: selectedProfile, foreach: availableProfiles">
+				<!-- ko if: $index() == 0 -->
+				<option disabled>Выберите отрасли</option>
+				<!-- /ko -->
+				<option data-bind="value: $root.selectedProfile,
+					text: $data.name"></option>
+			</select>
+		</div>
+		<div class="col-sm-12">
 			<div id="gmap" class="contact-map">
 				
 			</div>

@@ -2,7 +2,7 @@
 
 $settings = new Settings();
 
-function UViewModel() {
+function ViewModel() {
 
 	var self = this;
     self.waiter = new Waiter();
@@ -17,40 +17,6 @@ function UViewModel() {
     self.customerVoted = ko.observable(false);
     self.customer.agreed = ko.observable(true);
     self.userQuery = ko.observable('');
-
-    self.products = ko.observableArray();
-    self.endpointCategories = ko.observableArray([]);
-
-    // paginator
-    self.nbPerPage = ko.observable(50);
-    self.nbPerPageVariants = [10, 25, 50, 100];
-    self.pageNumber = ko.observable(0);
-    self.totalPages = ko.computed(function() {
-        var div = Math.floor(self.products().length / self.nbPerPage());
-        div += self.products().length % self.nbPerPage() > 0 ? 1 : 0;
-        return div - 1;
-    });
-    
-    self.paginatedProducts = ko.computed(function() {
-        var first = self.pageNumber() * self.nbPerPage();
-        return self.products.slice(first, first + self.nbPerPage());
-    });
-    self.hasPrevious = ko.computed(function() {
-        return self.pageNumber() !== 0;
-    });
-    self.hasNext = ko.computed(function() {
-        return self.pageNumber() !== self.totalPages();
-    });
-    self.next = function() {
-        if(self.pageNumber() < self.totalPages()) {
-            self.pageNumber(self.pageNumber() + 1);
-        }
-    }
-    self.previous = function() {
-        if(self.pageNumber() != 0) {
-            self.pageNumber(self.pageNumber() - 1);
-        }
-    }
 
     self.firstShow = ko.observable(true);
     
@@ -161,231 +127,37 @@ function UViewModel() {
 
     self.updateSettings();
 
-    self.sendFeedback = function() {
-        return function() {
-            self.firstShow(false);
-            if (self.feedbackText.isValid() && self.customer.email.isValid() && self.customer.firstName.isValid()) {
-                var token = $('input[name*=csrf]').val();
-                $.post($settings.urls.feedback, {
-                    feedback: self.feedbackText(),
-                    phone: self.customer.phone(),
-                    firstName: self.customer.firstName(),
-                    email: self.customer.email(),
-                    agreed: self.customer.agreed(),
-                    csrfmiddlewaretoken: token}).then(function (resp) {
-                    // self.showResponse(true); // for form to be invisible, to show only msg or err!!
-                    console.log(resp.status);
-                    if (resp.status == 0) {
-                        console.log(resp);
-                        $("#msg").text(resp.success);
-                        // self.hideFeedbackForm();
-                        // self.customer.email('');
-                        self.feedbackText('');
-                        self.firstShow(true);
-                        // self.customerVoted(true);
-                        // self.showResponse(false);
-                    } else if (resp.status == 3) {
-                        $("#msg").text(resp.success);
-                        // self.customer.email('');
-                        self.feedbackText('');
-                        // self.customerVoted(true);
-                        // self.showResponse(false);
-                    } else {
-                        $("p#err").empty();
-                        $("p#err").append("Ошибка сервера, повторите попытку позже.");
-                        // self.showResponse(false);
-                    }
-                }).always();
-            }
-        }
-    };
-
-    self.getRandProducts = function() {
-        var token = $('input[name*=csrf]').val();
-        $.post($settings.urls.randProducts, {csrfmiddlewaretoken: token}).then(function (resp) {
-            console.log(resp);
-            if (resp) {
-                self.products.removeAll();
-                for (var i = 0; i < resp.length; i++) {
-                    self.products.push(resp[i]);
+    self.availableSpecs = ko.observableArray([
+        {
+            "name": "Горно-добывающая промышленность",
+            "values": [
+                {
+                    "name": "Добыча полезных ископаемых", 
+                    "values": [
+                        "прочие полезные ископаемые",
+                        "добыча"
+                    ]
+                },
+                {
+                    "name": "Что то там еще", 
+                    "values": [
+                        "Какое то еще что то",
+                        "добыча чего то еще там вот"
+                    ]
                 }
-            }
-        }).always(function() {
-            self.categoryTabHeading('Популярные товары');
-            self.waiter.hide();
-        });
-    };
-    self.getRandProducts();
-
-    self.getSearchResults = function() {
-        self.waiter.show();
-        var newUrl = updateQueryStringParameter(window.location.href, "query", self.userQuery());
-        window.history.pushState({path: newUrl},'',newUrl);
-        if (1) {
-            var token = $('input[name*=csrf]').val();
-            $.post($settings.urls.search.getRes, {
-                query: self.userQuery(),
-                csrfmiddlewaretoken: token}).then(function (resp) {
-                    // console.log(resp.status);
-                // if (resp.status == 0) {
-                    console.log(resp);
-                    self.products.removeAll();
-                    for (var i = 0; i < resp['search_results'].length; i++) {
-                        for (var prop in resp['search_results'][i]) {
-                            self.products.push(resp['search_results'][i][prop]);
-                        }
-                    }
-                    self.userQuery(resp['fixed_query']);
-                // } else {
-                    // $("p#err").empty();
-                    // $("p#err").append("Ошибка сервера, повторите попытку позже.");
-                // }
-            }).always(function() {
-                self.categoryTabHeading('Результаты поиска');
-                self.waiter.hide();
-            });
+            ]
         }
-    }
+        // {"name": "2list", "values": ["7890", "0987"]}
+    ]);
+    self.selectedSpec = ko.observable();
 
-    self.getCategoriesDict = function() {
-        self.waiter.show();
-        $.get($settings.urls.categories.getDict).then(function (resp) {
-            console.log(resp);
-            if (resp) {
-                $(".just-padding").empty();
-                $(".just-padding").append('<ul id="ul_cat-list" onclick="hideshow(\'ul_cat-list\');">');
-                // resp = {
-                //     'fgfg fg': {
-                //         'аываы': {
-                //             'п': 'a', 
-                //             'ж': 'b',
-                //             'х': 'c'
-                //         },
-                //         'ghfdhd': {
-                //             'б': 'a', 
-                //             'д': 'b',
-                //             'с': 'c'
-                //         }
-                //     }, 
-                //     2: 'd',
-                //     3: 'e'
-                // };
-                self.getCategoryContents(resp, 'cat-list', 0);
-            }
-        }).always(function() {
-            self.waiter.hide();
-        });
-    }();
-
-    // self.getCategoryContents = function(cat_obj, div) {
-    //     var self = this;
-    //     self.waiter.show();
-    //     var end_rec = false;
-    //     for (var prop in cat_obj) {
-    //         end_rec = false; // ! important line
-    //         var cat_id = '';
-    //         if (typeof cat_obj[prop] == 'string') {
-    //             end_rec = true;
-    //             cat_id = cat_obj[prop];
-    //         }
-
-    //         var cat_id_tmp = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-    //         var div_id_tmp = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-    //         // console.log(cat_id_tmp);
-    //         // $("#" + div.replace(" ", "")).append('<div style="padding-left:10px; color:#000;" id="' + prop.replace(" ", "") + '">' + prop + '</div>');
-    //         var div_id = prop.replace(/\s/g, '_');
-    //         // console.log(cat_id_tmp);
-    //         $("#" + div.replace(/\s+/g, '')).append('<div id="' + cat_id_tmp + '">' + prop + '</div><div id="'++'"></div>');
-    //         if (end_rec) {
-    //             // TODO: append link to goods in category...
-    //             var cat_obj_id = cat_obj[prop];
-    //             var cat = {};
-    //             cat["id"] = cat_obj_id;
-    //             cat["name"] = prop;
-    //             self.endpointCategories.push(cat);
-    //             $("div#" + cat_id_tmp).attr("onclick","javascript: UVM.getCategoryProducts('" + cat_obj[prop] + "')");
-    //             $("div#" + cat_id_tmp).children("i").remove();
-    //             // console.log(cat_obj[prop]);
-    //             // n += 1;
-    //         } else {
-    //             $('#' + div.replace(/\s+/g, '')).click(function(){
-    //               $('#' + cat_id_tmp).animate({
-    //                 opacity: 0.25,
-    //                 left: "+=50",
-    //                 height: "toggle"
-    //               }, 500, function() {
-    //                 // Animation complete.
-    //               });
-    //             });
-    //             self.getCategoryContents(cat_obj[prop], cat_id_tmp) //prop
-    //         }
-    //     }
-    //     self.waiter.hide();
-    //     return end_rec;
-    // }
-
-    self.getCategoryContents = function(cat_obj, div, n) {
-        for (prop in cat_obj) {
-            var x = cat_obj[prop];
-            var prop_id = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-            $("#ul_" + div).append('<li id="li_' + prop_id + '">' + prop + '</li>');
-            if (typeof x != 'string') {
-                $('#li_'+prop_id).append('<ul id="ul_' + prop_id + '"></ul>');
-                $('#li_'+prop_id).attr("onclick", "javascript: hideshow(\'li_" + prop_id + "\');");
-                self.getCategoryContents(x, prop_id, n+1);
-            } else {
-                var cat_obj_id = cat_obj[prop];
-                var cat = {};
-                cat["id"] = cat_obj_id;
-                cat["name"] = prop;
-                self.endpointCategories.push(cat);
-                // $('#li_'+prop_id).attr("onclick", "javascript: hideshow(\'li_" + prop_id + "\');");
-                $("#li_" + prop_id).attr("onclick","javascript: UVM.getCategoryProducts('" + cat_obj[prop] + "', event)");
-                // $("#" + prop_id).children("i").remove();
-            }
+    self.availableProfiles = ko.computed(function() {
+        if (self.selectedSpec()) {
+            console.log(self.selectedSpec()["values"]);
+            return self.selectedSpec()["values"];
         }
-        if (n == 0){
-            $("#ul_cat-list > li ul").css("display", "none");
-        }
-    };
-
-    self.endpointCategories.find = function(cat_id) {
-        // console.log("Find:");
-        // console.log(typeof cat_id);
-        for (var i = 0; i < self.endpointCategories().length; i++) {
-            // console.log(self.endpointCategories()[i]);
-            if (parseInt(self.endpointCategories()[i]["id"]) === parseInt(cat_id)) {
-                return self.endpointCategories()[i];
-            }
-        }
-        return 0;
-    }
-
-    self.getCategoryProducts = function(cat_id, evt) {
-        self.waiter.show();
-        evt.preventDefault();
-        var newUrl = window.location.origin + window.location.pathname;
-        window.history.pushState({path: newUrl},'',newUrl);
-        self.userQuery('');
-        console.log(cat_id);
-        $.get($settings.urls.categories.getProducts + '' + cat_id + '/').then(function (resp) {
-            console.log(resp);
-            if (resp) {
-                self.products.removeAll();
-                for (var i = 0; i < resp.length; i++) {
-                    self.products.push(resp[i]);
-                }
-            }
-        }).always(function() {
-            var curCat = {};
-            if (curCat = self.endpointCategories.find(cat_id)) {
-                self.categoryTabHeading('Товары в категории '+curCat["name"]);
-            } else {
-                self.categoryTabHeading('Товары');
-            }
-            self.waiter.hide();
-        });
-    }
+    });
+    self.selectedProfile = ko.observable('');
 };
 
 function hideshow(id) {
