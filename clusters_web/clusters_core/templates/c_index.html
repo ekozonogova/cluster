@@ -40,35 +40,51 @@
 </section>
 
 {% endcomment %}
-<div class="container">
-	<div class="row">    		
-		<div class="col-sm-4">
-			<!-- <h2 class="title text-center">Свяжитесь с <strong>нами</strong></h2> -->
-			<!-- <input type="button" name="repaint" value="repaint1" id="repaint1"> -->
-			<!-- <input type="button" name="repaint" value="repaint2" id="repaint2"> -->
-			<select class="form-control" data-bind="options: availableSpecs,
-                       optionsText: 'name',
-                       value: selectedSpec,
-                       optionsCaption: 'Выберите специализацию'">
-			</select>
-		</div>
-		<div class="col-sm-4">
-			<select class="form-control" multiple data-bind="optionsCaption: 'Выберите отрасль', value: selectedProfile, foreach: availableProfiles">
-				<!-- ko if: $index() == 0 -->
-				<option disabled>Выберите отрасли</option>
-				<!-- /ko -->
-				<option data-bind="value: $root.selectedProfile,
-					text: $data.name"></option>
-			</select>
-		</div>
-		<div class="col-sm-4">
-			<input type="button" name="Отправить">
-		</div>
-		<div class="col-sm-12">
-			<div id="gmap" class="contact-map">
-				
+<div class="container" style="padding: 30px;">
+	<div class="row">  
+		<form action="">
+			<div class="col-sm-4" style="/*position: fixed;
+    top: 210px;
+    z-index: 1000;*/">
+				<!-- <h2 class="title text-center">Свяжитесь с <strong>нами</strong></h2> -->
+				<!-- <input type="button" name="repaint" value="repaint1" id="repaint1"> -->
+				<!-- <input type="button" name="repaint" value="repaint2" id="repaint2"> -->
+				<select class="form-control" data-bind="options: availableSpecs,
+	                       optionsText: 'name',
+	                       value: selectedSpec,
+	                       optionsCaption: 'Выберите специализацию'">
+				</select>
 			</div>
-		</div>
+			<div class="col-sm-6" style="padding: 1px;">
+				<i data-bind="visible: selectedSpec, click: deselectAllProfiles" class="fa fa-times-circle fa-2x" style="position: absolute;
+    z-index: 11;
+    float: right;
+    right: 10px;
+    top: 3px;"></i>
+				<select class="form-control" size="1" id="select-profile" multiple="true" style="height: auto;position: absolute; z-index: 10; max-height: 100px;" data-bind="selectedOptions: selectedProfiles, options: availableProfiles, optionsText: 'name'">
+					{% comment %}<!-- ko if: $index() == 0 -->
+						<option disabled>Выберите отрасли</option>
+					<!-- /ko -->
+						<option data-bind="value: $root.availableProfiles[$index()],
+						text: $data.name"></option>
+					{% endcomment %}
+				</select>
+			</div>
+			<div class="col-sm-2">
+				<span style="float: left; width: 60px; padding: 4px;">
+					<label for="all" style="float: left;">Все</label>
+					<input class="" id="all" type="checkbox" data-bind="checked: selectedAll" style="float: right; width: 20px;">
+				</span>
+				<span style="float: right; width: 100px;">
+					<input type="button" data-bind="enable: selectedProfiles.isValid, click: updateCompaniesData" class="form-control btn btn-success" value="Отправить" name="submit">
+				</span>
+			</div>
+			<div class="col-sm-12">
+				<div id="gmap" class="contact-map">
+					
+				</div>
+			</div>
+		</form>
 	</div>
 </div>
 
