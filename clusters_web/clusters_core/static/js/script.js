@@ -360,10 +360,28 @@ var _colors2 = {
 ymaps.ready(init);
 var myMap, placemark;
 
-var companies = [];
+companies = [];
 
 // var coord1 = [57.999544, 56.301705];
 // var coord2 = [58.068200, 56.344613];
+
+function updateCompaniesOnMap() {
+	clusterer.removeAll();
+
+	geoObjects = [];
+
+	for (var i = 0; i < companies.length; i++) {
+		geoObjects[i] = new ymaps.Placemark([companies[i].lat, companies[i].lon], { 
+			hintContent: companies[i].name,
+			balloonContent: companies[i].name + ' ' + companies[i].address + ' ' + companies[i].phone + ' ' + companies[i].url
+		}, {
+            preset: 'islands#violetIcon'
+        });
+    };
+
+	clusterer.add(geoObjects);
+	myMap.geoObjects.add(clusterer);
+}
 
 function init() { 
 
@@ -380,6 +398,8 @@ function init() {
         center: [57.999544, 56.301705],
         zoom: 3
     });
+
+
     clusterer = new ymaps.Clusterer({
     	preset: 'islands#invertedVioletClusterIcons',
     	groupByCoordinates: false,
@@ -387,44 +407,8 @@ function init() {
     	clusterHideIconOnBalloonOpen: false,
     	geoObjectHideIconOnBalloonOpen: false
 	});
-    // getPointData = function (index) {
-    //     return {
-    //         balloonContentHeader: '<font size=3><b><a target="_blank" href="https://yandex.ru">Здесь может быть ваша ссылка</a></b></font>',
-    //         balloonContentBody: '<p>Ваше имя: <input name="login"></p><p>Телефон в формате 2xxx-xxx:  <input></p><p><input type="submit" value="Отправить"></p>',
-    //         balloonContentFooter: '<font size=1>Информация предоставлена: </font> балуном <strong>метки ' + index + '</strong>',
-    //         clusterCaption: 'метка <strong>' + index + '</strong>'
-    //     };
-    // };
-	geoObjects = [];
 
-	for (var i = 0; i < companies.length; i++) {
-		geoObjects[i] = new ymaps.Placemark([companies[i].lat, companies[i].lon], { 
-			hintContent: companies[i].name,
-			balloonContent: companies[i].address + '' + companies[i].phone 
-		}, {
-            preset: 'islands#violetIcon'
-        });
-    };
-
-	// for(var i = 0; i < points.length; i++) {
-	//     geoObjects[i] = new ymaps.Placemark(points[i], getPointData(i), getPointOptions());
-	// }
-
-	/**
-	 * Можно менять опции кластеризатора после создания.
-	 */
-	// clusterer.options.set({
-	//     gridSize: 80,
-	//     clusterDisableClickZoom: true
-	// });
-
-	/**
-	 * В кластеризатор можно добавить javascript-массив меток (не геоколлекцию) или одну метку.
-	 * @see https://api.yandex.ru/maps/doc/jsapi/2.1/ref/reference/Clusterer.xml#add
-	 */
-	clusterer.add(geoObjects);
-	myMap.geoObjects.add(clusterer);
-
+    updateCompaniesOnMap();
 	/**
 	 * Спозиционируем карту так, чтобы на ней были видны все объекты.
 	 */
@@ -512,40 +496,27 @@ function loadBordersAndPaint(colors) {
     });
 };
 
-function addCompaniesToMap(companies) {
-	if (Array.isArray(companies) == false) {
-		return;
-	}
-	for (var i = 0; i < companies.length; i++) {
-		placemark = new ymaps.Placemark([companies[i].lat, companies[i].lon], { hintContent: companies[i].name, balloonContent: companies[i].address + '' + companies[i].phone });
-    	myMap.geoObjects.add(placemark);
-    	// $('html, body').animate({
-	    //     scrollTop: $("#gmap").offset().top - 300
-	    // }, 500);
-	}
-}
+// function addCompaniesToMap(companies) {
+// 	if (Array.isArray(companies) == false) {
+// 		return;
+// 	}
+// 	for (var i = 0; i < companies.length; i++) {
+// 		placemark = new ymaps.Placemark([companies[i].lat, companies[i].lon], { hintContent: companies[i].name, balloonContent: companies[i].address + '' + companies[i].phone });
+//     	myMap.geoObjects.add(placemark);
+//     	// $('html, body').animate({
+// 	    //     scrollTop: $("#gmap").offset().top - 300
+// 	    // }, 500);
+// 	}
+// }
 
-function Company(name, address, lat, lon, phone) {
+function Company(name, address, lat, lon, phone, url) {
 	this.name = name;
 	this.address = address;
 	this.lat = lat;
 	this.lon = lon;
 	this.phone = phone;
+	this.url = url;
 }
-
-function getCompaniesForTest() {
-	var key = "f9134045-4f6b-4b1e-bdd8-10582c026780";
-	var query = "?apikey=" + key + "&type=biz&lang=ru_RU&results=50&text=" + encodeURIComponent(data[0]);
-	$.get("https://search-maps.yandex.ru/v1/" + query, function(resp, status){
-		// console.log(resp);
-		for (var i = 0; i < resp.features.length; i++) {
-			var companyMeta = resp.features[i].properties.CompanyMetaData;
-			companies.push(new Company(companyMeta.name, companyMeta.address, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], companyMeta.Phones[0].formatted));
-		}
-		// console.log(companies);
-    });
-}
-getCompaniesForTest();
 
 // function switchPlacemarks(placemark_coords) {
 // 	var zoom = 18;
@@ -592,35 +563,14 @@ function scroll(url)
 	return false;
 }	
 	
-UVM = new UViewModel();
+UVM = new ViewModel();
 ko.applyBindings(UVM);
-UVM.waiter.show();
+// UVM.waiter.show();
 
 Date.prototype.toUserString = function () {
 	var strDate = this.getFullYear() + "-" + (this.getMonth() + 1) + "-" + this.getDate();
 	return strDate;
 };
-
-function replaceHeaderLogoWithLink() {
-	var logoElem = $("#mainNav").find('#header-logo').children('a#full');
-	var mobileElem = $("#mainNav").find('#header-logo').children('a#mobile');
-	if (window.innerWidth < 768) {
-		$(logoElem).css('display', 'none');
-		$(mobileElem).css('display', 'block');
-		$("#mainNav").find('#header-logo').css('margin-top', '10px');
-	} else {
-		$("#mainNav").find('#header-logo').css('margin-top', '0');
-		$(mobileElem).css('display', 'none');
-		$(logoElem).css('display', 'block');
-	}
-}
-
-function deactivateCatNavLinks() {
-	$("#categories-list").find("a").each(function() {
-		$(this).css("font-weight", 400);
-		$(this).css("background", "#fff");
-	});
-}
 
 // TODO: jQuery extending example
 jQuery.expr.filters.onscreen = function(el) { // only by height !
@@ -629,16 +579,17 @@ jQuery.expr.filters.onscreen = function(el) { // only by height !
 };
 
 $(document).ready(function() {
+	$('#select-profile').attr('size', '1');
 
-	// String.prototype.includes = function(symbol) {
- //        var includes = false;
- //        for (var i = 0; i < this.length; i++) {
- //            if (this[i] == symbol) {
- //                includes = true;
- //            } 
- //        }
- //        return includes;
- //    };
+	String.prototype.includes = function(symbol) {
+        var includes = false;
+        for (var i = 0; i < this.length; i++) {
+            if (this[i] == symbol) {
+                includes = true;
+            } 
+        }
+        return includes;
+    };
 
   //   String.prototype.includesString = function(string) {
 		// var includes = false;
@@ -650,23 +601,7 @@ $(document).ready(function() {
   //       	}
   //       }
   //       return includes;
-  //   }
-  	// $('#slider1').slick();
- //  	$('#slider1').slick({
-	//   slidesToShow: 1,
-	//   slidesToScroll: 1,
-	//   arrows: false,
-	//   fade: true,
-	//   asNavFor: '#slider1-nav'
-	// });
-	// $('#slider1-nav').slick({
-	//   slidesToShow: 3,
-	//   slidesToScroll: 1,
-	//   asNavFor: '#slider1',
-	//   dots: true,
-	//   centerMode: true,
-	//   focusOnSelect: true
-	// });
+  //   };
 
     String.prototype.startsWith = function(substr) {
     	var startsWith = false;
@@ -681,62 +616,19 @@ $(document).ready(function() {
     	return startsWith;
     };
 
-	if(window.location.hash.length > 0 && window.location.hash === "#feedback_form") {
-		// $(document).ajaxComplete(function() {
-		// 	$(document).scrollTop($(document).innerHeight());			
-		// });
-		scroll('#feedback_form');
-	}
 	if (window.location.href.includes('?query=')) {
-		var query = decodeURIComponent(window.location.search.split('?query=')[1]);
 
-		UVM.userQuery(query);
-		UVM.getSearchResults();
 	}
-	replaceHeaderLogoWithLink();
-	$('#cat-nav').affix({
-	  offset: {
-	    top: 470
-	  }
-	});
 
 	$(document).on("scroll", function() {
-		if ($(window).scrollTop() > 575 & $(window).innerWidth() > 760) {
-			$("#categories-menu").css('position', 'fixed');
-			$("#categories-menu").css('width', '20%');
-			$("#categories-menu").css('top', '20px');
-		} else {
-			$("#categories-menu").css('position', '');
-			$("#categories-menu").css('width', '');
-			$("#categories-menu").css('top', '');
-		}
-	});
 
-	$(document).on("click", ".cat-scroll", function() {
-		var href = $(this).children("a").attr("href");
-		deactivateCatNavLinks();
-		$('body').animate({
-			scrollTop: $(href).offset().top - $("#cat-nav").outerHeight()
-		}, 500);
-		$(this).children("a").css("font-weight", 600);
 	});
 
 	$(window).resize(function() {
-		replaceHeaderLogoWithLink();
-		// (window.innerWidth);
+
 	});
 
 	$(".fit-width").on("click", function(elem, event) {
-		console.log(this);
+
 	});
-});
-
-$(function() {
-        
-  $('.list-group-item').on('click', function() {
-    $('.glyphicon', this)
-      .toggleClass('glyphicon-chevron-right')
-      .toggleClass('glyphicon-chevron-down');
-  });
-
 });

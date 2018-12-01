@@ -2,7 +2,7 @@
 
 $settings = new Settings();
 
-function UViewModel() {
+function ViewModel() {
 
 	var self = this;
     self.waiter = new Waiter();
@@ -17,40 +17,6 @@ function UViewModel() {
     self.customerVoted = ko.observable(false);
     self.customer.agreed = ko.observable(true);
     self.userQuery = ko.observable('');
-
-    self.products = ko.observableArray();
-    self.endpointCategories = ko.observableArray([]);
-
-    // paginator
-    self.nbPerPage = ko.observable(50);
-    self.nbPerPageVariants = [10, 25, 50, 100];
-    self.pageNumber = ko.observable(0);
-    self.totalPages = ko.computed(function() {
-        var div = Math.floor(self.products().length / self.nbPerPage());
-        div += self.products().length % self.nbPerPage() > 0 ? 1 : 0;
-        return div - 1;
-    });
-    
-    self.paginatedProducts = ko.computed(function() {
-        var first = self.pageNumber() * self.nbPerPage();
-        return self.products.slice(first, first + self.nbPerPage());
-    });
-    self.hasPrevious = ko.computed(function() {
-        return self.pageNumber() !== 0;
-    });
-    self.hasNext = ko.computed(function() {
-        return self.pageNumber() !== self.totalPages();
-    });
-    self.next = function() {
-        if(self.pageNumber() < self.totalPages()) {
-            self.pageNumber(self.pageNumber() + 1);
-        }
-    }
-    self.previous = function() {
-        if(self.pageNumber() != 0) {
-            self.pageNumber(self.pageNumber() - 1);
-        }
-    }
 
     self.firstShow = ko.observable(true);
     
@@ -161,231 +127,756 @@ function UViewModel() {
 
     self.updateSettings();
 
-    self.sendFeedback = function() {
-        return function() {
-            self.firstShow(false);
-            if (self.feedbackText.isValid() && self.customer.email.isValid() && self.customer.firstName.isValid()) {
-                var token = $('input[name*=csrf]').val();
-                $.post($settings.urls.feedback, {
-                    feedback: self.feedbackText(),
-                    phone: self.customer.phone(),
-                    firstName: self.customer.firstName(),
-                    email: self.customer.email(),
-                    agreed: self.customer.agreed(),
-                    csrfmiddlewaretoken: token}).then(function (resp) {
-                    // self.showResponse(true); // for form to be invisible, to show only msg or err!!
-                    console.log(resp.status);
-                    if (resp.status == 0) {
-                        console.log(resp);
-                        $("#msg").text(resp.success);
-                        // self.hideFeedbackForm();
-                        // self.customer.email('');
-                        self.feedbackText('');
-                        self.firstShow(true);
-                        // self.customerVoted(true);
-                        // self.showResponse(false);
-                    } else if (resp.status == 3) {
-                        $("#msg").text(resp.success);
-                        // self.customer.email('');
-                        self.feedbackText('');
-                        // self.customerVoted(true);
-                        // self.showResponse(false);
-                    } else {
-                        $("p#err").empty();
-                        $("p#err").append("Ошибка сервера, повторите попытку позже.");
-                        // self.showResponse(false);
+    self.availableSpecs = ko.observableArray(
+        [
+            {
+                "name": "Лесная промышленность, деревообработка, целлюлозно-бумажная обработка",
+                "values": [
+                    {
+                        "name": "Производство прочих деревянных строительных конструкций и столярных изделий",
+                        "values": [
+                            "прочие деревянные строительные конструкции",
+                            "столярные изделия"
+                        ]
+                    },
+                    {
+                        "name": "Издание книг, периодических публикаций и другие виды издательской деятельности",
+                        "values": [
+                            "периодические публикации",
+                            "издательская деятельность",
+                            "издание книг",
+                            "другие виды"
+                        ]
+                    },
+                    {
+                        "name": "Производство прочих деревянных изделий; производство изделий из пробки, соломки и материалов для плетения",
+                        "values": [
+                            "прочие деревянные изделия",
+                            "производство изделий",
+                            "соломка",
+                            "производство",
+                            "пробка",
+                            "плетение",
+                            "материалы"
+                        ]
+                    },
+                    {
+                        "name": "Производство целлюлозы, древесной массы, бумаги и картона",
+                        "values": [
+                            "производство целлюлозы",
+                            "древесная масса",
+                            "картон",
+                            "бумага"
+                        ]
+                    },
+                    {
+                        "name": "Лесоводство и лесозаготовки",
+                        "values": [
+                            "лесозаготовка",
+                            "лесоводство"
+                        ]
+                    },
+                    {
+                        "name": "Производство мебели",
+                        "values": [
+                            "производство мебели"
+                        ]
+                    },
+                    {
+                        "name": "Производство изделий из дерева, пробки, соломки и материалов для плетения",
+                        "values": [
+                            "производство изделий",
+                            "соломка",
+                            "пробка",
+                            "плетение",
+                            "материалы",
+                            "дерево"
+                        ]
+                    },
+                    {
+                        "name": "Производство изделий из бумаги и картона",
+                        "values": [
+                            "производство изделий",
+                            "картон",
+                            "бумага"
+                        ]
+                    },
+                    {
+                        "name": "Распиловка и строгание древесины",
+                        "values": [
+                            "строгание древесины",
+                            "распиловка"
+                        ]
+                    },
+                    {
+                        "name": "Производство деревянной тары",
+                        "values": [
+                            "деревянная тара",
+                            "производство"
+                        ]
                     }
-                }).always();
+                ]
+            },
+            {
+                "name": "Металлообработка",
+                "values": [
+                    {
+                        "name": "Производство кабелей и кабельной арматуры",
+                        "values": [
+                            "производство кабелей",
+                            "кабельная арматура"
+                        ]
+                    },
+                    {
+                        "name": "Производство машин и оборудования общего назначения",
+                        "values": [
+                            "производство машин",
+                            "оборудование общего назначения"
+                        ]
+                    },
+                    {
+                        "name": "Производство электродвиг., генераторов, трансформаторов, распредел.устр-в, контрольно-измер. аппаратуры",
+                        "values": [
+                            "распределительные устройства",
+                            "производство электродвигателей",
+                            "контрольно-измерительная аппаратура",
+                            "трансформаторы",
+                            "генераторы"
+                        ]
+                    },
+                    {
+                        "name": "Обработка металлов и нанесение покрытий на металлы; механическая обработка металлов",
+                        "values": [
+                            "механическая обработка металлов",
+                            "обработка металлов",
+                            "нанесение покрытий",
+                            "металлы"
+                        ]
+                    },
+                    {
+                        "name": "Производство инструмента",
+                        "values": [
+                            "производство инструмента"
+                        ]
+                    },
+                    {
+                        "name": "Производство чугуна, стали и ферросплавов",
+                        "values": [
+                            "производство чугуна",
+                            "ферросплавы",
+                            "сталь"
+                        ]
+                    },
+                    {
+                        "name": "Производство станков, машин и оборуд. для обработки металлов и пр. твердых материалов",
+                        "values": [
+                            "твёрдые материалы",
+                            "производство станков",
+                            "обработка металлов",
+                            "оборудование для обработки металлов",
+                            "машины"
+                        ]
+                    },
+                    {
+                        "name": "Производство металлических цистерн, резервуаров и прочих емкостей",
+                        "values": [
+                            "прочие ёмкости",
+                            "металлические цистерны",
+                            "резервуары"
+                        ]
+                    },
+                    {
+                        "name": "Литье металлов",
+                        "values": [
+                            "литье металлов"
+                        ]
+                    },
+                    {
+                        "name": "Производство строительных металлических конструкций и изделий",
+                        "values": [
+                            "строительные металлические конструкции",
+                            "строительные металлические изделия"
+                        ]
+                    },
+                    {
+                        "name": "Производство прочих готовых металлических изделий",
+                        "values": [
+                            "готовые металлические изделия"
+                        ]
+                    },
+                    {
+                        "name": "Производство электрических ламп и осветительного оборудования",
+                        "values": [
+                            "электрические лампы",
+                            "осветительный оборудование"
+                        ]
+                    },
+                    {
+                        "name": "Производство электрической распределительной и регулирующей аппаратуры",
+                        "values": [
+                            "регулирующая аппаратура",
+                            "электрическая распределительная аппаратура"
+                        ]
+                    },
+                    {
+                        "name": "Производство стальных труб, полых профилей и фитингов",
+                        "values": [
+                            "стальные трубы",
+                            "полые профили",
+                            "фитинги"
+                        ]
+                    },
+                    {
+                        "name": "Производство автотранспортных средств, прицепов и полуприцепов",
+                        "values": [
+                            "автотранспортные средства",
+                            "прицепы",
+                            "полуприцепы"
+                        ]
+                    },
+                    {
+                        "name": "Ковка, прессование, штамповка и профилирование; изгот-е изделий методом порошковой металлургии",
+                        "values": [
+                            "порошковая металлургия",
+                            "штамповка",
+                            "профилирование",
+                            "прессование",
+                            "ковка"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Горнодобывающее производство",
+                "values": [
+                    {
+                        "name": "Добыча прочих полезных ископаемых",
+                        "values": [
+                            "прочие полезные ископаемые"
+                        ]
+                    },
+                    {
+                        "name": "Добыча урановой и ториевой руд",
+                        "values": [
+                            "ториевая руда",
+                            "урановая руда"
+                        ]
+                    },
+                    {
+                        "name": "Добыча и обогащение железных руд",
+                        "values": [
+                            "железные руды",
+                            "обогащение руд",
+                            "добыча руд"
+                        ]
+                    },
+                    {
+                        "name": "Добыча руд цветных металлов",
+                        "values": [
+                            "руды цветных металлов",
+                            "добыча руд"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Пищевая промышленность",
+                "values": [
+                    {
+                        "name": "Производство готовых кормов для животных",
+                        "values": [
+                            "готовые корма",
+                            "производство",
+                            "животные"
+                        ]
+                    },
+                    {
+                        "name": "Производство напитков",
+                        "values": [
+                            "производство напитков"
+                        ]
+                    },
+                    {
+                        "name": "Переработка и консервирование фруктов и овощей",
+                        "values": [
+                            "консервирование фруктов",
+                            "переработка",
+                            "овощи"
+                        ]
+                    },
+                    {
+                        "name": "Выращивание однолетних культур",
+                        "values": [
+                            "однолетние культуры",
+                            "выращивание"
+                        ]
+                    },
+                    {
+                        "name": "Производство табачных изделий",
+                        "values": [
+                            "табачные изделия",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Животноводство",
+                        "values": [
+                            "животноводство"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Виды деятельности",
+                "values": []
+            },
+            {
+                "name": "Угольная промышленность",
+                "values": [
+                    {
+                        "name": "Агломерация угля, антрацита и бурого угля (лигнита) и производство термоуглей",
+                        "values": [
+                            "производство термоуглей",
+                            "бурый уголь",
+                            "агломерация угля",
+                            "лигнит",
+                            "антрацит"
+                        ]
+                    },
+                    {
+                        "name": "Производство кокса",
+                        "values": [
+                            "производство кокса"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Нефтегазовая промышленность",
+                "values": [
+                    {
+                        "name": "Производство нефтепродуктов",
+                        "values": [
+                            "производство нефтепродуктов"
+                        ]
+                    },
+                    {
+                        "name": "Добыча сырой нефти",
+                        "values": [
+                            "сырой нефть",
+                            "добыча"
+                        ]
+                    },
+                    {
+                        "name": "Добыча горючих (битуминозных) сланцев, песка и озокерита",
+                        "values": [
+                            "песок",
+                            "озокерит",
+                            "добыча"
+                        ]
+                    },
+                    {
+                        "name": "Деятельность трубопроводного транспорта",
+                        "values": [
+                            "трубопроводный транспорт",
+                            "деятельность"
+                        ]
+                    },
+                    {
+                        "name": "Добыча природного газа",
+                        "values": [
+                            "природное газа",
+                            "добыча"
+                        ]
+                    },
+                    {
+                        "name": "Предоставление услуг по бурению, связанному с добычей нефти, газа и газового конденсата",
+                        "values": [
+                            "предоставление услуг",
+                            "добыча нефти",
+                            "газовое конденсат",
+                            "газа",
+                            "бурение"
+                        ]
+                    },
+                    {
+                        "name": "Предоставление услуг в области добычи нефти и природного газа",
+                        "values": [
+                            "область добычи нефти",
+                            "природное газа",
+                            "предоставление услуг"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Обработка цветных и драгоценных металлов",
+                "values": [
+                    {
+                        "name": "Производство основных драгоценных металлов и прочих цветных металлов, производство ядерного топлива",
+                        "values": [
+                            "производство",
+                            "прочие цветные металлы",
+                            "основные драгоценные металлы",
+                            "ядерное топливо"
+                        ]
+                    },
+                    {
+                        "name": "Производство комплектующих и принадлежностей для автотранспортных средств",
+                        "values": [
+                            "автотранспортные средства",
+                            "производство",
+                            "принадлежности"
+                        ]
+                    },
+                    {
+                        "name": "Производство ювелирных изделий и аналогичных изделий",
+                        "values": [
+                            "ювелирные изделия",
+                            "аналогичные изделия",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство электрических аккумуляторов и аккумуляторных батарей",
+                        "values": [
+                            "электрические аккумуляторы",
+                            "аккумуляторные батареи",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство кабелей и кабельной арматуры",
+                        "values": [
+                            "производство кабелей",
+                            "кабельная арматура"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Строительные материалы",
+                "values": [
+                    {
+                        "name": "Производство абразивных и неметаллических минеральных изделий, не включенных в другие группировки",
+                        "values": [
+                            "неметаллические минеральные изделия",
+                            "другие группировка",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство цемента, извести и гипса",
+                        "values": [
+                            "производство цемента",
+                            "известь",
+                            "гипс"
+                        ]
+                    },
+                    {
+                        "name": "Производство керамических плит и плиток",
+                        "values": [
+                            "керамические плиты",
+                            "производство",
+                            "плитки"
+                        ]
+                    },
+                    {
+                        "name": "Производство кирпича, черепицы и прочих строительных изделий из обожженной глины",
+                        "values": [
+                            "прочие строительные изделия",
+                            "производство кирпича",
+                            "обожжённая глина",
+                            "черепица"
+                        ]
+                    },
+                    {
+                        "name": "Резка, обработка и отделка камня",
+                        "values": [
+                            "отделка камня",
+                            "резка",
+                            "обработка"
+                        ]
+                    },
+                    {
+                        "name": "Производство изделий из бетона, цемента и гипса",
+                        "values": [
+                            "производство изделий",
+                            "цемент",
+                            "гипс",
+                            "бетон"
+                        ]
+                    },
+                    {
+                        "name": "Производство прочих фарфоровых и керамических изделий",
+                        "values": [
+                            "керамические изделия",
+                            "производство"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Легкая промышленность",
+                "values": [
+                    {
+                        "name": "Производство одежды из кожи",
+                        "values": [
+                            "производство одежды",
+                            "кожа"
+                        ]
+                    },
+                    {
+                        "name": "Производство текстильных изделий",
+                        "values": [
+                            "текстильные изделия",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство чемоданов, дамских сумок и аналогичных изделий из кожи и других материалов; производство шорно-седельных и других изделий из кожи",
+                        "values": [
+                            "кожа",
+                            "производство чемоданов",
+                            "другие материалы",
+                            "другие изделия",
+                            "дамские сумки",
+                            "аналогичные изделия",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство одежды, кроме одежды из меха",
+                        "values": [
+                            "производство одежды",
+                            "одежда",
+                            "мех"
+                        ]
+                    },
+                    {
+                        "name": "Производство меховых изделий",
+                        "values": [
+                            "меховые изделия",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Дубление и отделка кожи, производство чемоданов, сумок, шорно-седельных изделий из кожи; выделка и крашение меха",
+                        "values": [
+                            "шорно-седельные изделия",
+                            "производство чемоданов",
+                            "отделка кожи",
+                            "крашение меха",
+                            "сумки",
+                            "кожа",
+                            "дубление",
+                            "выделка"
+                        ]
+                    }
+                ]
+            },
+            {
+                "name": "Химическая промышленность",
+                "values": [
+                    {
+                        "name": "Производство изделий из пластмасс",
+                        "values": [
+                            "производство изделий",
+                            "пластмассы"
+                        ]
+                    },
+                    {
+                        "name": "Производство изделий, не включенных в другие группировки",
+                        "values": [
+                            "производство изделий",
+                            "другие группировка"
+                        ]
+                    },
+                    {
+                        "name": "Производство музыкальных инструментов",
+                        "values": [
+                            "музыкальные инструменты",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство стекла и изделий из стекла",
+                        "values": [
+                            "производство стекла",
+                            "стекло",
+                            "изделия"
+                        ]
+                    },
+                    {
+                        "name": "Производство фармацевтических субстанций",
+                        "values": [
+                            "фармацевтические субстанции",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство основных химических веществ, удобрений и азотных соединений, пластмасс и синтетического каучука в первичных формах",
+                        "values": [
+                            "основные химические вещества",
+                            "синтетический каучук",
+                            "первичные формы",
+                            "азотные соединения",
+                            "удобрения",
+                            "производство",
+                            "пластмассы"
+                        ]
+                    },
+                    {
+                        "name": "Производство красок, лаков и аналогичных материалов для нанесения покрытий, полиграфических красок и мастик",
+                        "values": [
+                            "производство красок",
+                            "полиграфические краски",
+                            "нанесение покрытий",
+                            "аналогичные материалы",
+                            "мастики",
+                            "лаки"
+                        ]
+                    },
+                    {
+                        "name": "Производство мыла и моющих, чистящих и полирующих средств; парфюмерных и косметических средств",
+                        "values": [
+                            "производство мыла",
+                            "полирующие средства",
+                            "косметические средства"
+                        ]
+                    },
+                    {
+                        "name": "Производство прочих химических продуктов",
+                        "values": [
+                            "прочие химические продукты",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство спортивных товаров",
+                        "values": [
+                            "спортивные товары",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство химических волокон",
+                        "values": [
+                            "химические волокна",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство резиновых изделий",
+                        "values": [
+                            "резиновые изделия",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство стальных труб, полых профилей и фитингов",
+                        "values": [
+                            "стальные трубы",
+                            "полые профили",
+                            "фитинги",
+                            "производство"
+                        ]
+                    },
+                    {
+                        "name": "Производство игр и игрушек",
+                        "values": [
+                            "производство игр",
+                            "игрушки"
+                        ]
+                    }
+                ]
+            }
+        ]
+    );
+    self.selectedSpec = ko.observable();
+
+    self.availableProfiles = ko.computed(function() {
+        if (self.selectedSpec()) {
+            $('#select-profile').attr('size', '' + self.selectedSpec()["values"].length);
+            console.log(self.selectedSpec()["values"]);
+            return self.selectedSpec()["values"];
+        }
+    });
+    self.selectedProfiles = ko.observableArray();
+    self.selectedAll = ko.observable(false);
+
+    self.selectAllProfiles = function() {
+        if (self.selectedAll()) {
+            for (var i = 0; i < self.availableProfiles().length; i++) {
+                self.selectedProfiles.push(self.availableProfiles()[i]);
             }
         }
     };
+    self.deselectAllProfiles = function() {
+        self.selectedProfiles.removeAll();
+    };
 
-    self.getRandProducts = function() {
-        var token = $('input[name*=csrf]').val();
-        $.post($settings.urls.randProducts, {csrfmiddlewaretoken: token}).then(function (resp) {
-            console.log(resp);
-            if (resp) {
-                self.products.removeAll();
-                for (var i = 0; i < resp.length; i++) {
-                    self.products.push(resp[i]);
+    self.selectedAll.subscribe(function(newVal) {
+        if (newVal == true) {
+            self.selectAllProfiles();
+        } else {
+            self.deselectAllProfiles();
+        }
+    });
+
+    self.selectedProfiles.isValid = ko.computed(function() {
+        var e = self.selectedProfiles();
+        return !!e && typeof e !== "undefined"
+        && e.length !== 0 && e.length > 0;
+    });
+
+    self.requestData = ko.computed(function() {
+        var request = '';
+        for (var i = 0; i < self.selectedProfiles().length; i++) {
+            var req_part = '';
+            for (var j = 0; j < self.selectedProfiles()[i]["values"].length; j++) {
+                if (j > self.selectedProfiles()[i]["values"].length - 2) {
+                    req_part += self.selectedProfiles()[i]["values"][j];
+                } else {
+                    req_part += self.selectedProfiles()[i]["values"][j] + ' | ';
                 }
             }
-        }).always(function() {
-            self.categoryTabHeading('Популярные товары');
-            self.waiter.hide();
-        });
-    };
-    self.getRandProducts();
-
-    self.getSearchResults = function() {
-        self.waiter.show();
-        var newUrl = updateQueryStringParameter(window.location.href, "query", self.userQuery());
-        window.history.pushState({path: newUrl},'',newUrl);
-        if (1) {
-            var token = $('input[name*=csrf]').val();
-            $.post($settings.urls.search.getRes, {
-                query: self.userQuery(),
-                csrfmiddlewaretoken: token}).then(function (resp) {
-                    // console.log(resp.status);
-                // if (resp.status == 0) {
-                    console.log(resp);
-                    self.products.removeAll();
-                    for (var i = 0; i < resp['search_results'].length; i++) {
-                        for (var prop in resp['search_results'][i]) {
-                            self.products.push(resp['search_results'][i][prop]);
-                        }
-                    }
-                    self.userQuery(resp['fixed_query']);
-                // } else {
-                    // $("p#err").empty();
-                    // $("p#err").append("Ошибка сервера, повторите попытку позже.");
-                // }
-            }).always(function() {
-                self.categoryTabHeading('Результаты поиска');
-                self.waiter.hide();
-            });
-        }
-    }
-
-    self.getCategoriesDict = function() {
-        self.waiter.show();
-        $.get($settings.urls.categories.getDict).then(function (resp) {
-            console.log(resp);
-            if (resp) {
-                $(".just-padding").empty();
-                $(".just-padding").append('<ul id="ul_cat-list" onclick="hideshow(\'ul_cat-list\');">');
-                // resp = {
-                //     'fgfg fg': {
-                //         'аываы': {
-                //             'п': 'a', 
-                //             'ж': 'b',
-                //             'х': 'c'
-                //         },
-                //         'ghfdhd': {
-                //             'б': 'a', 
-                //             'д': 'b',
-                //             'с': 'c'
-                //         }
-                //     }, 
-                //     2: 'd',
-                //     3: 'e'
-                // };
-                self.getCategoryContents(resp, 'cat-list', 0);
-            }
-        }).always(function() {
-            self.waiter.hide();
-        });
-    }();
-
-    // self.getCategoryContents = function(cat_obj, div) {
-    //     var self = this;
-    //     self.waiter.show();
-    //     var end_rec = false;
-    //     for (var prop in cat_obj) {
-    //         end_rec = false; // ! important line
-    //         var cat_id = '';
-    //         if (typeof cat_obj[prop] == 'string') {
-    //             end_rec = true;
-    //             cat_id = cat_obj[prop];
-    //         }
-
-    //         var cat_id_tmp = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-    //         var div_id_tmp = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-    //         // console.log(cat_id_tmp);
-    //         // $("#" + div.replace(" ", "")).append('<div style="padding-left:10px; color:#000;" id="' + prop.replace(" ", "") + '">' + prop + '</div>');
-    //         var div_id = prop.replace(/\s/g, '_');
-    //         // console.log(cat_id_tmp);
-    //         $("#" + div.replace(/\s+/g, '')).append('<div id="' + cat_id_tmp + '">' + prop + '</div><div id="'++'"></div>');
-    //         if (end_rec) {
-    //             // TODO: append link to goods in category...
-    //             var cat_obj_id = cat_obj[prop];
-    //             var cat = {};
-    //             cat["id"] = cat_obj_id;
-    //             cat["name"] = prop;
-    //             self.endpointCategories.push(cat);
-    //             $("div#" + cat_id_tmp).attr("onclick","javascript: UVM.getCategoryProducts('" + cat_obj[prop] + "')");
-    //             $("div#" + cat_id_tmp).children("i").remove();
-    //             // console.log(cat_obj[prop]);
-    //             // n += 1;
-    //         } else {
-    //             $('#' + div.replace(/\s+/g, '')).click(function(){
-    //               $('#' + cat_id_tmp).animate({
-    //                 opacity: 0.25,
-    //                 left: "+=50",
-    //                 height: "toggle"
-    //               }, 500, function() {
-    //                 // Animation complete.
-    //               });
-    //             });
-    //             self.getCategoryContents(cat_obj[prop], cat_id_tmp) //prop
-    //         }
-    //     }
-    //     self.waiter.hide();
-    //     return end_rec;
-    // }
-
-    self.getCategoryContents = function(cat_obj, div, n) {
-        for (prop in cat_obj) {
-            var x = cat_obj[prop];
-            var prop_id = Math.random().toString(36).replace(/[^a-z]+/g, '').substr(0, 5);
-            $("#ul_" + div).append('<li id="li_' + prop_id + '">' + prop + '</li>');
-            if (typeof x != 'string') {
-                $('#li_'+prop_id).append('<ul id="ul_' + prop_id + '"></ul>');
-                $('#li_'+prop_id).attr("onclick", "javascript: hideshow(\'li_" + prop_id + "\');");
-                self.getCategoryContents(x, prop_id, n+1);
+            if (i > self.selectedProfiles().length - 2) {
+                request += req_part;
             } else {
-                var cat_obj_id = cat_obj[prop];
-                var cat = {};
-                cat["id"] = cat_obj_id;
-                cat["name"] = prop;
-                self.endpointCategories.push(cat);
-                // $('#li_'+prop_id).attr("onclick", "javascript: hideshow(\'li_" + prop_id + "\');");
-                $("#li_" + prop_id).attr("onclick","javascript: UVM.getCategoryProducts('" + cat_obj[prop] + "', event)");
-                // $("#" + prop_id).children("i").remove();
+                request += req_part + ' | ';
             }
         }
-        if (n == 0){
-            $("#ul_cat-list > li ul").css("display", "none");
-        }
-    };
+        console.log(request);
+        return request
+    });
 
-    self.endpointCategories.find = function(cat_id) {
-        // console.log("Find:");
-        // console.log(typeof cat_id);
-        for (var i = 0; i < self.endpointCategories().length; i++) {
-            // console.log(self.endpointCategories()[i]);
-            if (parseInt(self.endpointCategories()[i]["id"]) === parseInt(cat_id)) {
-                return self.endpointCategories()[i];
-            }
-        }
-        return 0;
-    }
-
-    self.getCategoryProducts = function(cat_id, evt) {
-        self.waiter.show();
-        evt.preventDefault();
-        var newUrl = window.location.origin + window.location.pathname;
-        window.history.pushState({path: newUrl},'',newUrl);
-        self.userQuery('');
-        console.log(cat_id);
-        $.get($settings.urls.categories.getProducts + '' + cat_id + '/').then(function (resp) {
-            console.log(resp);
-            if (resp) {
-                self.products.removeAll();
-                for (var i = 0; i < resp.length; i++) {
-                    self.products.push(resp[i]);
+    self.updateCompaniesData = function() {
+        var key = "f9134045-4f6b-4b1e-bdd8-10582c026780";
+        var query = "?apikey=" + key + "&type=biz&lang=ru_RU&results=50&text=" + encodeURIComponent(self.requestData());
+        $.get("https://search-maps.yandex.ru/v1/" + query, function(resp, status){
+            // console.log(resp);
+            companies = [];
+            for (var i = 0; i < resp.features.length; i++) {
+                var companyMeta = resp.features[i].properties.CompanyMetaData;
+                var phone, url, addr = 'нет данных';
+                if (typeof companyMeta.Phones !== 'undefined') {
+                    phone = companyMeta.Phones[0].formatted;
                 }
+                if (typeof companyMeta.url !== 'undefined') {
+                    url = companyMeta.url;
+                }
+                if (typeof companyMeta.address !== 'undefined') {
+                    addr = companyMeta.address;
+                }
+                companies.push(new Company(companyMeta.name, addr, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], phone, url));
             }
-        }).always(function() {
-            var curCat = {};
-            if (curCat = self.endpointCategories.find(cat_id)) {
-                self.categoryTabHeading('Товары в категории '+curCat["name"]);
-            } else {
-                self.categoryTabHeading('Товары');
-            }
-            self.waiter.hide();
+            updateCompaniesOnMap();
+            // TODO: 
+            // loadBordersAndPaint(_colors1);
         });
-    }
+    };
+    // self.updateCompaniesData();
 };
 
 function hideshow(id) {

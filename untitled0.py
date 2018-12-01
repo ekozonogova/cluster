@@ -6,13 +6,13 @@ Created on Tue Nov 27 19:38:22 2018
 @author: dan
 """
 import re
-from utilites import dump
+from utilites import dump, load
 from rutermextract import TermExtractor as TE                       
 te = TE()
 
 res = {}
 subres = {}
-for line in [ a.strip('\n') for a in open('specs.txt').readlines() ]:
+for line in [ a.strip('\n') for a in load('specs.json'):
     try:
         m = re.match(r'[А-Я]+', line)
         if m.group() == line.split()[0]:
