@@ -23,18 +23,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '#d4nh(0=iu8k2clojolwm6(3za16xw0$bz6zd(d_ac8i5k7$_='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
-# this setting means if the app should redirect user only on preorder/subscribe page, should be True after startup application!
-PRODUCTION = True
-# TODO: uncoment this in production
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '185.22.62.61', 'ruclusters.ru', 'www.ruclusters.ru']
+DEBUG = True
 
-APPEND_SLASH = True
+ALLOWED_HOSTS = []
 
-try:
-    HOSTNAME = socket.gethostname()
-except:
-    HOSTNAME = 'localhost'
 
 # Application definition
 
@@ -139,8 +131,8 @@ MEDIA_ROOT = os.path.join(os.path.abspath(BASE_DIR), 'media')
 
 SITE_SETTINGS = {
     # required settings
-    'site_name': '',
-    'c_site_name': '',
+    'site_name': 'Astra',
+    'c_site_name': 'Салон красоты Астра',
     # 'shop_email': 'uskoritel59@yandex.ru',
     # 'admin_email': 'alarionov93@yandex.ru',
     # 'company_phones': [
