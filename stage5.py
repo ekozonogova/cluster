@@ -1,4 +1,6 @@
 from json import load, loads, dumps
+from copy import deepcopy
+
 from okpd2okved import okpd2okved, okved
 from rutermextract import TermExtractor as TE
 from requests import get, post
@@ -113,18 +115,35 @@ def calc_lq(INA = {}, INB = {}):
     return rez
         
 def clusters_from_dot(filename = 'clusters.dot'):
-    clustername = ''
+    def get_cl_name(a):
+        conv = {
+            '1':'Металлообработка',
+            '2':'Химическая промышленность',
+            '3':'Пищевая промышленность',
+            '4':'Горнодобывающее производство',
+            '5':'Лесная промышленность, деревообработка, целлюлозно-бумажная обработка',
+            '6':'Обработка цветных и драгоценных металлов',
+            '7':'Строительные материалы',
+            '8':'Легкая промышленность',
+            '9':'Нефтегазовая промышленность',
+            '10':'Угольная промышленность',
+            '11':'Высокотехнологичное оборудование и ИТ',
+        }
+
+        return conv[a]
+
+    industry = ''
     rez = {}
     for line in open(filename).readlines():
         if line.count('->') == 0:
-            clustername += line.replace('\n', ' ').replace('\t', ' ')
+            industry += line.replace('\n', ' ').replace('\t', ' ')
             if line.count('[cluster') == 1:
                 cnumber = line.split('="')[1].split('"')[0]
-                clustername = clustername.strip()
-                clustername = clustername.replace('"', ' ')
-                clustername = clustername.split('[')[0]
-                clustername = clustername.strip()
-                words1 = clustername.split()
+                industry = industry.strip()
+                industry = industry.replace('"', ' ')
+                industry = industry.split('[')[0]
+                industry = industry.strip()
+                words1 = industry.split()
                 for okpd in okpd2okved.keys():
                     words2 = okpd.split()
                     n = 0
@@ -134,9 +153,29 @@ def clusters_from_dot(filename = 'clusters.dot'):
                         key = okpd2okved[okpd]
                         rez.update({key:cnumber})
                         break
-                clustername = ''
-    return rez
+                industry = ''
+    rex = {}
+    for clusternumber in set(y.values()):
+        clustercontent = [ a[0] for a in y.items() if a[1] == clusternumber ]
+        clustername = get_cl_name(clusternumber)
+        rex.update({clustername:clustercontent})
+        
+    return {'По индустриям':rez, 'По кластерам':rex}
+
+def make_spec_data(IN = {}, CL = {}):
+    def calc_PCA(a):
+        return 0
     
+    res = {}
+    for region in IN.keys():
+        reg = {}
+        for industry in CL.keys():
+            cl_name = get_cl_name(CL[industry])
+            
+            reg.update({'p1':years})
+        res.update({region:reg})
+    return res
+
 if __name__ == '__main__':
     end = False
     while not end:
