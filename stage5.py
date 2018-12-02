@@ -77,24 +77,24 @@ def calc_sums(IN = {}):
             for year in IN["По регионам"][region][industry].keys():
                 yearv = IN["По регионам"][region][industry][year]
                 rez_reg[region].update({year:rez_reg[region][year] + yearv})
-    for industry in IN["По отраслям"].keys():
+    for industry in IN["По кластерам"].keys():
         y = {}
         for year in range(2009, 2017):
             y.update({str(year):0})
         rez_ind.update({industry:y})
-        for region   in IN["По отраслям"][industry].keys():
-            for year in IN["По отраслям"][industry][region].keys():
-                yearv = IN["По отраслям"][industry][region][year]
+        for region   in IN["По кластерам"][industry].keys():
+            for year in IN["По кластерам"][industry][region].keys():
+                yearv = IN["По кластерам"][industry][region][year]
                 rez_ind[industry].update({year:rez_ind[industry][year] + yearv})
                 rez_all[year] += yearv
     
-    return {"По регионам": rez_reg, "По отраслям" : rez_ind, 'Всего': rez_all }
+    return {"По регионам": rez_reg, "По кластерам" : rez_ind, 'Всего': rez_all }
 
 def calc_lq(INA = {}, INB = {}):
     rez = {}
     for region in INA['По регионам']:
         reg = {}
-        for industry in INA['По отраслям']:
+        for industry in INA['По кластерам']:
             ind = {}
             for year in INA['Всего']:
                 try:
@@ -102,7 +102,7 @@ def calc_lq(INA = {}, INB = {}):
                 except KeyError:
                     B2  = 0
                 G2  = INA['По регионам'][region][year]
-                B7  = INA['По отраслям'][industry][year]
+                B7  = INA['По кластерам'][industry][year]
                 B10 = INA['Всего'][year]
                 try:
                     v = (B2/G2)/(B7/B10)
@@ -155,8 +155,8 @@ def clusters_from_dot(filename = 'clusters.dot'):
                         break
                 industry = ''
     rex = {}
-    for clusternumber in set(y.values()):
-        clustercontent = [ a[0] for a in y.items() if a[1] == clusternumber ]
+    for clusternumber in set(rez.values()):
+        clustercontent = [ a[0] for a in rez.items() if a[1] == clusternumber ]
         clustername = get_cl_name(clusternumber)
         rex.update({clustername:clustercontent})
         
@@ -168,13 +168,45 @@ def make_spec_data(IN = {}, CL = {}):
     
     res = {}
     for region in IN.keys():
+        for cl_name in CL['По кластерам'].keys():
+            for industry in CL['По кластерам'][cl_name]:
+                for year in [ str(y) for y in range(2009, 2017) ]:
+                    try:
+                        res[(region, cl_name, year)] += IN[region][industry][year]
+                    except KeyError:
+                        try:
+                            res.update({(region, cl_name, year):IN[region][industry][year]})
+                        except KeyError:
+                            pass
+                        
+    rez_reg = {}
+    rez_clu = {}
+    for region in IN.keys():
+        clu = {}
+        for cluster in CL['По кластерам'].keys():
+            years = {}
+            for year in [ str(y) for y in range(2009, 2017) ]:
+                try:
+                    years.update({year:res[(region,cluster,year)]})
+                except KeyError:
+                    pass
+            clu.update({cluster:years})
+        rez_reg.update({region:clu})
+
+    for cluster in CL['По кластерам'].keys():
         reg = {}
-        for industry in CL.keys():
-            cl_name = get_cl_name(CL[industry])
-            
-            reg.update({'p1':years})
-        res.update({region:reg})
-    return res
+        for region in IN.keys():
+            years = {}
+            for year in [ str(y) for y in range(2009, 2017) ]:
+                try:
+                    years.update({year:res[(region,cluster,year)]})
+                except KeyError:
+                    pass
+            reg.update({region:years})
+        rez_clu.update({cluster:reg})
+    
+                
+    return {'По регионам':rez_reg, 'По кластерам':rez_clu }
 
 if __name__ == '__main__':
     end = False
@@ -183,10 +215,11 @@ if __name__ == '__main__':
             fedstat_data = load('fedstat_data.json')
             filtered_data = load('filtered_data.json')
             structured_data = load('structured_data.json')
-            calculated_sums = load('calculated_sums.json')
-            calculated_lq = load('calculated_lq.json')
             clusters = load('clusters.json')
             spec_data = load('spec_data.json')
+
+            calculated_sums = load('calculated_sums.json')
+            calculated_lq = load('calculated_lq.json')
             end = True
         except FileNotFoundError as e:
             if e.filename == 'fedstat_data.json':
@@ -198,18 +231,18 @@ if __name__ == '__main__':
             if e.filename == 'structured_data.json':
                 structured_data = make_structure(filtered_data)
                 dump(structured_data, 'structured_data.json')
-            if e.filename == 'calculated_sums.json':
-                calculated_sums = calc_sums(structured_data)
-                dump(calculated_sums, 'calculated_sums.json')
-            if e.filename == 'calculated_lq.json':
-                calculated_lq = calc_lq(calculated_sums, structured_data)
-                dump(calculated_lq, 'calculated_lq.json')
             if e.filename == 'clusters.json':
                 clusters = clusters_from_dot()
                 dump(clusters, 'clusters.json')
             if e.filename == 'spec_data.json':
-                spec_data = make_spec_data(calculated_lq, clusters)
+                spec_data = make_spec_data(structured_data['По регионам'], clusters)
                 dump(spec_data, 'spec_data.json')
+            if e.filename == 'calculated_sums.json':
+                calculated_sums = calc_sums(spec_data)
+                dump(calculated_sums, 'calculated_sums.json')
+            if e.filename == 'calculated_lq.json':
+                calculated_lq = calc_lq(calculated_sums, spec_data)
+                dump(calculated_lq, 'calculated_lq.json')
             
 #exit(0)
     
