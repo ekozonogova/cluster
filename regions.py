@@ -1,3 +1,6 @@
+from requests import get
+from bs4 import BeautifulSoup as BS
+
 regions = [
 {"yandexname":"Алтайский край","emissname":"Алтайский край","code":"RU-ALT","color":"#ffffff"},
 {"yandexname":"Амурская область","emissname":"Амурская область","code":"RU-AMU","color":"#ffffff"},
@@ -86,3 +89,23 @@ regions = [
 {"yandexname":"Республика Крым","emissname":"Республика Крым","code":"RU-KRY","color":"#ffffff"}
 ]
 
+regnames = set([ s['yandexname'] for s in regions])
+
+def get_yandex_name(wikiname):
+    for rec in regions:
+        if rec['yandexname'].count(wikiname) > 0:
+            return rec['yandexname']
+
+def get_neighbors(region):
+    soup = BS(get('https://ru.wikipedia.org/wiki/%s' % region.replace(' ', '_')).content, features="lxml")
+    for p in soup('p'):
+        if p.text.count('Граничит') > 0:
+            neighbor_candidates = set([ get_yandex_name(a['title']) for a in p('a') ])
+            neighbors = regnames & neighbor_candidates
+            return neighbors
+    
+if __name__ == '__main__':
+    print(get_neighbors('Архангельская область'))
+    print(get_neighbors('Ненецкий автономный округ'))
+    print(get_neighbors('Томская область'))
+    
