@@ -4,7 +4,11 @@ from bs4 import BeautifulSoup as BS
 regions = [
 {"yandexname":"Алтайский край","emissname":"Алтайский край","code":"RU-ALT","color":"#ffffff"},
 {"yandexname":"Амурская область","emissname":"Амурская область","code":"RU-AMU","color":"#ffffff"},
-{"yandexname":"Архангельская область","emissname":"Архангельская область (без автономного округа)","code":"RU-ARK","color":"#ffffff"},
+{"yandexname":"Архангельская область","emissname":"Архангельская область (без автономного округа)","code":"RU-ARK","color":"#ffffff",
+"neighbors":[
+ "Республика Коми","Кировская область","Вологодская область","Республика Карелия","Мурманская область","Ненецкий автономный округ"
+]
+},
 {"yandexname":"Астраханская область","emissname":"Астраханская область","code":"RU-AST","color":"#ffffff"},
 {"yandexname":"Белгородская область","emissname":"Белгородская область","code":"RU-BEL","color":"#ffffff"},
 {"yandexname":"Брянская область","emissname":"Брянская область","code":"RU-BRY","color":"#ffffff"},
@@ -71,7 +75,11 @@ regions = [
 {"yandexname":"Тверская область","emissname":"Тверская область","code":"RU-TVE","color":"#ffffff"},
 {"yandexname":"Томская область","emissname":"Томская область","code":"RU-TOM","color":"#ffffff"},
 {"yandexname":"Тульская область","emissname":"Тульская область","code":"RU-TUL","color":"#ffffff"},
-{"yandexname":"Тюменская область","emissname":"Тюменская область (без автономных округов)","code":"RU-TYU","color":"#ffffff"},
+{"yandexname":"Тюменская область","emissname":"Тюменская область (без автономных округов)","code":"RU-TYU","color":"#ffffff",
+"neighbors":[
+ "Омская область","Ханты-Мансийский автономный округ","Курганская область","Свердловская область","Томская область"
+]
+},
 {"yandexname":"Удмуртская Республика","emissname":"Удмуртская Республика","code":"RU-UD","color":"#ffffff"},
 {"yandexname":"Ульяновская область","emissname":"Ульяновская область","code":"RU-ULY","color":"#ffffff"},
 {"yandexname":"Хабаровский край","emissname":"Хабаровский край","code":"RU-KHA","color":"#ffffff"},
