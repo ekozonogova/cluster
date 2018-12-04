@@ -769,6 +769,7 @@ function ViewModel() {
     });
 
     self.updateCompaniesData = function() {
+        self.waiter.show();
         var key = "f9134045-4f6b-4b1e-bdd8-10582c026780";
         var query = "?apikey=" + key + "&type=biz&lang=ru_RU&results=500&text=" + encodeURIComponent(self.requestData());
         $.get("https://search-maps.yandex.ru/v1/" + query, function(resp, status){
@@ -789,6 +790,7 @@ function ViewModel() {
                 companies.push(new Company(companyMeta.name, addr, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], phone, url));
             }
             updateCompaniesOnMap();
+            self.waiter.hide();
             // TODO: 
             // loadBordersAndPaint(_colors1);
         });
