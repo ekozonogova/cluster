@@ -2,6 +2,9 @@ from requests import get
 from bs4 import BeautifulSoup as BS
 from utilites import load, dump, compare
 
+regions = load('regions.json')
+distances = load('distances.json')
+
 def get_wiki_center(region):
     def is_city(region):
         x = soup.find('div', {'class':"mw-parser-output"}).table.tbody.tr.text
