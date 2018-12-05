@@ -269,7 +269,7 @@ var _colors2 = {
 ymaps.ready(init);
 var myMap, placemark;
 
-companies = [];
+allCompanies = [];
 
 // var coord1 = [57.999544, 56.301705];
 // var coord2 = [58.068200, 56.344613];
@@ -279,10 +279,10 @@ function updateCompaniesOnMap() {
 
 	geoObjects = [];
 
-	for (var i = 0; i < companies.length; i++) {
-		geoObjects[i] = new ymaps.Placemark([companies[i].lat, companies[i].lon], { 
-			hintContent: companies[i].name,
-			balloonContent: companies[i].name + ' ' + companies[i].address + ' ' + companies[i].phone + ' ' + companies[i].url
+	for (var i = 0; i < allCompanies.length; i++) {
+		geoObjects[i] = new ymaps.Placemark([allCompanies[i].lat, allCompanies[i].lon], { 
+			hintContent: allCompanies[i].name,
+			balloonContent: allCompanies[i].name + ' ' + allCompanies[i].address + ' ' + allCompanies[i].phone + ' ' + allCompanies[i].url
 		}, {
             preset: 'islands#violetIcon'
         });
@@ -327,7 +327,7 @@ function init() {
 	//     checkZoomRange: true
 	// });
 
-    // addCompaniesToMap(companies);
+    // addCompaniesToMap(allCompanies);
     loadBordersAndPaint(_colors0);
 }
 
@@ -406,12 +406,12 @@ function loadBordersAndPaint(colors) {
     });
 };
 
-// function addCompaniesToMap(companies) {
-// 	if (Array.isArray(companies) == false) {
+// function addCompaniesToMap(allCompanies) {
+// 	if (Array.isArray(allCompanies) == false) {
 // 		return;
 // 	}
-// 	for (var i = 0; i < companies.length; i++) {
-// 		placemark = new ymaps.Placemark([companies[i].lat, companies[i].lon], { hintContent: companies[i].name, balloonContent: companies[i].address + '' + companies[i].phone });
+// 	for (var i = 0; i < allCompanies.length; i++) {
+// 		placemark = new ymaps.Placemark([allCompanies[i].lat, allCompanies[i].lon], { hintContent: allCompanies[i].name, balloonContent: allCompanies[i].address + '' + allCompanies[i].phone });
 //     	myMap.geoObjects.add(placemark);
 //     	// $('html, body').animate({
 // 	    //     scrollTop: $("#gmap").offset().top - 300

@@ -792,41 +792,63 @@ function ViewModel() {
     // });
     self.companiesLoaded = ko.observable(false);
 
+    self.requestsCount = ko.observable(0);
+
+    self.requestsHandled = 0;
+
+    self.reqCallback = function(resp, status) {
+        console.log(resp);
+        for (var i = 0; i < resp.features.length; i++) {
+            var companyMeta = resp.features[i].properties.CompanyMetaData;
+            var phone, url, addr = 'нет данных';
+            if (typeof companyMeta.Phones !== 'undefined') {
+                phone = companyMeta.Phones[0].formatted;
+            }
+            if (typeof companyMeta.url !== 'undefined') {
+                url = companyMeta.url;
+            }
+            if (typeof companyMeta.address !== 'undefined') {
+                addr = companyMeta.address;
+            }
+            allCompanies.push(new Company(companyMeta.name, addr, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], phone, url));
+        }
+        self.requestsHandled++;
+    }
+
+    self.sendRequest = function(requestData) {
+        var key = "f9134045-4f6b-4b1e-bdd8-10582c026780";
+        var query = "?apikey=" + key + "&type=biz&lang=ru_RU&results=500&text=" + encodeURIComponent(requestData);
+        $.get("https://search-maps.yandex.ru/v1/" + query, self.reqCallback);
+    }
+
+    self.waitForResponseParse = function() {
+        var t;
+        if (self.requestsHandled == self.requestsCount()) {
+            console.log('Loaded');
+            self.companiesLoaded(true);
+            clearTimeout(t);
+        } else {
+            console.log('Waiting...');
+            t  = setTimeout(self.waitForResponseParse, 500);
+        }
+    };
+
     self.updateCompaniesData = function() {
         self.waiter.show();
         self.companiesLoaded(false);
-        console.log('Show waiter');
-        var key = "f9134045-4f6b-4b1e-bdd8-10582c026780";
-        companies = [];
-        $.when(function() {
-            for (var i = 0; i < self.requestData().length; i++) {
-                var query = "?apikey=" + key + "&type=biz&lang=ru_RU&results=50&text=" + encodeURIComponent(self.requestData()[i]);
-                $.get("https://search-maps.yandex.ru/v1/" + query, function(resp, status) {
-                    console.log(resp);
-                    for (var i = 0; i < resp.features.length; i++) {
-                        var companyMeta = resp.features[i].properties.CompanyMetaData;
-                        var phone, url, addr = 'нет данных';
-                        if (typeof companyMeta.Phones !== 'undefined') {
-                            phone = companyMeta.Phones[0].formatted;
-                        }
-                        if (typeof companyMeta.url !== 'undefined') {
-                            url = companyMeta.url;
-                        }
-                        if (typeof companyMeta.address !== 'undefined') {
-                            addr = companyMeta.address;
-                        }
-                        companies.push(new Company(companyMeta.name, addr, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], phone, url));
-                    }
-                });
-            }
-        }).then(function() {
-            self.companiesLoaded(true);
-        });
+        self.requestsHandled = 0;
+        allCompanies = [];
+        self.requestsCount(self.requestData().length);
+
+        for (var i = 0; i < self.requestsCount(); i++) {
+            self.sendRequest(self.requestData()[i]);
+        }
+
+        var t = setTimeout(self.waitForResponseParse, 100);
     };
 
     self.companiesLoaded.subscribe(function(newVal) {
         if (newVal == true) {
-            console.log('Loaded');
             updateCompaniesOnMap();
             self.waiter.hide();
             // TODO: 
