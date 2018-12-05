@@ -14,11 +14,6 @@
 				</select>
 			</div>
 			<div class="col-sm-6" style="padding: 1px;">
-				<i data-bind="visible: selectedSpec, click: deselectAllProfiles" class="fa fa-times-circle fa-2x" style="position: absolute;
-    z-index: 11;
-    float: right;
-    right: 10px;
-    top: 3px;"></i>
 				<select class="form-control" size="1" id="select-profile" multiple="true" style="height: auto;position: absolute; z-index: 10; max-height: 100px;" data-bind="selectedOptions: selectedProfiles, options: availableProfiles, optionsText: 'name'">
 					{% comment %}<!-- ko if: $index() == 0 -->
 						<option disabled>Выберите отрасли</option>
@@ -30,8 +25,11 @@
 			</div>
 			<div class="col-sm-2">
 				<span style="float: left; width: 60px; padding: 4px;">
-					<label for="all" style="float: left;">Все</label>
-					<input class="" id="all" type="checkbox" data-bind="checked: selectedAll" style="float: right; width: 20px;">
+					<label for="all" style="float: right;" data-bind="click: selectAllProfiles"><i class="fa fa-check-double fa-2x"></i></label>
+					<label for="all" style="float: left; position: absolute; left: 13px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && !collapsedProfiles()" class="fa fa-times fa-2x"></i></label>
+					<label for="all" style="float: left; position: absolute; left: 10px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && collapsedProfiles()" class="fa fa-arrow-down fa-2x"></i></label>
+
+					<!-- <input class="" id="all" type="checkbox" style="float: right; width: 20px;"> -->
 				</span>
 				<span style="float: right; width: 100px;">
 					<input type="button" data-bind="enable: selectedProfiles.isValid, click: updateCompaniesData" class="form-control btn btn-success" value="Найти" name="submit">

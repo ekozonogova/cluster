@@ -711,10 +711,12 @@ function ViewModel() {
         ]
     );
     self.selectedSpec = ko.observable();
+    self.collapsedProfiles = ko.observable(false);
 
     self.availableProfiles = ko.computed(function() {
         if (self.selectedSpec()) {
-            $('#select-profile').attr('size', '' + self.selectedSpec()["values"].length);
+            $('#select-profile').attr('size', '10');
+            self.collapsedProfiles(false);
             console.log(self.selectedSpec()["values"]);
             return self.selectedSpec()["values"];
         }
@@ -723,23 +725,49 @@ function ViewModel() {
     self.selectedAll = ko.observable(false);
 
     self.selectAllProfiles = function() {
-        if (self.selectedAll()) {
+        if (!self.selectedAll()) {
             for (var i = 0; i < self.availableProfiles().length; i++) {
                 self.selectedProfiles.push(self.availableProfiles()[i]);
             }
+            self.selectedAll(true);
+            console.log(1);
+            console.log(self.selectedAll());
+        } else {
+            self.selectedProfiles.removeAll();
+            self.selectedAll(false);
+            console.log(2);
+            console.log(self.selectedAll());
         }
     };
     self.deselectAllProfiles = function() {
         self.selectedProfiles.removeAll();
+        self.selectedAll(false);
+    };
+    $(document).ready(function() {
+        $('#select-profile').on('click', function() {
+            if(self.selectedAll()) {
+                self.deselectAllProfiles();
+            }
+        });
+    });
+
+    self.collapseProfiles = function() {
+        if(!self.collapsedProfiles()) {
+            $('#select-profile').attr('size', '1');
+            self.collapsedProfiles(true);
+        } else {
+            $('#select-profile').attr('size', '10');
+            self.collapsedProfiles(false);
+        }
     };
 
-    self.selectedAll.subscribe(function(newVal) {
-        if (newVal == true) {
-            self.selectAllProfiles();
-        } else {
-            self.deselectAllProfiles();
-        }
-    });
+    // self.selectedAll.subscribe(function(newVal) {
+    //     if (newVal == true) {
+    //         self.selectAllProfiles();
+    //     } else {
+    //         self.deselectAllProfiles();
+    //     }
+    // });
 
     self.selectedProfiles.isValid = ko.computed(function() {
         var e = self.selectedProfiles();
