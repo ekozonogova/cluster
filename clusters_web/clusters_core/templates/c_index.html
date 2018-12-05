@@ -3,8 +3,18 @@
 
 {% block content %}
 
-<div class="container" style="padding: 30px;">
-	<div class="row">  
+<div style="position: absolute; top: 60px; height: 20px; width: 80px; background-color: rgba(240, 240, 117, 0.5);">
+	<p style="text-align: left; padding-left: 3px;">Что-то</p>
+</div>
+<div style="position: absolute; top: 80px; height: 20px; width: 80px; background-color: rgba(251, 108, 63, 0.5);">
+	<p style="text-align: left; padding-left: 3px;">Центр</p>
+</div>
+<div style="position: absolute; top: 100px; height: 20px; width: 80px; background-color: rgba(61, 76, 118, 0.5);">
+	<p style="text-align: left; padding-left: 3px;">Ост-е</p>
+</div>
+<div class="container" style="padding: 0 30px;">
+	<div class="row">
+		<h1 style="text-align: center;">Межрегиональные кластеры России</h1>
 		<form action="">
 			<div class="col-sm-4">
 				<select class="form-control" data-bind="options: availableSpecs,
@@ -25,7 +35,7 @@
 			</div>
 			<div class="col-sm-2">
 				<span style="float: left; width: 60px; padding: 4px;">
-					<label for="all" style="float: right;" data-bind="click: selectAllProfiles"><i class="fa fa-check-double fa-2x"></i></label>
+					<label for="all" style="float: right;" data-bind="click: selectAllProfiles"><i class="fa fa-check-double fa-2x" title="Выбрать все отрасли"></i></label>
 					<label for="all" style="float: left; position: absolute; left: 13px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && !collapsedProfiles()" class="fa fa-times fa-2x"></i></label>
 					<label for="all" style="float: left; position: absolute; left: 10px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && collapsedProfiles()" class="fa fa-arrow-down fa-2x"></i></label>
 
@@ -39,7 +49,7 @@
 	</div>
 </div>
 
-<div id="gmap" style="bottom: 0; position: absolute; left: 0; right: 0; top: 94px;">
+<div id="gmap" style="bottom: 0; position: absolute; left: 0; right: 0; top: 124px;">
 	
 </div>
 
