@@ -208,6 +208,38 @@ def make_spec_data(IN = {}, CL = {}):
                 
     return {'По регионам':rez_reg, 'По кластерам':rez_clu }
 
+def calc_w_distance(IN = {}):
+    n = int(len(IN.keys()) / 2)
+    rez = np.zeros([n,n])
+    regions = sorted([ r.split('<->')[0] for r in IN.keys() ])
+    for i in range(n):
+        for j in range(n):
+            try:
+                rez[i,j] = 1/IN["%s<->%s" % (regions[i], regions[j])]
+            except KeyError:
+                pass
+    return rez
+        
+def calc_w_neighbors(IN = {}, DIST = {}):
+    regions = sorted(IN.keys())
+    n = len(IN.keys())
+    rez = {}
+    for i in range(n):
+        reg = IN[regions[i]]
+        try:
+            neighbors = reg['neighbors']
+            data = []
+            for neighbor in neighbors:
+                try:
+                    data += [1/DIST["%s<->%s" % (regions[i], neighbor)]]
+                except KeyError:
+                    data += [-1]
+            rez.update({i:data})
+        except KeyError as e:
+#            print(IN[regions[i]])
+            print(e)
+    return rez
+
 if __name__ == '__main__':
     end = False
     while not end:
@@ -220,6 +252,9 @@ if __name__ == '__main__':
 
             calculated_sums = load('calculated_sums.json')
             calculated_lq = load('calculated_lq.json')
+            w_distance =  load('w_distance.dat')
+            w_neighbors =  load('w_neighbors.json')
+#            spatial_corr =  load('spatial_corr.json')
             end = True
         except FileNotFoundError as e:
             if e.filename == 'fedstat_data.json':
@@ -243,7 +278,14 @@ if __name__ == '__main__':
             if e.filename == 'calculated_lq.json':
                 calculated_lq = calc_lq(calculated_sums, spec_data)
                 dump(calculated_lq, 'calculated_lq.json')
-            
+            if e.filename == 'w_distance.dat':
+                distances = load('distances.json')
+                w_distance = calc_w_distance(distances)
+                dump(w_distance, 'w_distance.dat')
+            if e.filename == 'w_neighbors.json':
+                neighbors = load('regions.json')
+                w_neighbors = calc_w_neighbors(neighbors, distances)
+                dump(w_neighbors, 'w_neighbors.json')
 #exit(0)
     
 #    cookie = dict(
