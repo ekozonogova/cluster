@@ -4,7 +4,95 @@
 
 ;
 
-var _colors0 = {
+colors = {
+"c0":{
+		'RU-ALT': '#F0F075',
+		'RU-AMU': '#F0F075',
+		'RU-ARK': '#FB6C3F',
+		'RU-AST': '#3D4C76',
+		'RU-BEL': '#3D4C76',
+		'RU-BRY': '#3D4C76',
+		'RU-VLA': '#FB6C3F',
+		'RU-VGG': '#F0F075',
+		'RU-VLG': '#F0F075',
+		'RU-VOR': '#FB6C3F',
+		'RU-YEV': '#F0F075',
+		'RU-ZAB': '#F0F075',
+		'RU-IVA': '#F0F075',
+		'RU-IRK': '#FB6C3F',
+		'RU-KB': '#3D4C76',
+		'RU-KGD': '#3D4C76',
+		'RU-KLU': '#FB6C3F',
+		'RU-KAM': '#3D4C76',
+		'RU-KC': '#F0F075',
+		'RU-KEM': '#F0F075',
+		'RU-KIR': '#F0F075',
+		'RU-KOS': '#F0F075',
+		'RU-KDA': '#F0F075',
+		'RU-KYA': '#3D4C76',
+		'RU-KGN': '#F0F075',
+		'RU-KRS': '#F0F075',
+		'RU-LEN': '#F0F075',
+		'RU-LIP': '#F0F075',
+		'RU-MAG': '#3D4C76',
+		'RU-MOS': '#FB6C3F',
+		'RU-MUR': '#3D4C76',
+		'RU-NIZ': '#FB6C3F',
+		'RU-NGR': '#F0F075',
+		'RU-NVS': '#FB6C3F',
+		'RU-OMS': '#FB6C3F',
+		'RU-ORE': '#F0F075',
+		'RU-ORL': '#F0F075',
+		'RU-PNZ': '#FB6C3F',
+		'RU-PER': '#FB6C3F',
+		'RU-PRI': '#FB6C3F',
+		'RU-PSK': '#F0F075',
+		'RU-AD': '#3D4C76',
+		'RU-AL': '#3D4C76',
+		'RU-BA': '#FB6C3F',
+		'RU-BU': '#F0F075',
+		'RU-DA': '#3D4C76',
+		'RU-IN': '#F0F075',
+		'RU-KL': '#3D4C76',
+		'RU-KR': '#F0F075',
+		'RU-KO': '#3D4C76',
+		'RU-ME': '#F0F075',
+		'RU-MO': '#F0F075',
+		'RU-SA': '#3D4C76',
+		'RU-SE': '#3D4C76',
+		'RU-TA': '#FB6C3F',
+		'RU-TY': '#3D4C76',
+		'RU-KK': '#3D4C76',
+		'RU-ROS': '#FB6C3F',
+		'RU-RYA': '#FB6C3F',
+		'RU-SAM': '#FB6C3F',
+		'RU-SAR': '#FB6C3F',
+		'RU-SAK': '#3D4C76',
+		'RU-SVE': '#FB6C3F',
+		'RU-SMO': '#3D4C76',
+		'RU-STA': '#F0F075',
+		'RU-TAM': '#FB6C3F',
+		'RU-TVE': '#3D4C76',
+		'RU-TOM': '#F0F075',
+		'RU-TUL': '#F0F075',
+		'RU-TYU': '#F0F075',
+		'RU-UD': '#FB6C3F',
+		'RU-ULY': '#FB6C3F',
+		'RU-KHA': '#FB6C3F',
+		'RU-CHE': '#FB6C3F',
+		'RU-CE': '#3D4C76',
+		'RU-CU': '#F0F075',
+		'RU-CHU': '#3D4C76',
+		'RU-YAR': '#FB6C3F',
+		'RU-SPE': '#FB6C3F',
+		'RU-MOW': '#FB6C3F',
+		'RU-NEN': '#3D4C76',
+		'RU-KHM': '#3D4C76',
+		'RU-YAN': '#3D4C76',
+		'RU-SEV': '#3D4C76',
+		'RU-KRY': '#3D4C76'
+	},
+"c1":{
 	'RU-ALT': '#F0F075',
 	'RU-AMU': '#F0F075',
 	'RU-ARK': '#FB6C3F',
@@ -90,95 +178,8 @@ var _colors0 = {
 	'RU-YAN': '#3D4C76',
 	'RU-SEV': '#3D4C76',
 	'RU-KRY': '#3D4C76'
-}
-var _colors1 = {
-	'RU-ALT': '#F0F075',
-	'RU-AMU': '#F0F075',
-	'RU-ARK': '#FB6C3F',
-	'RU-AST': '#3D4C76',
-	'RU-BEL': '#3D4C76',
-	'RU-BRY': '#3D4C76',
-	'RU-VLA': '#FB6C3F',
-	'RU-VGG': '#F0F075',
-	'RU-VLG': '#F0F075',
-	'RU-VOR': '#FB6C3F',
-	'RU-YEV': '#F0F075',
-	'RU-ZAB': '#F0F075',
-	'RU-IVA': '#F0F075',
-	'RU-IRK': '#FB6C3F',
-	'RU-KB': '#3D4C76',
-	'RU-KGD': '#3D4C76',
-	'RU-KLU': '#FB6C3F',
-	'RU-KAM': '#3D4C76',
-	'RU-KC': '#F0F075',
-	'RU-KEM': '#F0F075',
-	'RU-KIR': '#F0F075',
-	'RU-KOS': '#F0F075',
-	'RU-KDA': '#F0F075',
-	'RU-KYA': '#3D4C76',
-	'RU-KGN': '#F0F075',
-	'RU-KRS': '#F0F075',
-	'RU-LEN': '#F0F075',
-	'RU-LIP': '#F0F075',
-	'RU-MAG': '#3D4C76',
-	'RU-MOS': '#FB6C3F',
-	'RU-MUR': '#3D4C76',
-	'RU-NIZ': '#FB6C3F',
-	'RU-NGR': '#F0F075',
-	'RU-NVS': '#FB6C3F',
-	'RU-OMS': '#FB6C3F',
-	'RU-ORE': '#F0F075',
-	'RU-ORL': '#F0F075',
-	'RU-PNZ': '#FB6C3F',
-	'RU-PER': '#FB6C3F',
-	'RU-PRI': '#FB6C3F',
-	'RU-PSK': '#F0F075',
-	'RU-AD': '#3D4C76',
-	'RU-AL': '#3D4C76',
-	'RU-BA': '#FB6C3F',
-	'RU-BU': '#F0F075',
-	'RU-DA': '#3D4C76',
-	'RU-IN': '#F0F075',
-	'RU-KL': '#3D4C76',
-	'RU-KR': '#F0F075',
-	'RU-KO': '#3D4C76',
-	'RU-ME': '#F0F075',
-	'RU-MO': '#F0F075',
-	'RU-SA': '#3D4C76',
-	'RU-SE': '#3D4C76',
-	'RU-TA': '#FB6C3F',
-	'RU-TY': '#3D4C76',
-	'RU-KK': '#3D4C76',
-	'RU-ROS': '#FB6C3F',
-	'RU-RYA': '#FB6C3F',
-	'RU-SAM': '#FB6C3F',
-	'RU-SAR': '#FB6C3F',
-	'RU-SAK': '#3D4C76',
-	'RU-SVE': '#FB6C3F',
-	'RU-SMO': '#3D4C76',
-	'RU-STA': '#F0F075',
-	'RU-TAM': '#FB6C3F',
-	'RU-TVE': '#3D4C76',
-	'RU-TOM': '#F0F075',
-	'RU-TUL': '#F0F075',
-	'RU-TYU': '#F0F075',
-	'RU-UD': '#FB6C3F',
-	'RU-ULY': '#FB6C3F',
-	'RU-KHA': '#FB6C3F',
-	'RU-CHE': '#FB6C3F',
-	'RU-CE': '#3D4C76',
-	'RU-CU': '#F0F075',
-	'RU-CHU': '#3D4C76',
-	'RU-YAR': '#FB6C3F',
-	'RU-SPE': '#FB6C3F',
-	'RU-MOW': '#FB6C3F',
-	'RU-NEN': '#3D4C76',
-	'RU-KHM': '#3D4C76',
-	'RU-YAN': '#3D4C76',
-	'RU-SEV': '#3D4C76',
-	'RU-KRY': '#3D4C76'
-}
-var _colors2 = {
+	},
+"c2":{
 	'RU-ALT': '#FB6C3F',
 	'RU-AMU': '#FB6C3F',
 	'RU-ARK': '#FB6C3F',
@@ -264,7 +265,8 @@ var _colors2 = {
 	'RU-YAN': '#F0F075',
 	'RU-SEV': '#F0F075',
 	'RU-KRY': '#F0F075'
-}
+	}
+};
 
 ymaps.ready(init);
 var myMap, placemark;
@@ -294,13 +296,6 @@ function updateCompaniesOnMap() {
 
 function init() { 
 
-	$(document).on("click", "input#repaint1", function() {
-		loadBordersAndPaint(_colors1);
-	});
-	$(document).on("click", "input#repaint2", function() {
-		loadBordersAndPaint(_colors2);
-	});
-
 	objectManager = new ymaps.ObjectManager();
 
     myMap = new ymaps.Map("gmap", {
@@ -328,7 +323,7 @@ function init() {
 	// });
 
     // addCompaniesToMap(allCompanies);
-    loadBordersAndPaint(_colors0);
+    // loadBordersAndPaint(colors[]);
 }
 
 function loadBordersAndPaint(colors) {
@@ -403,6 +398,7 @@ function loadBordersAndPaint(colors) {
         console.log(result);
         objectManager.add(result);
         myMap.geoObjects.add(objectManager);
+        UVM.waiter.hide();
     });
 };
 
