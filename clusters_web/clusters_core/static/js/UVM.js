@@ -713,6 +713,11 @@ function ViewModel() {
     self.selectedSpec = ko.observable();
     self.collapsedProfiles = ko.observable(false);
 
+    self.selectedSpec.subscribe(function(newVal) {
+        var colors = newVal["colors"];
+        loadBordersAndPaint(colors);
+    });
+
     self.availableProfiles = ko.computed(function() {
         if (self.selectedSpec()) {
             $('#select-profile').attr('size', '10');

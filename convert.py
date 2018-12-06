@@ -8,11 +8,14 @@ Created on Tue Nov 27 19:38:22 2018
 from json import dump, load
 res = []
 x = load(open('specs.json', 'r'))
+n = 0
 
 for key1 in x:
     subres = []
     for key2 in x[key1]:
         subres += [{"name": key2, "values": x[key1][key2]}]
-    res += [{"name": key1, "values": subres}]
+    color = 'c%s' % n
+    res += [{"name": key1, "values": subres, "color": color}]
+    n += 1
   
 dump(obj=res, fp=open('specs2.json', 'w'), indent=4, ensure_ascii=False)
