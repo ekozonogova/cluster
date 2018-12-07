@@ -2,11 +2,11 @@ import json
 import string
 import requests
 import random
-import core
+import clusters_core
 import traceback
-from astra import const
+# from astra import const
 # from core import models
-from astra import settings
+from clusters import settings
 
 
 def unique_temp_link_generator(size=6, chars=string.ascii_uppercase + string.digits):
@@ -15,8 +15,9 @@ def unique_temp_link_generator(size=6, chars=string.ascii_uppercase + string.dig
         return ''.join(['', str])
 
 def get_admin_emails():
+    pass
 
-    return [u.email for u in core.models.User.objects.filter(type_of=const.USER_TYPE_ADMIN)]
+    # return [u.email for u in core.models.User.objects.filter(type_of=const.USER_TYPE_ADMIN)]
 
 
 def any(iterable):
