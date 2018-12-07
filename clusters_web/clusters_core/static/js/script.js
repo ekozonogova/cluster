@@ -91,7 +91,7 @@ colors = {
 		'RU-YAN': '#3D4C76',
 		'RU-SEV': '#3D4C76',
 		'RU-KRY': '#3D4C76'
-	},
+},
 "c1":{
 	'RU-ALT': '#F0F075',
 	'RU-AMU': '#F0F075',
@@ -178,7 +178,7 @@ colors = {
 	'RU-YAN': '#3D4C76',
 	'RU-SEV': '#3D4C76',
 	'RU-KRY': '#3D4C76'
-	},
+},
 "c2":{
 	'RU-ALT': '#FB6C3F',
 	'RU-AMU': '#FB6C3F',
@@ -267,6 +267,8 @@ colors = {
 	'RU-KRY': '#F0F075'
 	}
 };
+UVM = new ViewModel();
+ko.applyBindings(UVM);
 
 ymaps.ready(init);
 var myMap, placemark;
@@ -276,16 +278,26 @@ allCompanies = [];
 // var coord1 = [57.999544, 56.301705];
 // var coord2 = [58.068200, 56.344613];
 
+function getPointData(i) {
+	return {
+	    balloonContentHeader: '<h7>' + allCompanies[i].name + '</h7>',
+	    balloonContentBody: '<p>Информация о компании: </p><p>' + allCompanies[i].name + '</p><p>' + allCompanies[i].address + '</p><p>' + allCompanies[i].phone + '</p><p>' + allCompanies[i].url + '</p>',
+	    clusterCaption: ' <strong>' + allCompanies[i].name + '</strong>'
+	}
+};
+
 function updateCompaniesOnMap() {
 	clusterer.removeAll();
 
 	geoObjects = [];
 
 	for (var i = 0; i < allCompanies.length; i++) {
-		geoObjects[i] = new ymaps.Placemark([allCompanies[i].lat, allCompanies[i].lon], { 
-			hintContent: allCompanies[i].name,
-			balloonContent: allCompanies[i].name + ' ' + allCompanies[i].address + ' ' + allCompanies[i].phone + ' ' + allCompanies[i].url
-		}, {
+		geoObjects[i] = new ymaps.Placemark([allCompanies[i].lat, allCompanies[i].lon], getPointData(i)
+		// { 
+			// hintContent: allCompanies[i].name,
+			// balloonContent: allCompanies[i].name + ' ' + allCompanies[i].address + ' ' + allCompanies[i].phone + ' ' + allCompanies[i].url,
+		// }
+		, {
             preset: 'islands#violetIcon'
         });
     };
@@ -308,7 +320,7 @@ function init() {
     	preset: 'islands#invertedVioletClusterIcons',
     	groupByCoordinates: false,
     	clusterDisableClickZoom: true,
-    	clusterOpenBalloonOnClick: false,
+    	// clusterOpenBalloonOnClick: false,
     	clusterHideIconOnBalloonOpen: false,
     	geoObjectHideIconOnBalloonOpen: false
 	});
@@ -468,9 +480,6 @@ function scroll(url)
 	}
 	return false;
 }	
-	
-UVM = new ViewModel();
-ko.applyBindings(UVM);
 // UVM.waiter.show();
 
 Date.prototype.toUserString = function () {
