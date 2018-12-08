@@ -134,13 +134,12 @@ def dict_to_xls(filename = 'out.xlsx',
     wb.save(filename)
 
 def compare(S1,S2):
-	ngrams = [S1[i:i+3] for i in range(len(S1))]
-	count = 0
-	for ngram in ngrams:
-		count += S2.count(ngram)
+    ngrams = [S1[i:i+3] for i in range(len(S1))]
+    count = 0
+    for ngram in ngrams:
+        count += S2.count(ngram)
 
-	return count/max(len(S1), len(S2))
+    return count/max(len(S1), len(S2))
 
 if __name__ == '__main__':
-    x = load("calculated_lq.json")
-    dict_to_xls("out.xls", x, )
+    print(compare('компутер', 'компьютеризация'))
