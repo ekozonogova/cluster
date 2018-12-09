@@ -7,6 +7,7 @@ from stage1 import download_data, convert_data, form_matrix
 from stage2 import *
 from stage3 import *
 from stage4 import *
+from stage5 import *
 
 URL = "http://www.gks.ru/wps/wcm/connect/rosstat_main/rosstat/ru/statistics/accounts/"
 
