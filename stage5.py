@@ -211,8 +211,8 @@ def make_spec_data(IN = {}, CL = {}):
 
 def get_hi_lo_regions(lq, regions, distances):
     data = {}
-    
-    for cluster in ['Угольная промышленность', 'Высокотехнологичное оборудование и ИТ']:
+    clusters = lq[list(lq.keys())[0]].keys()
+    for cluster in clusters:
         clu = {}
         DLQ_min, DLQ_max = 10000, -10000
         for region in regions.keys():
@@ -232,7 +232,7 @@ def get_hi_lo_regions(lq, regions, distances):
         clu.update({'max':DLQ_max})
         data.update({cluster:clu})
     res = {}
-    for cluster in ['Угольная промышленность', 'Высокотехнологичное оборудование и ИТ']:
+    for cluster in clusters :
         clu = {'hi':[],'lo':[]}
         for region in regions.keys():
             LQ = lq[region][cluster]['2016']
@@ -240,12 +240,45 @@ def get_hi_lo_regions(lq, regions, distances):
             B = data[cluster]['min'] / 53
             A = data[cluster]['max'] / 53
             if DLQ > A:
-                clu['hi'].append({region:LQ})
+                clu['hi'].append((region,LQ))
             elif DLQ < B:
-                clu['lo'].append({region:LQ})
+                clu['lo'].append((region,LQ))
         res.update({cluster:clu})
     return res
 
+def get_neib_regions(hi_lo_regions, regions, distances):
+    res = {}
+    for cluster in hi_lo_regions.keys():
+        clu = {}
+        for regionA,lq in hi_lo_regions[cluster]['hi']:
+            dst = []
+            for regionB in set(regions.keys()) - {regionA}:
+                dst += [(regionB, distances["%s<->%s" % (regionA, regionB)])]
+            dst.sort(key=lambda x:x[1])
+            neib_candidates = set([ _[0] for _ in dst[:3] ])
+            hi_regions = set([ _[0] for _ in hi_lo_regions[cluster]['hi']])
+            neib = list(neib_candidates - hi_regions)
+            clu.update({regionA:neib})
+        res.update({cluster:clu})
+    return res
+
+def get_region_colors(regions, neib_regions):
+    colors = []
+    for cluster in neib_regions.keys():
+        clu = {'name':cluster}
+        all_neib = []
+        for region in neib_regions[cluster]:
+            all_neib += neib_regions[cluster][region]
+        for region in regions:
+            code = regions[region]["code"]
+            if region in neib_regions[cluster].keys():
+                clu.update({code:"#FB6C3F"})
+            elif region in all_neib:
+                clu.update({code:"#F0F075"})
+            else:
+                clu.update({code:"#8A92AB"})
+        colors += [clu]
+    return colors
 
 if __name__ == '__main__':
     end = False
@@ -261,6 +294,8 @@ if __name__ == '__main__':
             calculated_lq = load('calculated_lq.json')
             distances = load('distances.json')
             cluster_hi_lo = load('cluster_hi_lo.json')
+            neib_regions = load('neib_regions.json')
+            region_colors = load('region_colors.json')
             end = True
         except FileNotFoundError as e:
             if e.filename == 'fedstat_data.json':
@@ -289,3 +324,12 @@ if __name__ == '__main__':
                 distances = load('distances.json')
                 cluster_hi_lo = get_hi_lo_regions(calculated_lq, regions, distances)
                 dump(cluster_hi_lo, 'cluster_hi_lo.json')
+            if e.filename == 'neib_regions.json':
+                regions = load('regions.json')
+                distances = load('distances.json')
+                neib_regions = get_neib_regions(cluster_hi_lo, regions, distances)
+                dump(neib_regions, 'neib_regions.json')
+            if e.filename == 'region_colors.json':
+                regions = load('regions.json')
+                region_colors = get_region_colors(regions, neib_regions)
+                dump(region_colors, 'region_colors.json')
