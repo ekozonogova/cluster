@@ -8,7 +8,7 @@ from utilites import dump, load
 from regions import regions, get_yandex_name, emiss_to_yandex
 
 import numpy as np
-from pysal import W, Moran, Moran_Local
+#from pysal import W, Moran, Moran_Local
 
 FNAME = 'out.4.json'
 te = TE()
@@ -211,25 +211,41 @@ def make_spec_data(IN = {}, CL = {}):
 
 def get_hi_lo_regions(lq, regions, distances):
     data = {}
-    A_dlq = 0
+    
     for cluster in ['Угольная промышленность', 'Высокотехнологичное оборудование и ИТ']:
+        clu = {}
+        DLQ_min, DLQ_max = 10000, -10000
         for region in regions.keys():
             lq_a = lq[region][cluster]['2016']
             D_lq = 0
             for neib in regions[region]['neighbors']:
                 lq_b = lq[neib][cluster]['2016']
-                D_lq += lq_a - lq_b
+                D = distances["%s<->%s" % (region, neib)]
+                if D == 0: D = 4
+                D_lq += (lq_a - lq_b) * 1 / D
             D_lq /= len(regions[region]['neighbors'])
-            A_dlq += D_lq
-            data.update({region:{cluster:D_lq})
-        A_dlq /= len(regions.keys())
-    res = {'hi':[],'lo':[]}
-    for region in data.keys():
-        if data[region] > A_dlq:
-            res['hi'].append({region:lq[region]['Высокотехнологичное оборудование и ИТ']['2016']})
-        else:
-            res['lo'].append({region:lq[region]['Высокотехнологичное оборудование и ИТ']['2016']})
-    return {'Высокотехнологичное оборудование и ИТ':res}
+            if D_lq < DLQ_min: DLQ_min = D_lq
+            if D_lq > DLQ_max: DLQ_max = D_lq
+                
+            clu.update({region:D_lq})
+        clu.update({'min':DLQ_min})
+        clu.update({'max':DLQ_max})
+        data.update({cluster:clu})
+    res = {}
+    for cluster in ['Угольная промышленность', 'Высокотехнологичное оборудование и ИТ']:
+        clu = {'hi':[],'lo':[]}
+        for region in regions.keys():
+            LQ = lq[region][cluster]['2016']
+            DLQ = data[cluster][region]
+            B = data[cluster]['min'] / 53
+            A = data[cluster]['max'] / 53
+            if DLQ > A:
+                clu['hi'].append({region:LQ})
+            elif DLQ < B:
+                clu['lo'].append({region:LQ})
+        res.update({cluster:clu})
+    return res
+
 
 if __name__ == '__main__':
     end = False
