@@ -130,7 +130,7 @@ function ViewModel() {
     self.availableSpecs = ko.observableArray(
         [
             {
-                "color": "c0",
+                "color": "c4",
                 "values": [
                     {
                         "values": [
@@ -171,7 +171,7 @@ function ViewModel() {
                 "name": "Обработка цветных и драгоценных металлов"
             },
             {
-                "color": "c1",
+                "color": "c10",
                 "values": [
                     {
                         "values": [
@@ -224,7 +224,7 @@ function ViewModel() {
                 "name": "Нефтегазовая промышленность"
             },
             {
-                "color": "c2",
+                "color": "c1",
                 "values": [
                     {
                         "values": [
@@ -369,7 +369,7 @@ function ViewModel() {
                 "name": "Химическая промышленность"
             },
             {
-                "color": "c4",
+                "color": "c5",
                 "values": [
                     {
                         "values": [
@@ -497,7 +497,7 @@ function ViewModel() {
                 "name": "Металлообработка"
             },
             {
-                "color": "c5",
+                "color": "c8",
                 "values": [
                     {
                         "values": [
@@ -529,7 +529,7 @@ function ViewModel() {
                 "name": "Горнодобывающее производство"
             },
             {
-                "color": "c6",
+                "color": "c7",
                 "values": [
                     {
                         "values": [
@@ -606,7 +606,7 @@ function ViewModel() {
                 "name": "Высокотехнологическое оборудование и ИТ"
             },
             {
-                "color": "c7",
+                "color": "c2",
                 "values": [
                     {
                         "values": [
@@ -664,7 +664,7 @@ function ViewModel() {
                 "name": "Строительные материалы"
             },
             {
-                "color": "c8",
+                "color": "c9",
                 "values": [
                     {
                         "values": [
@@ -685,7 +685,7 @@ function ViewModel() {
                 "name": "Угольная промышленность"
             },
             {
-                "color": "c9",
+                "color": "c0",
                 "values": [
                     {
                         "values": [
@@ -732,7 +732,7 @@ function ViewModel() {
                 "name": "Легкая промышленность"
             },
             {
-                "color": "c10",
+                "color": "c6",
                 "values": [
                     {
                         "values": [
