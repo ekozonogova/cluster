@@ -16,16 +16,16 @@ def add_meta(ctx, page_header=None, current_page=None):
 def index(request):
 	context = {}
 	context.update({'a': 1})
-	data = {}
+	# data = {}
 
-	data.update({
-		'process': 'RuClusters',
-		'status': 1,
-		'message': 'Testing connector',
-	})
+	# data.update({
+		# 'process': 'RuClusters',
+		# 'status': 1,
+		# 'message': 'Testing connector',
+	# })
 
-	data.update(context)
-	conn = ErrorConnector(data=data, exception=None)
-	conn.send_data()
+	# data.update(context)
+	# conn = ErrorConnector(data=data, exception=None)
+	# conn.send_data()
 
 	return render(request, 'c_index.html', context=context)
