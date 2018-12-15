@@ -947,7 +947,9 @@ function ViewModel() {
             if (typeof companyMeta.address !== 'undefined') {
                 addr = companyMeta.address;
             }
-            allCompanies.push(new Company(companyMeta.name, addr, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], phone, url));
+            if (!companyExists(companyMeta.name)) {
+                allCompanies.push(new Company(companyMeta.name, addr, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], phone, url));
+            }
         }
         self.requestsHandled++;
     }

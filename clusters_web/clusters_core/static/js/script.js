@@ -1249,6 +1249,15 @@ var myMap, placemark;
 
 allCompanies = [];
 
+function companyExists(companyName) {
+    for (var i = 0; i < allCompanies.length; i++) {
+        if(allCompanies[i].name == companyName) {
+            return true;
+        }
+    }
+    return false;
+}
+
 // var coord1 = [57.999544, 56.301705];
 // var coord2 = [58.068200, 56.344613];
 
