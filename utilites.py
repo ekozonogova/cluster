@@ -3,7 +3,7 @@ from json import  load as jload
 from numpy import load as nload
 from json import  dump as jdump
 from numpy import save as ndump
-#from nltk.tokenize import WordPunctTokenizer
+from nltk.tokenize import WordPunctTokenizer
 
 from constants import MIN_WEIGHT
 
