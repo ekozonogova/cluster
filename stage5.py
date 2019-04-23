@@ -1,19 +1,15 @@
-from json import load, loads, dumps
-from copy import deepcopy
-
 from okpd2okved import okpd2okved, okved
 from rutermextract import TermExtractor as TE
 from requests import get, post
 from utilites import dump, load
-from regions import regions, get_yandex_name, emiss_to_yandex
-
-import numpy as np
+from regions import emiss_to_yandex
 #from pysal import W, Moran, Moran_Local
 
 FNAME = 'out.4.json'
 te = TE()
 
 def download_fedstat():
+    from json import loads
     gget = get('https://www.fedstat.ru/indicator/43007')
     cookies = gget.cookies.get_dict()
     headers = {}
