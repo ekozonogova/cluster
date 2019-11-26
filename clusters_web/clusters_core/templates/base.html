@@ -54,6 +54,10 @@
 	<div class="background-imgs">
 		<!-- <img src="{% static 'images/home/flag.png' %}" class="img-responsive"> -->
 	</div>
+    <div class="background-waiter" style="z-index: 130 !important;" style="display: block;" data-bind="visible: waiter.status()"></div>
+    <div id="waiter" class="lds-spinner" data-bind="visible: waiter.status()" style="display: block;">
+        <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
+    </div>
 	
 	{% block content %}
 	{% endblock %}
