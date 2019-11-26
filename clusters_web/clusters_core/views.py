@@ -56,8 +56,25 @@ def benchmark(request):
 	return render(request, 'benchmark.html', context=context)
 
 def regions_list(request):
-	reg = json.load(open('/Users/sanya/Work/cluster/clusters_web/clusters_core/matrix_regions_distances.json', 'r')).keys()
+	regions = json.load(open('../../cluster/r_data.json', 'r'))
+	res = {}
+	for r in regions:
+		res.update({ r:regions[r]["code"] })
 
-	return HttpResponse(json.dumps(list(reg), ensure_ascii=0))
+	print(res)
+
+	return HttpResponse(json.dumps(dict(res), ensure_ascii=0))
+
+def identical_regions_list(request, reg_name):
+	# get regions codes from regions.json -> yandexname
+	# then create json with regions codes
+	print(reg_name)
+	selected_region = {}
+	regions = json.load(open('../../cluster/r_data.json', 'r'))
+	for r in regions:
+		if r == reg_name:
+			selected_region = regions[r]
+
+	return HttpResponse(json.dumps(dict(selected_region), ensure_ascii=0))
 
 

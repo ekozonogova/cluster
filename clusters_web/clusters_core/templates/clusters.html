@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-
+{% load staticfiles %}
 
 {% block content %}
 
@@ -58,4 +58,9 @@
 	
 </div>
 
+{% endblock %}
+
+{% block spec_scripts %}
+	<script src="{% static 'js/UVM.js' %}"></script>
+    <script src="{% static 'js/script.js' %}"></script>
 {% endblock %}

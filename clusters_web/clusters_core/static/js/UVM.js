@@ -1006,25 +1006,6 @@ function ViewModel() {
             // loadBordersAndPaint(_colors1);
         }
     });
-
-    self.availableRegions = ko.observableArray();
-    self.selectedRegion = ko.observable();
-    self.identicalRegionsVal = ko.observable(5);
-    self.getRegions = function() {
-        self.waiter.show();
-        $.get($settings.urls.availableRegionsList).then(function (resp) {
-            resp = JSON.parse(resp);
-            for (var i = 0; i < resp.length; i++) {
-                self.availableRegions.push(resp[i]);
-            }
-            console.log(self.availableRegions());
-        }).always(function() {
-            $settings.isConfigured(true);
-            self.settings($settings);
-            self.waiter.hide();
-        });
-    };
-    self.getRegions();
 };
 
 function hideshow(id) {

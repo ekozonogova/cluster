@@ -1,17 +1,17 @@
 {% extends 'base.html' %}
-
+{% load staticfiles %}
 
 {% block content %}
 
 <div style="position: absolute; background: #fff; z-index: 99; right: 10px; bottom: 70px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;">
 	<p style="text-align: left; padding-left: 3px;">Легенда: </p>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(240, 240, 117, 0.5);">
-		<p style="text-align: left; padding-left: 3px;">Участник</p>
+	<div style="border: 1px solid #000;z-index: 100; height: 20px; width: 80px; background-color: rgba(255, 0, 0, 0.5);">
+		<p style="text-align: left; padding-left: 3px;">Идентичный</p>
 	</div>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(251, 108, 63, 0.5);">
-		<p style="text-align: left; padding-left: 3px;">Ядро</p>
+	<div style="border: 1px solid #000;z-index: 100; height: 20px; width: 80px; background-color: rgba(255, 0, 0, 1);">
+		<p style="text-align: left; padding-left: 3px;">Выбранный</p>
 	</div>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(61, 76, 118, 0.5);">
+	<div style="border: 1px solid #000;z-index: 100; height: 20px; width: 80px; background-color: rgba(255, 255, 255, 1);">
 		<p style="text-align: left; padding-left: 3px;">Другой</p>
 	</div>
 </div>
@@ -23,13 +23,14 @@
 		<form action="" style="height: 50px; padding: 5px 0;">
 			<div class="col-sm-4">
 				<select class="form-control" id="select-spec" data-bind="options: availableRegions,
-	                       value: selectedRegion,
-	                       optionsCaption: 'Выберите регион'">
+							optionsText: 'name',
+	                    	value: selectedRegion,
+	                    	optionsCaption: 'Выберите регион'">
 				</select>
 			</div>
 			<div class="col-sm-6" style="padding: 5px;">
 				<span style="font-size: 14pt;">Количество идентичных регионов: </span>
-				<span style="padding: 10px;"><input type="range" min="1" max="10" id="size" oninput="" value="5" data-bind="value: identicalRegionsVal, valueUpdate: 'input'"></span>
+				<span style="padding: 10px;"><input type="range" min="1" max="50" id="size" oninput="" value="5" data-bind="value: identicalRegionsVal, valueUpdate: 'input'"></span>
 				<span data-bind="text: identicalRegionsVal"></span>
 			</div>
 			<div class="col-sm-2">
@@ -41,7 +42,7 @@
 					<!-- <input class="" id="all" type="checkbox" style="float: right; width: 20px;"> -->
 				<!-- </span> -->
 				<span style="float: right; width: 100px;">
-					<input type="button" data-bind="enable: selectedProfiles.isValid, click: updateCompaniesData" class="form-control btn btn-success" value="Найти" name="submit">
+					<input type="button" data-bind="enable: selectedRegion.isValid, click: getIdenticalRegions" class="form-control btn btn-success" value="Найти" name="submit">
 				</span>
 			</div>
 		</form>
@@ -51,5 +52,8 @@
 <div id="gmap" style="bottom: 0; position: absolute; left: 0; right: 0; top: 107px;">
 	
 </div>
+{% endblock %}
 
+{% block spec_scripts %}
+	<script src="{% static 'js/benchmark.js' %}"></script>
 {% endblock %}

@@ -24,7 +24,8 @@ function Settings() {
 			getDict: "/categories/get/",
 			getProducts: "/category/products/get/"
 		},
-		availableRegionsList: "/regions_list"
+		availableRegionsList: "/regions_list",
+		identicalRegionsList: "/i_regions_list/"
 	};
 	this.categoriesHeaderHeight = $("#cat-nav").outerHeight();
 
