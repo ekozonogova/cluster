@@ -159,7 +159,7 @@ function BenchViewModel() {
             var chosen_length = self.identicalRegionsVal();
             colors["c0"] = {}
             colors["c0"][self.selectedRegion().code] = "#ff0000";
-            for (var i = 0; i < chosen_length; i++) {
+            for (var i = 0; i <= chosen_length; i++) {
                 var c = parseInt(255 - (i+1) * 255/chosen_length).toString(16);
                 if (c.length < 2) {
                     c = "0" + c;
