@@ -102,6 +102,16 @@ function Region(code, name){
     this.name = name;
 }
 
+function compare(a, b) {
+    if ( a.name < b.name ){
+        return -1;
+    }
+    if ( a.name > b.name ){
+        return 1;
+    }
+    return 0;
+}
+
 function BenchViewModel() {
 
     var self = this;
@@ -119,6 +129,8 @@ function BenchViewModel() {
                 self.availableRegions.push(new Region(resp[key],key));
             }
             console.log(self.availableRegions());
+        }).done(function () {
+            self.availableRegions.sort(compare);
         }).always(function() {
             $settings.isConfigured(true);
             self.settings($settings);
