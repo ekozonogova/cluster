@@ -61,6 +61,8 @@
 	
 	{% block content %}
 	{% endblock %}
+
+    <input type="button" id="button1" name="" disabled>
   
     <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -68,7 +70,6 @@
 	<script src="{% static 'js/price-range.js' %}"></script>
 	<script src="{% static 'js/knockout.js' %}"></script>
 	<script src="{% static 'js/conf.js' %}"></script>
-    <script src="{% static 'js/UVM.js' %}"></script>
     <!-- <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script> -->
     <script src="{% static 'js/main.js' %}"></script>
     
@@ -77,6 +78,28 @@
   	<script type="text/javascript" src="{% static 'js/slick.min.js' %}"></script>
     
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
-    <script src="{% static 'js/script.js' %}"></script>
+    {% block spec_scripts %}
+    {% endblock %}
+    <!-- <script type="text/javascript">
+        function v() {
+            console.log(this);
+        };
+        $(document).ready(function() {
+            document.getElementById('button1').onclick(function(evt) {
+                BVM.waiter.show();
+                //or
+                $("#background-img").attr('display', 'block');
+                $("#background-waiter").attr('display', 'block');
+                // actions
+                v();
+                BVM.waiter.hide();
+                //or
+                $("#background-img").attr('display', 'none');
+                $("#background-waiter").attr('display', 'none');
+            });
+            $("#button1").click(function(evt) {/*code*/});
+        });
+
+    </script> -->
 </body>
 </html>

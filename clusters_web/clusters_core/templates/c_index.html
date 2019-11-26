@@ -2,60 +2,6 @@
 
 
 {% block content %}
-
-<div style="position: absolute; background: #fff; z-index: 99; right: 10px; bottom: 70px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;">
-	<p style="text-align: left; padding-left: 3px;">Легенда: </p>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(240, 240, 117, 0.5);">
-		<p style="text-align: left; padding-left: 3px;">Участник</p>
-	</div>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(251, 108, 63, 0.5);">
-		<p style="text-align: left; padding-left: 3px;">Ядро</p>
-	</div>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(61, 76, 118, 0.5);">
-		<p style="text-align: left; padding-left: 3px;">Другой</p>
-	</div>
-</div>
-<div class="container" style="margin: 0;
-    width: 100%;
-    background-color: #8a92a6;">
-	<div class="row">
-		<h3 style="text-align: center;text-transform: uppercase;">Межрегиональные кластеры России</h3>
-		<form action="" style="height: 50px; padding: 5px 0;">
-			<div class="col-sm-4">
-				<select class="form-control" id="select-spec" data-bind="options: availableSpecs,
-	                       optionsText: 'name',
-	                       value: selectedSpec,
-	                       optionsCaption: 'Выберите специализацию'">
-				</select>
-			</div>
-			<div class="col-sm-6" style="padding: 1px;">
-				<select class="form-control" size="1" id="select-profile" multiple="true" style="height: auto;position: absolute; z-index: 10; max-height: 100px;" data-bind="selectedOptions: selectedProfiles, options: availableProfiles, optionsText: 'name'">
-					{% comment %}<!-- ko if: $index() == 0 -->
-						<option disabled>Выберите отрасли</option>
-					<!-- /ko -->
-						<option data-bind="value: $root.availableProfiles[$index()],
-						text: $data.name"></option>
-					{% endcomment %}
-				</select>
-			</div>
-			<div class="col-sm-2">
-				<span style="float: left; width: 60px; padding: 4px;">
-					<label for="all" style="float: right;" data-bind="click: selectAllProfiles"><i class="fa fa-check-double fa-2x" title="Выбрать все отрасли"></i></label>
-					<label for="all" style="float: left; position: absolute; left: 13px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && !collapsedProfiles()" class="fa fa-times fa-2x" title="Свернуть"></i></label>
-					<label for="all" style="float: left; position: absolute; left: 10px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && collapsedProfiles()" class="fa fa-arrow-down fa-2x" title="Развернуть"></i></label>
-
-					<!-- <input class="" id="all" type="checkbox" style="float: right; width: 20px;"> -->
-				</span>
-				<span style="float: right; width: 100px;">
-					<input type="button" data-bind="enable: selectedProfiles.isValid, click: updateCompaniesData" class="form-control btn btn-success" value="Найти" name="submit">
-				</span>
-			</div>
-		</form>
-	</div>
-</div>
-
-<div id="gmap" style="bottom: 0; position: absolute; left: 0; right: 0; top: 107px;">
-	
-</div>
-
+<a href="clusters">Межрегиональные кластеры</a>
+<a href="benchmark">Бенчмаркинг</a>
 {% endblock %}
