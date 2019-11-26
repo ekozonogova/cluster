@@ -54,15 +54,15 @@
 	<div class="background-imgs">
 		<!-- <img src="{% static 'images/home/flag.png' %}" class="img-responsive"> -->
 	</div>
-	<div class="background-waiter" style="z-index: 130 !important;" style="display: block;" data-bind="visible: waiter.status()"></div>
-    <div id="waiter" class="lds-spinner" data-bind="visible: waiter.status()" style="display: block;">
-    	<div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
-    </div>
 	
 	{% block content %}
 	{% endblock %}
 
-    <input type="button" id="button1" name="" disabled>
+    <script type="text/javascript">
+        if (window.location.pathname == "/") {
+            window.location.pathname = "/clusters";
+        }
+    </script>
   
     <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
@@ -80,26 +80,5 @@
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     {% block spec_scripts %}
     {% endblock %}
-    <!-- <script type="text/javascript">
-        function v() {
-            console.log(this);
-        };
-        $(document).ready(function() {
-            document.getElementById('button1').onclick(function(evt) {
-                BVM.waiter.show();
-                //or
-                $("#background-img").attr('display', 'block');
-                $("#background-waiter").attr('display', 'block');
-                // actions
-                v();
-                BVM.waiter.hide();
-                //or
-                $("#background-img").attr('display', 'none');
-                $("#background-waiter").attr('display', 'none');
-            });
-            $("#button1").click(function(evt) {/*code*/});
-        });
-
-    </script> -->
 </body>
 </html>
