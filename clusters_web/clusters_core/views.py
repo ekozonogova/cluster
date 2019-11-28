@@ -61,14 +61,14 @@ def regions_list(request):
 	for r in regions:
 		res.update({ r:regions[r]["code"] })
 
-	print(res)
+	# print(res)
 
 	return HttpResponse(json.dumps(dict(res), ensure_ascii=0))
 
 def identical_regions_list(request, reg_name):
 	# get regions codes from regions.json -> yandexname
 	# then create json with regions codes
-	print(reg_name)
+	# print(reg_name)
 	selected_region = {}
 	regions = json.load(open('../../cluster/r_data.json', 'r'))
 	for r in regions:
