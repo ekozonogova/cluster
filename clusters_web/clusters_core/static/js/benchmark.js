@@ -54,7 +54,7 @@ function BenchViewModel() {
     self.selectedRegion.isValid = ko.computed(function() {
         var e = self.selectedRegion();
         return !!e && typeof e !== "undefined"
-        && e.length !== 0 && self.identicalRegionsVal() > 0 && self.identicalRegionsVal() < 51;
+        && e.length !== 0 && self.identicalRegionsVal() > 0 && self.identicalRegionsVal() < 85;
     });
 
     self.initPainting = function() {
@@ -76,7 +76,7 @@ function BenchViewModel() {
                 if (c.length < 2) {
                     c = "0" + c;
                 }
-                colors["c0"][region.neighbors[i][0]] = "#ff0000" + c;
+                colors["c0"][region.neighbors[i][0]] = "#00ff00" + c;
             }
         }).done(function() {
             self.initPainting();

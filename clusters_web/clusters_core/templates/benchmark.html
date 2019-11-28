@@ -8,7 +8,7 @@
 	<div style="border: 1px solid #000;z-index: 100; height: 24px; width: 120px; background-color: rgba(255, 0, 0, 1);">
 		<p style="text-align: center;">Выбранный</p>
 	</div>
-	<div style="border: 1px solid #000;z-index: 100; height: 68px; width: 120px; background: linear-gradient(180deg, #ff0000, #ffffff);;">
+	<div style="border: 1px solid #000;z-index: 100; height: 68px; width: 120px; background: linear-gradient(180deg, #00ff00, #ffffff);;">
 		<p style="text-align: center;">Идентичный</p>
 	</div>
 	<div style="border: 1px solid #000;z-index: 100; height: 24px; width: 120px; background-color: rgba(255, 255, 255, 1);">
@@ -28,10 +28,15 @@
 	                    	optionsCaption: 'Выберите регион'">
 				</select>
 			</div>
-			<div class="col-sm-6" style="padding: 5px;">
+			<div class="col-sm-5" style="padding: 5px;">
 				<span style="font-size: 14pt;">Количество идентичных регионов: </span>
-				<span style="padding: 10px;"><input type="range" min="1" max="50" id="size" oninput="" value="5" data-bind="value: identicalRegionsVal, valueUpdate: 'input'"></span>
+				<span style="padding: 10px;"><input type="range" min="1" max="84" id="size" oninput="" value="5" data-bind="value: identicalRegionsVal, valueUpdate: 'input'"></span>
 				<span data-bind="text: identicalRegionsVal"></span>
+			</div>
+			<div class="col-sm-1">
+				<!-- ko if: selectedRegion.isValid -->
+				<a data-bind="attr: { href: '/static/data/'+ selectedRegion().code + '.xlsx' }" style="color: #ff0000; font-size: 14pt;">Отчёт</a>
+				<!-- /ko -->
 			</div>
 			<div class="col-sm-2">
 				<!-- <span style="float: left; width: 60px; padding: 4px;">
