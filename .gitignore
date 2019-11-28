@@ -5,6 +5,7 @@ __pycache__/
 *.DS_Store
 # C extensions
 *.so
+clusters_core/static/data/
 
 # Distribution / packaging
 .Python
