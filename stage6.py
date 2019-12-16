@@ -3,7 +3,7 @@ import xlwt
 from utilites import dump, load
 
 года = [ str(_) for _ in range(2009, 2017) ]
-_in = load('data/calculated_lq.json')
+_in = load('data/calculated_sums.json')
 
 регионы = list(_in.keys())
 отрасли = list(load('data/clusters.json')["По кластерам"].keys())
