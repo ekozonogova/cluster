@@ -23,6 +23,18 @@ ul li {
   text-decoration: underline;
 }*/
 
+.crop-img {
+    width: 500px;
+    height: 310px;
+    overflow: hidden;
+}
+
+.crop-img img {
+    width: 700px;
+    height: 400px;
+    margin: -10% 0 0 -22%;
+}
+
 .underline {
   text-decoration: underline;
 }

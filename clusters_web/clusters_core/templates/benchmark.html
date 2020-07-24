@@ -15,6 +15,33 @@
 		<p style="text-align: center;">Другой</p>
 	</div>
 </div>
+<div style="position: absolute; background: #fff; z-index: 99; left: 20px; bottom: 50px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;" data-bind="visible: selectedRegion">
+	<i class="fa fa-times" title="Свернуть" data-bind="click: collapseRegionLegend" style="float: right;"></i>
+	<!-- ko if: showRegionLegend -->
+	<p style="text-align: center;"><b data-bind="text: selectedRegion().name"></b></p>
+	<p style="text-align: center;">Структура отраслевой специализации <br>(по показателю "Производительность труда")</p>
+	<div class="crop-img">
+		<img data-bind="attr: {'src': selectedRegionImgSrc}">
+	</div>
+	<p style="text-align: center;">
+		<img src="/static/images/icons/1.png" width="30" height="30" title="Гостиницы и рестораны">
+		<img src="/static/images/icons/2.png" width="30" height="30" title="Добыча полезных ископаемых">
+		<img src="/static/images/icons/3.png" width="30" height="30" title="Другие виды деятельности">
+		<img src="/static/images/icons/4.png" width="30" height="30" title="Здравоохранение и предоставление социальных услуг">
+		<img src="/static/images/icons/5.png" width="30" height="30" title="Обрабатывающие производства">
+		<img src="/static/images/icons/6.png" width="30" height="30" title="Образование">
+		<img src="/static/images/icons/7.png" width="30" height="30" title="Операции с недвижимым имуществом, аренда и предоставление услуг">
+		<img src="/static/images/icons/8.png" width="30" height="30" title="Оптовая и розничная торговля; ремонт автотранспортных средств, мотоциклов, бытовых изделий и предметов личного пользования">
+		<img src="/static/images/icons/9.png" width="30" height="30" title="Предоставление прочих коммунальных, социальных и персональных услуг">
+		<img src="/static/images/icons/10.png" width="30" height="30" title="Производство и распределение электроэнергии, газа и воды">
+		<img src="/static/images/icons/11.png" width="30" height="30" title="Сельское хозяйство, охота и лесное хозяйство; рыболовство, рыбоводство">
+		<img src="/static/images/icons/12.png" width="30" height="30" title="Строительство">
+		<img src="/static/images/icons/13.png" width="30" height="30" title="Транспорт и связь">
+	</p>
+	<a href="http://esc.vscc.ac.ru/article/2668?_lang=en">Методика "умного" бенчмаркинга</a>
+	<a style="float: right;" data-bind="attr: { 'href': selectedRegionLink }">Cтратегия развития</a>
+	<!-- /ko -->
+</div>
 <div class="container" style="margin: 0;
     width: 100%;
     background-color: #ffffff;">
