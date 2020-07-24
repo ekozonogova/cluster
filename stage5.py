@@ -2,7 +2,7 @@ from okpd2okved import okpd2okved, okved
 from rutermextract import TermExtractor as TE
 from requests import get, post
 from utilites import dump, load
-from regions import emiss_to_yandex
+from regions import emiss_to_yandex, regions
 #from pysal import W, Moran, Moran_Local
 
 FNAME = 'out.4.json'
