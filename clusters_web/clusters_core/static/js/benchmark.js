@@ -94,7 +94,7 @@ region_links = {
 "Еврейская автономная область": "http://www.eao.ru/o-eao/sotsialno-ekonomicheskoe-razvitie-eao-/strategiya-sotsialno-ekonomicheskogo-razvitiya-eao-do-2020-goda--2/",
 "Чукотский автономный округ":   "https://invest-chukotka.ru/investpolitika/investiczionnaya-strategiya",
 "Республика Крым":  "https://rk.gov.ru/document/show/2018_05_30_16_32_zakon_respubliki_krym_ot_30_maia_2018_goda_502_zrk_2018_o_vnesenii_izmenenii_v_zakon_respubliki_krym_o_strategii_sotsialno_ekonomiche",
-"г. Севастополь":   "https://sevzakon.ru/view/laws/strategiya_ser/"
+"Севастополь":   "https://sevzakon.ru/view/laws/strategiya_ser/"
 }
 
 function Region(code, name){
