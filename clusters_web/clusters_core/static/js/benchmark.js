@@ -152,7 +152,7 @@ function BenchViewModel() {
             var img = '/static/images/region_values/'+ newVal.name +'.png';
             console.log(img);
             self.selectedRegionImgSrc(img);
-            self.showRegionLegend(true);
+            // self.showRegionLegend(true);
         };
     });
 
@@ -191,6 +191,7 @@ function BenchViewModel() {
             }
         }).done(function() {
             self.initPainting();
+            self.showRegionLegend(true);
         }).always(function() {
             $settings.isConfigured(true);
             self.settings($settings);
