@@ -55,6 +55,23 @@ def benchmark(request):
 
 	return render(request, 'benchmark.html', context=context)
 
+def macroregions(request):
+	context = {}
+	context.update({'a': 1})
+	# data = {}
+
+	# data.update({
+		# 'process': 'RuClusters',
+		# 'status': 1,
+		# 'message': 'Testing connector',
+	# })
+
+	# data.update(context)
+	# conn = ErrorConnector(data=data, exception=None)
+	# conn.send_data()
+
+	return render(request, 'macroregions.html', context=context)
+
 def regions_list(request):
 	regions = json.load(open('../../cluster/r_data.json', 'r'))
 	res = {}
