@@ -46,3 +46,12 @@ function Waiter() {
         self.status(false);
     };
 }
+
+$(document).ready(function() {
+	$('ul.nav-tabs').children().each(function(idx,elem) {
+		$(this).children().removeClass('active');
+		if (window.location.pathname.split('/')[1] == $(elem).children().attr('href')) {
+			$(this).children().addClass('active');
+		}
+	});
+});

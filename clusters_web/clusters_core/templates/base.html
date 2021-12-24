@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-{% load staticfiles %}
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="utf-8">
@@ -29,7 +29,8 @@
 <noscript><div><img src="https://mc.yandex.ru/watch/51602057" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
 	<title>Межрегиональные кластеры России</title>
-    <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet"> -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <!-- <link href="{% static 'css/font-awesome.min.css' %}" rel="stylesheet"> -->
     <link href="{% static 'css/prettyPhoto.css' %}" rel="stylesheet">
     <link href="{% static 'css/price-range.css' %}" rel="stylesheet">
@@ -58,7 +59,26 @@
     <div id="waiter" class="lds-spinner" data-bind="visible: waiter.status()" style="display: block;">
         <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     </div>
-	
+	{% block header %}
+    <div class="container" style="
+    margin: 20px 5%;
+    width: 100%;
+    background-color: #ffffff;">
+        <div class="row">
+            <ul class="nav nav-tabs" style="padding: 0 190px;">
+              <li class="nav-item">
+                <a class="nav-link" href="clusters">Межрегиональные кластеры</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="benchmark">Бенчмаркинг</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="macroregions">Пространственное развитие субъектов РФ</a>
+              </li>
+            </ul>
+        </div>
+    </div>
+    {% endblock %}
 	{% block content %}
 	{% endblock %}
 
@@ -70,16 +90,8 @@
   
     <script src="{% static 'js/jquery-3.3.1.js' %}"></script>
 	<script src="{% static 'js/bootstrap.min.js' %}"></script>
-	<!-- <script src="{% static 'js/jquery.scrollUp.min.js' %}"></script> -->
-	<script src="{% static 'js/price-range.js' %}"></script>
 	<script src="{% static 'js/knockout.js' %}"></script>
-	<script src="{% static 'js/conf.js' %}"></script>
-    <!-- <script src="{% static 'js/jquery.prettyPhoto.js' %}"></script> -->
-    <script src="{% static 'js/main.js' %}"></script>
-    
-    <!-- <script type="text/javascript" src="//code.jquery.com/jquery-1..0.min.js"></script> -->
-  	<!-- <script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script> -->
-  	<script type="text/javascript" src="{% static 'js/slick.min.js' %}"></script>
+    <script src="{% static 'js/conf.js' %}"></script>
     
     <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU" type="text/javascript"></script>
     {% block spec_scripts %}

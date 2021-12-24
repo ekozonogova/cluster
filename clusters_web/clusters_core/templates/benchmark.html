@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load staticfiles %}
+{% load static %}
 
 {% block content %}
 
@@ -42,12 +42,11 @@
 	<a style="float: right;" data-bind="attr: { 'href': selectedRegionLink }">Cтратегия развития</a>
 	<!-- /ko -->
 </div>
-<div class="container" style="margin: 0;
+<form action="">
+<div class="container" style="
     width: 100%;
     background-color: #ffffff;">
 	<div class="row">
-		<h3 style="text-align: center;text-transform: uppercase;">Бенчмаркинг, <a href="clusters" style="color: #ff0000;">Межрегиональные кластеры</a></h3>
-		<form action="" style="height: 50px; padding: 5px 0;">
 			<div class="col-sm-4">
 				<select class="form-control" id="select-spec" data-bind="options: availableRegions,
 							optionsText: 'name',
@@ -56,7 +55,7 @@
 				</select>
 			</div>
 			<div class="col-sm-5" style="padding: 5px;">
-				<span style="font-size: 14pt;">Количество идентичных регионов: </span>
+				<span style="font-size: 12pt;">Количество идентичных регионов: </span>
 				<span style="padding: 10px;"><input type="range" min="1" max="84" id="size" oninput="" value="5" data-bind="value: identicalRegionsVal, valueUpdate: 'input'"></span>
 				<span data-bind="text: identicalRegionsVal"></span>
 			</div>
@@ -76,12 +75,12 @@
 				<span style="float: right; width: 100px;">
 					<input type="button" data-bind="enable: selectedRegion.isValid, click: getIdenticalRegions" class="form-control btn btn-success" value="Найти" name="submit">
 				</span>
-			</div>
-		</form>
+		</div>
 	</div>
 </div>
+</form>
 
-<div id="gmap" style="bottom: 0; position: absolute; left: 0; right: 0; top: 107px;">
+<div id="gmap" style="bottom: 0; position: absolute; left: 0; right: 0; top: 130px;">
 	
 </div>
 {% endblock %}
