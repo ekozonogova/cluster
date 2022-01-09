@@ -7,5 +7,6 @@ urlpatterns = [
 	path('benchmark', views.benchmark, name='benchmark'),
 	path('macroregions', views.macroregions, name='macroregions'),
 	path('regions_list', views.regions_list, name='regions'),
-	path('i_regions_list/<str:reg_name>', views.identical_regions_list, name='identical_regions')
+	path('i_regions_list/<str:reg_name>', views.identical_regions_list, name='identical_regions'),
+	path('m_region_members/<str:reg_name>', views.macro_region_members, name='macro_region_members')
 ]

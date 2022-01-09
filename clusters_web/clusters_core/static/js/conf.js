@@ -25,7 +25,8 @@ function Settings() {
 			getProducts: "/category/products/get/"
 		},
 		availableRegionsList: "/regions_list",
-		identicalRegionsList: "/i_regions_list/"
+		identicalRegionsList: "/i_regions_list/",
+		macroRegionMembers: "/m_region_members/"
 	};
 	this.categoriesHeaderHeight = $("#cat-nav").outerHeight();
 
