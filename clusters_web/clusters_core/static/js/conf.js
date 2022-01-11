@@ -6,6 +6,7 @@ function Settings() {
 	this.minOrderSum = ko.observable(null);
     this.countOfProductsToShow = 4;
 	this.siteIndex = "";
+	this.imgSize = 1000;
 	this.serverRoot = '127.0.0.1'; // TODO: take this from server
 	this.noProdImg = 'http://127.0.0.1/static/img/no_prod_photo.png';
 	this.urls = {

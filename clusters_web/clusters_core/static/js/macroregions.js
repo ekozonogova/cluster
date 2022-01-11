@@ -121,10 +121,9 @@ function BenchViewModel() {
     self.settings = ko.observable({});
     self.availableRegions = ko.observableArray();
     self.selectedRegion = ko.observable();
-    // self.identicalRegionsVal = ko.observable(5);
-    self.identicalRegions = ko.observableArray();
     self.showRegionLegend = ko.observable(false);
     self.selectedRegionImgSrc = ko.observable('');
+    self.imageSizeVal = ko.observable(1000);
     self.getRegions = function() {
         self.waiter.show();
         $.get($settings.urls.availableRegionsList).then(function (resp) {
@@ -153,7 +152,6 @@ function BenchViewModel() {
 
     self.selectedRegion.subscribe(function (newVal) {
         if (newVal) {
-            
             self.getMacroRegionMembers();
         };
     });
@@ -530,8 +528,18 @@ $(document).ready(function() {
 
 	}
 
-	$(document).on("scroll", function() {
-
+	$(document).on("wheel", ".crop-img-graph", function(evt) {
+        evt.preventDefault();
+        $('.crop-img-graph').css('overflow', 'hidden');
+        $settings.imgSize = parseInt($('.crop-img-graph').children('img').css('width').replace('px', ''));
+        if (Math.max(-1, Math.min(1, (evt.originalEvent.wheelDelta))) > 0) {
+            $settings.imgSize +=25;
+        } else {
+            $settings.imgSize -=25;
+        }
+        $('.crop-img-graph').children('img').css('width', $settings.imgSize + 'px');
+        $('.crop-img-graph').children('img').css('height', $settings.imgSize + 'px');
+        $('.crop-img-graph').css('overflow', 'auto');
 	});
 
 	$(window).resize(function() {
