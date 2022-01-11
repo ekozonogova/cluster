@@ -15,15 +15,56 @@
 		<p style="text-align: center;">Другой</p>
 	</div>
 </div>
-<div style="position: absolute; background: #fff; z-index: 99; left: 20px; bottom: 50px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;" data-bind="visible: selectedRegion">
-	<i class="fa fa-times" title="Свернуть" data-bind="click: collapseRegionLegend" style="float: right;"></i>
+<!-- position: relative; background: #fff; z-index: 99; left: 20px; bottom: 50px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;  -->
+<form action="" style="height: 50px; padding: 5px 0;">
+	<div class="container" style="
+	    width: 100%;
+	    background-color: #ffffff;">
+		<div class="row">
+			<div style="width:100%;">
+				<select class="form-control" id="select-spec" data-bind="options: availableRegions,
+							optionsText: 'name',
+	                    	value: selectedRegion,
+	                    	optionsCaption: 'Выберите регион'">
+				</select>
+			</div>
+			<!-- <div class="col-sm-5" style="padding: 5px;"> -->
+				<!-- <span style="font-size: 14pt;">Количество идентичных регионов: </span>
+				<span style="padding: 10px;"><input type="range" min="1" max="84" id="size" oninput="" value="5" data-bind="value: identicalRegionsVal, valueUpdate: 'input'"></span>
+				<span data-bind="text: identicalRegionsVal"></span> -->
+			<!-- </div> -->
+			<!-- <div class="col-sm-1"> -->
+				<!-- ko if: selectedRegion.isValid -->
+				<!-- <a data-bind="attr: { href: '/static/data/'+ selectedRegion().code + '.xls' }" style="color: #ff0000; font-size: 12pt;">Отчёт</a> -->
+				<!-- /ko -->
+			<!-- </div> -->
+			<!-- <div class="col-sm-2"> -->
+				<!-- <span style="float: left; width: 60px; padding: 4px;">
+					<label for="all" style="float: right;" data-bind="click: selectAllProfiles"><i class="fa fa-check-double fa-2x" title="Выбрать все отрасли"></i></label>
+					<label for="all" style="float: left; position: absolute; left: 13px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && !collapsedProfiles()" class="fa fa-times fa-2x" title="Свернуть"></i></label>
+					<label for="all" style="float: left; position: absolute; left: 10px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && collapsedProfiles()" class="fa fa-arrow-down fa-2x" title="Развернуть"></i></label> -->
+
+					<!-- <input class="" id="all" type="checkbox" style="float: right; width: 20px;"> -->
+				<!-- </span> -->
+				<!-- <span style="float: right; width: 100px;"> -->
+					<!-- <input type="button" data-bind="enable: selectedRegion.isValid, click: getMacroRegionMembers" class="form-control btn btn-success" value="Найти" name="submit"> -->
+				<!-- </span> -->
+			<!-- </div> -->
+		</div>
+	</div>
+</form>
+<div style="float: left; width: 50%;">
+	<!-- <i class="fa fa-times" title="Свернуть" data-bind="click: collapseRegionLegend" style="float: right;"></i> -->
+	<!-- ko ifnot: showRegionLegend -->
+	<p style="text-align: center; margin-top: 20%;"><b>Регион не выбран</b></p>
+	<!-- /ko -->
 	<!-- ko if: showRegionLegend -->
-	<p style="text-align: center;"><b data-bind="text: selectedRegion().name"></b></p>
-	<p style="text-align: center;">Структура отраслевой специализации <br>(по показателю "Производительность труда")</p>
-	<div class="crop-img">
+	<!-- <p style="text-align: center;"><b data-bind="text: selectedRegion().name"></b></p> -->
+	<!-- <p style="text-align: center;">Структура отраслевой специализации <br>(по показателю "Производительность труда")</p> -->
+	<div class="crop-img-graph" data-bind="visible: selectedRegion">
 		<img data-bind="attr: {'src': selectedRegionImgSrc}">
 	</div>
-	<p style="text-align: center;">
+	<!-- <p style="text-align: center;">
 		<img src="/static/images/icons/1.png" width="30" height="30" title="Гостиницы и рестораны">
 		<img src="/static/images/icons/2.png" width="30" height="30" title="Добыча полезных ископаемых">
 		<img src="/static/images/icons/3.png" width="30" height="30" title="Другие виды деятельности">
@@ -39,48 +80,12 @@
 		<img src="/static/images/icons/13.png" width="30" height="30" title="Транспорт и связь">
 	</p>
 	<a href="http://esc.vscc.ac.ru/article/2668?_lang=en">Методика "умного" бенчмаркинга</a>
-	<a style="float: right;" data-bind="attr: { 'href': selectedRegionLink }">Cтратегия развития</a>
+	<a style="float: right;" data-bind="attr: { 'href': selectedRegionLink }">Cтратегия развития</a> -->
 	<!-- /ko -->
 </div>
-<form action="" style="height: 50px; padding: 5px 0;">
-	<div class="container" style="
-	    width: 100%;
-	    background-color: #ffffff;">
-		<div class="row">
-			<div class="col-sm-4">
-				<select class="form-control" id="select-spec" data-bind="options: availableRegions,
-							optionsText: 'name',
-	                    	value: selectedRegion,
-	                    	optionsCaption: 'Выберите регион'">
-				</select>
-			</div>
-			<div class="col-sm-5" style="padding: 5px;">
-				<!-- <span style="font-size: 14pt;">Количество идентичных регионов: </span>
-				<span style="padding: 10px;"><input type="range" min="1" max="84" id="size" oninput="" value="5" data-bind="value: identicalRegionsVal, valueUpdate: 'input'"></span>
-				<span data-bind="text: identicalRegionsVal"></span> -->
-			</div>
-			<div class="col-sm-1">
-				<!-- ko if: selectedRegion.isValid -->
-				<a data-bind="attr: { href: '/static/data/'+ selectedRegion().code + '.xls' }" style="color: #ff0000; font-size: 12pt;">Отчёт</a>
-				<!-- /ko -->
-			</div>
-			<div class="col-sm-2">
-				<!-- <span style="float: left; width: 60px; padding: 4px;">
-					<label for="all" style="float: right;" data-bind="click: selectAllProfiles"><i class="fa fa-check-double fa-2x" title="Выбрать все отрасли"></i></label>
-					<label for="all" style="float: left; position: absolute; left: 13px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && !collapsedProfiles()" class="fa fa-times fa-2x" title="Свернуть"></i></label>
-					<label for="all" style="float: left; position: absolute; left: 10px;" data-bind="click: collapseProfiles"><i data-bind="visible: selectedSpec() && collapsedProfiles()" class="fa fa-arrow-down fa-2x" title="Развернуть"></i></label> -->
 
-					<!-- <input class="" id="all" type="checkbox" style="float: right; width: 20px;"> -->
-				<!-- </span> -->
-				<span style="float: right; width: 100px;">
-					<!-- <input type="button" data-bind="enable: selectedRegion.isValid, click: getMacroRegionMembers" class="form-control btn btn-success" value="Найти" name="submit"> -->
-				</span>
-			</div>
-		</div>
-	</div>
-</form>
-
-<div id="gmap" style="bottom: 0; position: absolute; left: 0; right: 0; top: 130px;">
+<!-- style="bottom: 0; position: absolute; left: 0; right: 0; top: 130px;" -->
+<div id="gmap" style="float: right;width: 50%; height: 500px;">
 	
 </div>
 {% endblock %}

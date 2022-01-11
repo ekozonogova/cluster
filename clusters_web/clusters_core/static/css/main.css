@@ -35,6 +35,18 @@ ul li {
     margin: -10% 0 0 -22%;
 }
 
+.crop-img-graph {
+    /*max-width: 650px;*/
+    height: 500px;
+    overflow: auto;
+}
+
+.crop-img-graph img {
+    width: 1000px;
+    height: 1000px;
+    margin: -1% 0 0 -2%;
+}
+
 .underline {
   text-decoration: underline;
 }
