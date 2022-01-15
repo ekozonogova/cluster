@@ -533,9 +533,11 @@ $(document).ready(function() {
         $('.crop-img-graph').css('overflow', 'hidden');
         $settings.imgSize = parseInt($('.crop-img-graph').children('img').css('width').replace('px', ''));
         if (Math.max(-1, Math.min(1, (evt.originalEvent.wheelDelta))) > 0) {
-            $settings.imgSize +=25;
+            if ($settings.imgSize < $settings.imgSizeMax)
+                $settings.imgSize +=25;
         } else {
-            $settings.imgSize -=25;
+            if ($settings.imgSize > $settings.imgSizeMin)
+                $settings.imgSize -=25;
         }
         $('.crop-img-graph').children('img').css('width', $settings.imgSize + 'px');
         $('.crop-img-graph').children('img').css('height', $settings.imgSize + 'px');
