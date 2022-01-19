@@ -3,15 +3,15 @@
 
 {% block content %}
 
-<div style="position: absolute; background: #fff; z-index: 99; right: 10px; bottom: 70px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;">
-	<p style="text-align: left; padding-left: 3px;">Легенда: </p>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(240, 240, 117, 0.5);">
+<div style="position: fixed; background: #fff; z-index: 99; right: 10px; bottom: 10px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;">
+	<p style="text-align: left; padding-left: 3px;">Макрорегион: </p>
+	<div style="z-index: 100; height: 20px; width: 100px; background-color: rgba(255, 0, 0, 1);">
+		<p style="text-align: left; padding-left: 3px;">Выбранный</p>
+	</div>
+	<div style="z-index: 100; height: 20px; width: 100px; background-color: rgba(0, 255, 0, 1);">
 		<p style="text-align: left; padding-left: 3px;">Участник</p>
 	</div>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(251, 108, 63, 0.5);">
-		<p style="text-align: left; padding-left: 3px;">Ядро</p>
-	</div>
-	<div style="z-index: 100; height: 20px; width: 80px; background-color: rgba(61, 76, 118, 0.5);">
+	<div style="z-index: 100; height: 20px; width: 100px; background-color: rgba(255, 255, 255, 1);">
 		<p style="text-align: left; padding-left: 3px;">Другой</p>
 	</div>
 </div>
@@ -68,7 +68,7 @@
 	<!-- /ko -->
 </div>
 
-<div id="gmap" style="float: right;width: 50%; height: 800px;">
+<div id="gmap" style="float: right;width: 50%; height: 650px;">
 	
 </div>
 {% endblock %}
