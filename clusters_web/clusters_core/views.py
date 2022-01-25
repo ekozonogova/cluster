@@ -137,4 +137,9 @@ def identical_regions_list(request, reg_name):
 
 	return HttpResponse(json.dumps(dict(selected_region), ensure_ascii=0))
 
+def svg_img(request, path):
+	img = open(path).read()
+	
+	return HttpResponse(json.dumps(img, ensure_ascii=0))
+
 
