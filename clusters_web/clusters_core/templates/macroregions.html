@@ -43,12 +43,12 @@
 		    width: 100%;
 		    background-color: #ffffff;">
 			<div class="row">
-				<!-- <div>
+				<div style="width:40%;">
 					<span style="font-size: 12pt;">Масштаб: </span>
-					<span style="padding: 10px;"><input type="range" min="100" max="2000" id="img-size" oninput="" value="1000" data-bind="value: imageSizeVal, valueUpdate: 'input'"></span>
-					<span data-bind="text: imageSizeVal"></span>
-				</div> -->
-				<div style="width:100%;">
+					<span style="padding: 10px;"><input type="range" min="1" max="20" id="img-size" oninput="" value="1" data-bind="value: imageSizeVal, valueUpdate: 'input'"></span>
+					<!-- <span data-bind="text: imageSizeVal"></span> -->
+				</div>
+				<div style="width:60%;">
 					<select class="form-control" id="select-spec" data-bind="options: availableRegions,
 								optionsText: 'name',
 		                    	value: selectedRegion,
@@ -67,7 +67,9 @@
 	</div> -->
 
 	<div class="crop-img-graph" data-bind="visible: selectedRegion">
-		<img data-bind="attr: {'src': selectedRegionImgSrc}">
+		<iframe style="height: 600px; width: 100%;"
+		 data-bind="attr: {'src': selectedRegionImgSrc}">
+		</iframe>
 	</div>
 	<!-- /ko -->
 </div>
