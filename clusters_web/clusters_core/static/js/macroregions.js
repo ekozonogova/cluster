@@ -113,7 +113,7 @@ function BenchViewModel() {
                                 name += vals[n].toLowerCase();
                             }
                         }
-                        let img = 'http://localhost:8000/static/images/macroregion_values/graph.'+ name +'.dot.svg';
+                        let img = location.origin + '/static/images/macroregion_values/graph.'+ name +'.dot.svg';
                         console.log(img);
                         self.selectedRegionImgSrc(img);
                     }
