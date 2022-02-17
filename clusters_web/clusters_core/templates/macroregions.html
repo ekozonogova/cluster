@@ -3,27 +3,7 @@
 
 {% block content %}
 
-<div style="position: fixed; background: #fff; z-index: 99; right: 10px; bottom: 10px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;">
-	<p style="text-align: left; padding-left: 3px;">Макрорегион: </p>
-	<div style="z-index: 100; height: 20px; width: 100px; background-color: rgba(255, 0, 0, 1);">
-		<p style="text-align: left; padding-left: 3px;">Выбранный</p>
-	</div>
-	<div style="z-index: 100; height: 20px; width: 100px; background-color: rgba(0, 255, 0, 1);">
-		<p style="text-align: left; padding-left: 3px;">Участник</p>
-	</div>
-	<div style="z-index: 100; height: 20px; width: 100px; background-color: rgba(255, 255, 255, 1);">
-		<p style="text-align: left; padding-left: 3px;">Другой</p>
-	</div>
-</div>
-<div style="position: fixed; background: #fff; z-index: 99; left: 10px; bottom: 10px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;">
-	<p style="text-align: left; padding-left: 3px;margin: 10px;">Тип вида деятельности: </p>
-	<div style="z-index: 100; height: 48px; width: 210px; background-color: rgba(255, 255, 255, 1);word-break: break-all;">
-		<p style="text-align: left; padding-left: 3px;">🥇 - высокотехнологичные виды деятельности;</p>
-	</div>
-	<div style="z-index: 100; height: 43px; width: 210px; background-color: rgba(255, 255, 255, 1);word-break: break-all;">
-		<p style="text-align: left; padding-left: 3px;">🥈 - среднетехнологичные виды деятельности;</p>
-	</div>
-</div>
+
 <!-- position: relative; background: #fff; z-index: 99; left: 20px; bottom: 50px; padding: 5px 15px; border-radius: 5px; box-shadow: 0px 0px 40px;  -->
 <!-- <form action="" style="height: 50px; padding: 5px 0;">
 	<div class="container" style="
@@ -45,7 +25,12 @@
 		</div>
 	</div>
 </form> -->
-<div id="image" style="float: left; width: 50%;">
+<div style="padding-left: 14px;"><i id="info" class="fa fa-info"></i></div>
+<div id="title" style="display: none;background: #fff; z-index: 99; padding:  4px; width: 300px; position: absolute; top: 100px; left: 100px;">
+	Для изменения масштаба воспользуйтесь ползунком в левом верхнем углу.
+	Для идентификации вида деятельности, наведите курсор на интересующий значок.
+</div>
+<div id="image" style="float: left; width: 50%; min-height:650px;">
 	<!-- <i class="fa fa-times" title="Свернуть" data-bind="click: collapseRegionLegend" style="float: right;"></i> -->
 	<form action="" style="height: 50px; padding: 5px 0;">
 		<div class="container" style="
@@ -85,6 +70,28 @@
 
 <div id="gmap" style="float: right;width: 50%; height: 650px;">
 	
+</div>
+
+<div style="background: #fff; z-index: 99; width:  50%; float: right;">
+	<p style="text-align: left; padding-left: 45%;">Макрорегион: </p>
+	<div style="margin-left: 30%;float: left;z-index: 100; height: 20px; width: 100px; background-color: rgba(255, 0, 0, 1);">
+		<p style="text-align: left; padding-left: 3px;">Выбранный</p>
+	</div>
+	<div style="float: left;z-index: 100; height: 20px; width: 100px; background-color: rgba(0, 255, 0, 1);">
+		<p style="text-align: left; padding-left: 3px;">Участник</p>
+	</div>
+	<div style="float: left;z-index: 100; height: 20px; width: 100px; background-color: rgba(255, 255, 255, 1);">
+		<p style="text-align: left; padding-left: 3px;">Другой</p>
+	</div>
+</div>
+<div style="background: #fff; z-index: 99; width:  50%; float: left;">
+	<p style="text-align: left; padding-left: 40%;margin: 10px;">Тип вида деятельности: </p>
+	<div style="margin-left: 20%;float: left; z-index: 100; height: 48px; width: 210px; background-color: rgba(255, 255, 255, 1);word-break: break-all;">
+		<p style="text-align: left; padding-left: 3px;">🥇 - высокотехнологичные виды деятельности;</p>
+	</div>
+	<div style="float: left; z-index: 100; height: 43px; width: 210px; background-color: rgba(255, 255, 255, 1);word-break: break-all;">
+		<p style="text-align: left; padding-left: 3px;">🥈 - среднетехнологичные виды деятельности;</p>
+	</div>
 </div>
 {% endblock %}
 

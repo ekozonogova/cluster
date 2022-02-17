@@ -478,4 +478,10 @@ $(document).ready(function() {
 	$(".fit-width").on("click", function(elem, event) {
 
 	});
+    $('#info').on('mouseover', function(e) {
+        $("#title").show();
+    });
+    $('#info').on('mouseout', function(e) {
+        $("#title").hide();
+    });
 });
