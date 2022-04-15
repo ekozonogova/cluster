@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from clusters.utils import ErrorConnector
 import json
+import os
 from django.http import HttpResponse
 
 # Create your views here.
@@ -92,12 +93,14 @@ def list_names(reg_name):
 			return [a.lower(),b.lower(),c.lower()]
 	return []
 
-def get_code(reg_name):
+def get_reg_data(reg_name, dt='code'):
 	regions = json.load(open('../../cluster/r_data.json', 'r'))
+	# macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
 	for r in regions:
 		nms = list_names(reg_name)
 		if nms and list_names(r.lower()) == nms:
-			return regions[r]["code"]
+			# print(r)
+			return regions[r][dt]
 	raise CodeTypeError('Region code has a NoneType!')
 	return None
 
@@ -108,13 +111,23 @@ def is_there(reg_name, macro_members_list):
 	return False
 
 def macro_region_members(request, reg_name): # reg_code?
+	# print(reg_name)
 	macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
 	res = []
 	for r in macro_regions:
 		try:
 			if is_there(reg_name, macro_regions[r]['состав кластера']):
+				print(list_names(reg_name))
+				# print(r)
+				# print(macro_regions[r]['состав кластера'])
+				# res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
+				for name in list_names(reg_name):
+					try:
+						svg_img('/Users/sanya/Work/cluster/clusters_web/clusters_core/static/images/macroregion_values/graph.'+ '_'.join(name.split(' ')) +'.dot.svg' )
+					except FileNotFoundError:
+						print('Wrong filename')
 				try:
-					res = [{get_code(x): x} for x in macro_regions[r]['состав кластера']]
+					res = [{get_reg_data(x): x} for x in macro_regions[r]['состав кластера']]
 				except CodeTypeError as e:
 					print(e, file=sys.stderr)
 					break
@@ -137,9 +150,11 @@ def identical_regions_list(request, reg_name):
 
 	return HttpResponse(json.dumps(dict(selected_region), ensure_ascii=0))
 
-def svg_img(request, path):
+def svg_img(path):
+	print(path)
 	img = open(path).read()
-	
-	return HttpResponse(json.dumps(img, ensure_ascii=0))
+
+	# TODO: img.replace('title>')!!!!!
+
 
 

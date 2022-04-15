@@ -154,6 +154,98 @@ function BenchViewModel() {
             self.settings($settings);
         });
     };
+
+    // get info on selected node on macroregions graph
+
+    self.selectedProfiles = ko.observable([]);
+
+    self.selectedProfiles.isValid = ko.computed(function() {
+        var e = self.selectedProfiles();
+        return !!e && typeof e !== "undefined"
+        && e.length !== 0 && e.length > 0;
+    });
+
+    self.requestData = ko.computed(function() {
+        var request = [];
+        for (var i = 0; i < self.selectedProfiles().length; i++) {
+            for (var j = 0; j < self.selectedProfiles()[i]["values"].length; j++) {
+                request.push(self.selectedProfiles()[i]["values"][j]);
+            }
+        }
+        console.log(request);
+        return request
+    });
+
+    // self.requestData = ko.computed(function() {
+
+    // });
+    self.companiesLoaded = ko.observable(false);
+
+    self.requestsCount = ko.observable(0);
+
+    self.requestsHandled = 0;
+
+    self.reqCallback = function(resp, status) {
+        console.log(resp);
+        for (var i = 0; i < resp.features.length; i++) {
+            var companyMeta = resp.features[i].properties.CompanyMetaData;
+            var phone, url, addr = 'нет данных';
+            if (typeof companyMeta.Phones !== 'undefined') {
+                phone = companyMeta.Phones[0].formatted;
+            }
+            if (typeof companyMeta.url !== 'undefined') {
+                url = companyMeta.url;
+            }
+            if (typeof companyMeta.address !== 'undefined') {
+                addr = companyMeta.address;
+            }
+            if (!companyExists(companyMeta.name)) {
+                allCompanies.push(new Company(companyMeta.name, addr, resp.features[i].geometry.coordinates[1], resp.features[i].geometry.coordinates[0], phone, url));
+            }
+        }
+        self.requestsHandled++;
+    }
+
+    self.sendRequest = function(requestData) {
+        var key = "f9134045-4f6b-4b1e-bdd8-10582c026780";
+        var query = "?apikey=" + key + "&type=biz&lang=ru_RU&results=500&text=" + encodeURIComponent(requestData);
+        $.get("https://search-maps.yandex.ru/v1/" + query, self.reqCallback);
+    }
+
+    self.waitForResponseParse = function() {
+        var t;
+        if (self.requestsHandled == self.requestsCount()) {
+            console.log('Loaded');
+            self.companiesLoaded(true);
+            clearTimeout(t);
+        } else {
+            console.log('Waiting...');
+            t  = setTimeout(self.waitForResponseParse, 500);
+        }
+    };
+
+    self.updateCompaniesData = function() {
+        self.waiter.show();
+        self.companiesLoaded(false);
+        self.requestsHandled = 0;
+        allCompanies = [];
+        self.requestsCount(self.requestData().length);
+
+        for (var i = 0; i < self.requestsCount(); i++) {
+            self.sendRequest(self.requestData()[i]);
+        }
+
+        var t = setTimeout(self.waitForResponseParse, 100);
+    };
+
+    self.companiesLoaded.subscribe(function(newVal) {
+        if (newVal == true) {
+            updateCompaniesOnMap();
+            self.waiter.hide();
+            // TODO: 
+            // loadBordersAndPaint(_colors1);
+        }
+    });
 }
 
 BVM = new BenchViewModel();
