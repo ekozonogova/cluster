@@ -187,10 +187,10 @@ def svg_img(path):
 
 	soup = BS(img, features="xml")
 	for title in soup.findAll('g',  {'class': 'node'}):
-		qs = ",".join([f"'{x}'" for x in title.text.split("->") if title.text != "g"])
-		title['onclick'] = f'javascript: window.frames.parent.BVM.selectProfiles([{qs}]);'
+		qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
+		title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
-	open(f'{path.split(".dot")[0]}_clickable.svg', 'w').write(soup.prettify())
+	open('%s_clickable.svg' % path.split(".dot")[0], 'w').write(soup.prettify())
 
 
 
