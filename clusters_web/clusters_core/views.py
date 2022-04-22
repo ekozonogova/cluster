@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from clusters.utils import ErrorConnector
 import json
+import sys
 import os
 from django.http import HttpResponse
 from bs4 import BeautifulSoup as BS
@@ -154,9 +155,9 @@ def macro_region_members(request, reg_name): # reg_code?
 				# res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
 				for name in list_names(reg_name):
 					try:
-						svg_img('/Users/sanya/Work/cluster/clusters_web/clusters_core/static/images/macroregion_values/graph.'+ '_'.join(name.split(' ')) +'.dot.svg' )
+						svg_img('clusters_core/static/images/macroregion_values/graph.'+ '_'.join(name.split(' ')) +'.dot.svg' )
 					except FileNotFoundError:
-						print('Wrong filename')
+						print('Wrong filename', file=sys.stderr)
 				try:
 					res = [{get_reg_data(x): x} for x in macro_regions[r]['состав кластера']]
 				except CodeTypeError as e:
