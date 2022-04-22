@@ -933,7 +933,7 @@ function ViewModel() {
             }
         }
         console.log(request);
-        return request
+        return request;
     });
 
     // self.requestData = ko.computed(function() {

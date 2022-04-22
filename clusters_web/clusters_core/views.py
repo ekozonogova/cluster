@@ -3,6 +3,12 @@ from clusters.utils import ErrorConnector
 import json
 import os
 from django.http import HttpResponse
+from bs4 import BeautifulSoup as BS
+
+# from rutermextract import TermExtractor
+# # from json import load, dump
+   
+# te = TermExtractor()
 
 # Create your views here.
 def add_meta(ctx, page_header=None, current_page=None):
@@ -109,6 +115,31 @@ def is_there(reg_name, macro_members_list):
 	if list_names(reg_name) in mms:
 		return True
 	return False
+ 
+# def _filter_term(term):
+#     wrong_grammemes = {'ADJF', 'LATN', 'UNKN', 'NUMB', 'NUMR' }
+    
+#     word = term.words[0].parsed
+    
+#     return len(term.words) > 1 and \
+#            len(word.tag.grammemes & wrong_grammemes) == 0
+ 
+# def _normalize_terms_weights(kw):
+#     import numpy as np
+#     res = []
+ 
+#     max_weight, min_weight = kw[0][1], kw[-1][1]
+#     a, b = np.polyfit([max_weight, min_weight], [1, 0.1], 1)
+#     for term, weight in kw:
+#         normalized_weight = max(0, a * weight + b)
+#         res += [[str(term), normalized_weight]]
+        
+#     return res
+    
+# def get_text_keywords(a_text):
+#     kw = [ (term, term.count) for term in te(a_text) if _filter_term(term) ]
+    
+#     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
 	# print(reg_name)
@@ -154,7 +185,12 @@ def svg_img(path):
 	print(path)
 	img = open(path).read()
 
-	# TODO: img.replace('title>')!!!!!
+	soup = BS(img, features="xml")
+	for title in soup.findAll('g',  {'class': 'node'}):
+		qs = ",".join([f"'{x}'" for x in title.text.split("->") if title.text != "g"])
+		title['onclick'] = f'javascript: window.frames.parent.BVM.selectProfiles([{qs}]);'
+
+	open(f'{path.split(".dot")[0]}_clickable.svg', 'w').write(soup.prettify())
 
 
 

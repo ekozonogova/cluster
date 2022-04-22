@@ -113,7 +113,7 @@ function BenchViewModel() {
                                 name += vals[n].toLowerCase();
                             }
                         }
-                        let img = location.origin + '/static/images/macroregion_values/graph.'+ name +'.dot.svg';
+                        let img = location.origin + '/static/images/macroregion_values/graph.'+ name +'_clickable.svg';
                         console.log(img);
                         self.selectedRegionImgSrc(img);
                     }
@@ -159,6 +159,10 @@ function BenchViewModel() {
 
     self.selectedProfiles = ko.observable([]);
 
+    self.selectProfiles = function(arr) {
+        self.selectedProfiles(arr);
+    }
+
     self.selectedProfiles.isValid = ko.computed(function() {
         var e = self.selectedProfiles();
         return !!e && typeof e !== "undefined"
@@ -168,12 +172,16 @@ function BenchViewModel() {
     self.requestData = ko.computed(function() {
         var request = [];
         for (var i = 0; i < self.selectedProfiles().length; i++) {
-            for (var j = 0; j < self.selectedProfiles()[i]["values"].length; j++) {
-                request.push(self.selectedProfiles()[i]["values"][j]);
-            }
+            // for (var j = 0; j < self.selectedProfiles()[i]["values"].length; j++) {
+            request.push(self.selectedProfiles()[i]);
+            // }
         }
         console.log(request);
-        return request
+
+        if (self.selectedProfiles.isValid()) {
+            self.updateCompaniesData();
+        }
+        return request;
     });
 
     // self.requestData = ko.computed(function() {
@@ -254,47 +262,47 @@ ko.applyBindings(BVM);
 ymaps.ready(init);
 var myMap, placemark;
 
-// allCompanies = [];
+allCompanies = [];
 
-// function companyExists(companyName) {
-//     for (var i = 0; i < allCompanies.length; i++) {
-//         if(allCompanies[i].name == companyName) {
-//             return true;
-//         }
-//     }
-//     return false;
-// }
+function companyExists(companyName) {
+    for (var i = 0; i < allCompanies.length; i++) {
+        if(allCompanies[i].name == companyName) {
+            return true;
+        }
+    }
+    return false;
+}
 
 // var coord1 = [57.999544, 56.301705];
 // var coord2 = [58.068200, 56.344613];
 
-// function getPointData(i) {
-// 	return {
-// 	    balloonContentHeader: '<h7>' + allCompanies[i].name + '</h7>',
-// 	    balloonContentBody: '<p>Информация о компании: </p><p>' + allCompanies[i].name + '</p><p>' + allCompanies[i].address + '</p><p>' + allCompanies[i].phone + '</p><p>' + allCompanies[i].url + '</p>',
-// 	    clusterCaption: ' <strong>' + allCompanies[i].name + '</strong>'
-// 	}
-// };
+function getPointData(i) {
+	return {
+	    balloonContentHeader: '<h7>' + allCompanies[i].name + '</h7>',
+	    balloonContentBody: '<p>Информация о компании: </p><p>' + allCompanies[i].name + '</p><p>' + allCompanies[i].address + '</p><p>' + allCompanies[i].phone + '</p><p>' + allCompanies[i].url + '</p>',
+	    clusterCaption: ' <strong>' + allCompanies[i].name + '</strong>'
+	}
+};
 
-// function updateCompaniesOnMap() {
-// 	clusterer.removeAll();
+function updateCompaniesOnMap() {
+	clusterer.removeAll();
 
-// 	geoObjects = [];
+	geoObjects = [];
 
-// 	for (var i = 0; i < allCompanies.length; i++) {
-// 		geoObjects[i] = new ymaps.Placemark([allCompanies[i].lat, allCompanies[i].lon], getPointData(i)
-// 		// { 
-// 			// hintContent: allCompanies[i].name,
-// 			// balloonContent: allCompanies[i].name + ' ' + allCompanies[i].address + ' ' + allCompanies[i].phone + ' ' + allCompanies[i].url,
-// 		// }
-// 		, {
-//             preset: 'islands#violetIcon'
-//         });
-//     };
+	for (var i = 0; i < allCompanies.length; i++) {
+		geoObjects[i] = new ymaps.Placemark([allCompanies[i].lat, allCompanies[i].lon], getPointData(i)
+		// { 
+			// hintContent: allCompanies[i].name,
+			// balloonContent: allCompanies[i].name + ' ' + allCompanies[i].address + ' ' + allCompanies[i].phone + ' ' + allCompanies[i].url,
+		// }
+		, {
+            preset: 'islands#violetIcon'
+        });
+    };
 
-// 	clusterer.add(geoObjects);
-// 	myMap.geoObjects.add(clusterer);
-// }
+	clusterer.add(geoObjects);
+	myMap.geoObjects.add(clusterer);
+}
 
 function init() { 
 
@@ -305,16 +313,16 @@ function init() {
         zoom: 3
     });
 
- //    clusterer = new ymaps.Clusterer({
- //    	preset: 'islands#invertedVioletClusterIcons',
- //    	groupByCoordinates: false,
- //    	clusterDisableClickZoom: true,
- //    	// clusterOpenBalloonOnClick: false,
- //    	clusterHideIconOnBalloonOpen: false,
- //    	geoObjectHideIconOnBalloonOpen: false
-	// });
+    clusterer = new ymaps.Clusterer({
+    	preset: 'islands#invertedVioletClusterIcons',
+    	groupByCoordinates: false,
+    	clusterDisableClickZoom: true,
+    	// clusterOpenBalloonOnClick: false,
+    	clusterHideIconOnBalloonOpen: false,
+    	geoObjectHideIconOnBalloonOpen: false
+	});
 
- //    updateCompaniesOnMap();
+    updateCompaniesOnMap();
 	/**
 	 * Спозиционируем карту так, чтобы на ней были видны все объекты.
 	 */
@@ -390,22 +398,12 @@ function loadBordersAndPaint(colors) {
         result.features = [];
 
         for (var reg in regions) {
-            // regions[reg].events.add('click', function (event) {
-            //     var region = event.get('target');
-            //     region.options.set({fillOpacity: 1});
-            // });
             result.features.push(regions[reg]);
-            // console.log(regions[reg]);
         };
-        // myMap.events.add('click', function (e) {        
 
-        // });
         console.log(result);
         objectManager.add(result);
         myMap.geoObjects.add(objectManager);
-        // objectManager.events.add('click', function(e) {
-            // console.log(e.get('target'));
-        // });
         BVM.waiter.hide();
     });
 };
@@ -423,14 +421,14 @@ function loadBordersAndPaint(colors) {
 // 	}
 // }
 
-// function Company(name, address, lat, lon, phone, url) {
-// 	this.name = name;
-// 	this.address = address;
-// 	this.lat = lat;
-// 	this.lon = lon;
-// 	this.phone = phone;
-// 	this.url = url;
-// }
+function Company(name, address, lat, lon, phone, url) {
+	this.name = name;
+	this.address = address;
+	this.lat = lat;
+	this.lon = lon;
+	this.phone = phone;
+	this.url = url;
+}
 
 // function switchPlacemarks(placemark_coords) {
 // 	var zoom = 18;
@@ -503,10 +501,11 @@ $(document).ready(function() {
         return includes;
     };
 
-    // $('#select-spec').on('change', function(val) {
-    // 	clusterer.removeAll();
+    // TODO: what is the event target??? YES, #select-spec is OK!!
+    $('#select-spec').on('change', function(val) {
+    	clusterer.removeAll();
     // 	// loadBordersAndPaint(val["color"]);
-    // });
+    });
 
   //   String.prototype.includesString = function(string) {
 		// var includes = false;
