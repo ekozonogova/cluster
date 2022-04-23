@@ -143,6 +143,7 @@ def is_there(reg_name, macro_members_list):
 #     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
+	open('/tmp/log', 'a').write('%s : %s\n' % (datetime.now(), reg_name))
 	# print(reg_name)
 	macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
 	res = []
