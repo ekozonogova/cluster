@@ -5,6 +5,7 @@ import sys
 import os
 from django.http import HttpResponse
 from bs4 import BeautifulSoup as BS
+from datetime import datetime
 
 # from rutermextract import TermExtractor
 # # from json import load, dump
