@@ -184,7 +184,7 @@ def identical_regions_list(request, reg_name):
 	return HttpResponse(json.dumps(dict(selected_region), ensure_ascii=0))
 
 def svg_img(path):
-	print(path)
+	print(path, file=sys.stderr)
 	img = open(path).read()
 
 	soup = BS(img, features="xml")
@@ -192,6 +192,7 @@ def svg_img(path):
 		qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
 		title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
+	# TODO: shutil.move file to /static where collectstatic saves all files!
 	open('%s_clickable.svg' % path.split(".dot")[0], 'w').write(soup.prettify())
 
 
