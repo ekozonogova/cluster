@@ -157,7 +157,7 @@ def macro_region_members(request, reg_name): # reg_code?
 				# res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
 				for name in list_names(reg_name):
 					try:
-						svg_img('clusters_core/static/images/macroregion_values/graph.'+ '_'.join(name.split(' ')) +'.dot.svg' )
+						svg_img('../../clusters_core/static/images/macroregion_values/graph.'+ '_'.join(name.split(' ')) +'.dot.svg' )
 						print('1')
 					except FileNotFoundError:
 						print('Wrong filename', file=sys.stderr)
