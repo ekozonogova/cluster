@@ -5,7 +5,6 @@ import sys
 import os
 from django.http import HttpResponse
 from bs4 import BeautifulSoup as BS
-from datetime import datetime
 
 # from rutermextract import TermExtractor
 # # from json import load, dump
@@ -144,7 +143,7 @@ def is_there(reg_name, macro_members_list):
 #     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
-	open('/tmp/log', 'a').write('%s : %s\n' % (datetime.now(), reg_name))
+	# reg_name = reg_name.split('=')
 	# print(reg_name)
 	macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
 	res = []
@@ -157,8 +156,7 @@ def macro_region_members(request, reg_name): # reg_code?
 				# res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
 				for name in list_names(reg_name):
 					try:
-						svg_img('../../clusters_core/static/images/macroregion_values/graph.'+ '_'.join(name.split(' ')) +'.dot.svg' )
-						print('1')
+						svg_img('clusters_core/static/images/macroregion_values/graph.'+ '_'.join(name.split(' ')) +'.dot.svg' )
 					except FileNotFoundError:
 						print('Wrong filename', file=sys.stderr)
 				try:
