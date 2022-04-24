@@ -185,15 +185,15 @@ def identical_regions_list(request, reg_name):
 
 def svg_img(path):
 	print(path, file=sys.stderr)
-	img = open(path).read()
+	# img = open(path).read()
 
-	soup = BS(img, features="xml")
-	for title in soup.findAll('g',  {'class': 'node'}):
-		qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
-		title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
+	# soup = BS(img, features="xml")
+	# for title in soup.findAll('g',  {'class': 'node'}):
+	# 	qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
+	# 	title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
 	# TODO: shutil.move file to /static where collectstatic saves all files!
-	open('%s_clickable.svg' % path.split(".dot")[0], 'w').write(soup.prettify())
+	# open('%s_clickable.svg' % path.split(".dot")[0], 'w').write(soup.prettify())
 
 
 
