@@ -5,6 +5,7 @@ import sys
 import os
 from django.http import HttpResponse
 from bs4 import BeautifulSoup as BS
+from clusters import settings
 
 # from rutermextract import TermExtractor
 # # from json import load, dump
@@ -12,13 +13,16 @@ from bs4 import BeautifulSoup as BS
 # te = TermExtractor()
 
 # Create your views here.
-def add_meta(ctx, page_header=None, current_page=None):
+
+def add_meta(ctx, page_key=None):
 	ctx.update(settings.SITE_SETTINGS)
-	# banners = models.Banner.objects.filter(enabled=True).order_by('-id')
-	# ctx.update({'banners': banners})
+	if page_key:
+		pgs = settings.SITE_SETTINGS['pages']
+		current_page = [x[1] for x in pgs.items() if x[0] == page_key][0]
 	ctx.update({
-		'page_header': page_header,
-		'current_page': current_page
+		'pgs_info': [{"link":x, "name":y} for x,y in pgs.items()],
+		'page_key': page_key,
+		'current_page': current_page,
 	})
 
 	return ctx
@@ -32,6 +36,7 @@ def index(request):
 def clusters(request):
 	context = {}
 	context.update({'a': 1})
+	add_meta(context, page_key='clusters')
 	# data = {}
 
 	# data.update({
@@ -49,6 +54,7 @@ def clusters(request):
 def benchmark(request):
 	context = {}
 	context.update({'a': 1})
+	add_meta(context, page_key='benchmark')
 	# data = {}
 
 	# data.update({
@@ -66,6 +72,7 @@ def benchmark(request):
 def macroregions(request):
 	context = {}
 	context.update({'a': 1})
+	add_meta(context, page_key='product-space')
 	# data = {}
 
 	# data.update({
@@ -185,6 +192,10 @@ def identical_regions_list(request, reg_name):
 
 def svg_img(path):
 	print(path, file=sys.stderr)
+	# This code makes 500 internal server error only on production (maybe error in paths),
+	# so to update graphs:
+	# 	1. Uncomment lines below, run at localhost, 
+	#	2. git add all generated files, collect static on production.
 	# img = open(path).read()
 
 	# soup = BS(img, features="xml")
@@ -195,5 +206,17 @@ def svg_img(path):
 	# TODO: shutil.move file to /static where collectstatic saves all files!
 	# open('%s_clickable.svg' % path.split(".dot")[0], 'w').write(soup.prettify())
 
+def about(request):
+	context = {
+		"owners_data": [
+			{"img_name": "julia.jpg", "name": "Дубровская Юлия", "link": "http://"},
+			{"img_name": "elena.jpg", "name": "Козоногова Елена", "link": "http://"},
+			{"img_name": "maria.jpg", "name": "Русинова Мария", "link": "http://"},
+			{"img_name": "daniil.jpg", "name": "Курушин Даниил", "link": "http://github.com/daniel-kurushin"},
+			{"img_name": "sanya.jpg", "name": "Ларионов Александр", "link": "http://github.com/alarionov93"},
+		]
+	}
+	add_meta(context, page_key='about')
 
+	return render(request, 'about.html', context=context)
 

@@ -60,24 +60,22 @@
         <div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div><div></div>
     </div>
 	{% block header %}
-    <div class="container" style="
-    margin: 20px 0;
-    width: 100%;
-    background-color: #ffffff;">
+        <h1 class="text-center">{{ current_page }}</h1>
+        <div class="container" style="
+        /*margin: 0 0;*/
+        padding-bottom: 7px;
+        width: 100%;
+        background-color: #ffffff;">
         <div class="row">
-            <ul class="nav nav-tabs" style="padding: 0 190px;">
-              <li class="nav-item">
-                <a class="nav-link" href="clusters">Межрегиональные кластеры</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="benchmark">Бенчмаркинг</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="product-space">Пространственное развитие субъектов РФ</a>
-              </li>
+            <ul class="nav nav-tabs" style="padding: 0 90px; font-weight: 200;">
+                {% for e in pgs_info %}
+                  <li class="nav-item">
+                    <a class="nav-link" href="/{{ e.link }}">{{ e.name }}</a>
+                  </li>
+                {% endfor %}
             </ul>
         </div>
-    </div>
+        </div>
     {% endblock %}
 	{% block content %}
 	{% endblock %}

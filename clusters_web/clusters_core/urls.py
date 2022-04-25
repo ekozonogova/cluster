@@ -9,5 +9,6 @@ urlpatterns = [
 	path('regions_list', views.regions_list, name='regions'),
 	path('i_regions_list/<str:reg_name>', views.identical_regions_list, name='identical_regions'),
 	path('m_region_members/<str:reg_name>', views.macro_region_members, name='macro_region_members'),
-	path('svg_img/<str:path>', views.svg_img, name='svg_img')
+	path('svg_img/<str:path>', views.svg_img, name='svg_img'),
+	path('about/', views.about, name='about')
 ]

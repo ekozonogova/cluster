@@ -133,6 +133,15 @@ SITE_SETTINGS = {
     # required settings
     'site_name': '',
     'c_site_name': '',
+
+    
+    "pages": {
+        "clusters":"Межрегиональные кластеры",
+        "benchmark":"Бенчмаркинг",
+        "product-space":"Пространственное развитие субъектов РФ",
+        "about":"Об авторах проекта",
+    }
+
 }
 # # default value for order items statistics
 # # DEFAULT_STAT_PERIOD = 15

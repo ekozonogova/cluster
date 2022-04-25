@@ -23,6 +23,21 @@ ul li {
   text-decoration: underline;
 }*/
 
+.center-cropped {
+  width: 100px;
+  height: 100px;
+  /*background-position: center center;*/
+  background-repeat: no-repeat;
+}
+
+.cropped {
+  width: 100px;
+  height: 100px;
+  object-fit: cover; /* Do not scale the image */
+  object-position: center; /* Center the image within the element */
+  /*background-repeat: no-repeat;*/
+}
+
 .crop-img {
     width: 500px;
     height: 310px;

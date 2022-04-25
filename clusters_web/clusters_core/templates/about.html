@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+	<div class="container">
+		<div class="row">
+			<div class="col-sm-8">
+				<div class="row">
+					<h5>Участники проекта:</h5>
+				</div>
+				<div class="row">
+					{% for d in owners_data %}
+					<div class="col-sm-3">
+						{% with 'images/about/'|add:d.img_name as image_static %}
+							<img src="{% static image_static %}" class="cropped">
+						{% endwith %}
+					</div>
+					<div class="col-sm-9">
+						<a href="{{ d.link }}">{{ d.name }}</a>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			<div class="col-sm-4">
+				<h5>Сертификаты на программное обеспечение:</h5>
+				<img class="img-responsive" src="{% static 'cert1.png' %}" width="120">
+				<img class="img-responsive" src="{% static 'cert2.png' %}" width="110">
+				<img class="img-responsive" src="{% static 'cert3.png' %}" width="100">
+			</div>
+		</div>
+	</div>
+{% endblock %}
+
+{% block spec_scripts %}
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$(".background-waiter").css("display","none");
+			$("#waiter").css("display","none");
+
+		});
+	</script>
+{% endblock %}
