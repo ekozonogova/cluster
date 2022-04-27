@@ -241,13 +241,18 @@ def about(request):
 			{
 				"img_name": "daniil.jpg",
 				"name": "Курушин Д.C., кандидат технических наук", 
-				"links": [],
+				"links": [
+					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=101415"},
+					{"name":"Orcid", "addr":"https://orcid.org/0000-0003-4798-7423"},
+				],
 				"main_link": "https://github.com/daniel-kurushin",
 			},
 			{
 				"img_name": "sanya.jpg",
 				"name": "Ларионов А.A., магистр",
-				"links": [],
+				"links": [
+					{"name":"Orcid", "addr":"https://orcid.org/0000-0001-5214-7467"},
+				],
 				"main_link": "https://github.com/alarionov93",
 				"email": "alarionov93@yandex.ru",
 			},
