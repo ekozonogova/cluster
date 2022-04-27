@@ -5,27 +5,39 @@
 	<div class="container">
 		<div class="row">
 			<div class="col-sm-8">
-				<div class="row">
-					<h5>Участники проекта:</h5>
+				<div class="row" style="margin-bottom: 17px;">
+					<h5 class="text-center">Участники проекта</h5>
 				</div>
-				<div class="row">
-					{% for d in owners_data %}
-					<div class="col-sm-3">
-						{% with 'images/about/'|add:d.img_name as image_static %}
-							<img src="{% static image_static %}" class="cropped">
-						{% endwith %}
+				{% for d in owners_data %}
+					<div class="row" style="margin-bottom: 7px;">
+						<div class="col-sm-3">
+							{% with 'images/about/'|add:d.img_name as image_static %}
+								<img src="{% static image_static %}" class="cropped">
+							{% endwith %}
+						</div>
+						<div class="col-sm-9">
+							<div class="row">
+								<a href="{{ d.main_link }}">{{ d.name }}</a>
+								{% for l in d.links %}
+								<a href="{{ l.addr }}">{{ l.name }}</a>
+								{% empty %}
+									<p></p>
+								{% endfor %}
+								{% if d.email %}
+									<p>e-mail: {{ d.email }}</p>
+								{% endif %}
+							</div>
+						</div>
 					</div>
-					<div class="col-sm-9">
-						<a href="{{ d.link }}">{{ d.name }}</a>
-					</div>
-					{% endfor %}
-				</div>
+				{% endfor %}
 			</div>
 			<div class="col-sm-4">
-				<h5>Сертификаты на программное обеспечение:</h5>
-				<img class="img-responsive" src="{% static 'cert1.png' %}" width="120">
-				<img class="img-responsive" src="{% static 'cert2.png' %}" width="110">
-				<img class="img-responsive" src="{% static 'cert3.png' %}" width="100">
+				<div style="margin-bottom: 7px;">
+					<h5 class="text-center">Сертификаты на программное обеспечение</h5>
+					<img class="img-responsive" src="{% static 'cert1.png' %}" width="120">
+					<img class="img-responsive" src="{% static 'cert2.png' %}" width="110">
+					<img class="img-responsive" src="{% static 'cert3.png' %}" width="100">
+				</div>
 			</div>
 		</div>
 	</div>

@@ -209,11 +209,48 @@ def svg_img(path):
 def about(request):
 	context = {
 		"owners_data": [
-			{"img_name": "julia.jpg", "name": "Дубровская Юлия", "link": "http://"},
-			{"img_name": "elena.jpg", "name": "Козоногова Елена", "link": "http://"},
-			{"img_name": "maria.jpg", "name": "Русинова Мария", "link": "http://"},
-			{"img_name": "daniil.jpg", "name": "Курушин Даниил", "link": "http://github.com/daniel-kurushin"},
-			{"img_name": "sanya.jpg", "name": "Ларионов Александр", "link": "http://github.com/alarionov93"},
+			{
+				"img_name": "julia.jpg",
+				"name": "Дубровская Ю.В., кандидат экономических наук", 
+				"links": [
+					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=654406"},
+					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=lAFTPBkAAAAJ&hl=en"},
+				],
+				"main_link": "https://pstu.ru/basic/glossary/staff/?sid=1729",
+				"email": "elena.kozonogova@gmail.com",
+			},
+			{
+				"img_name": "elena.jpg",
+				"name": "Козоногова Е.В., кандидат экономических наук", 
+				"links": [
+					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=776901"},
+					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=3ZdcuSUAAAAJ&hl=en"},
+				],
+				"main_link": "https://pstu.ru/basic/glossary/staff/mailto:/?sid=-456",
+				"email": "elena.kozonogova@gmail.com",
+			},
+			{
+				"img_name": "maria.jpg",
+				"name": "Русинова М.Р., кандидат экономических наук", 
+				"links": [
+					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=911133"},
+					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=xY1cCocAAAAJ&hl=en"},
+				],
+				"main_link": "https://elibrary.ru/author_profile.asp?authorid=911133",
+			},
+			{
+				"img_name": "daniil.jpg",
+				"name": "Курушин Д.C., кандидат технических наук", 
+				"links": [],
+				"main_link": "https://github.com/daniel-kurushin",
+			},
+			{
+				"img_name": "sanya.jpg",
+				"name": "Ларионов А.A., магистр",
+				"links": [],
+				"main_link": "https://github.com/alarionov93",
+				"email": "alarionov93@yandex.ru",
+			},
 		]
 	}
 	add_meta(context, page_key='about')
