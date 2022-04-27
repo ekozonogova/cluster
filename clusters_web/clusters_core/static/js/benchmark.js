@@ -128,7 +128,7 @@ function BenchViewModel() {
         $.get($settings.urls.availableRegionsList).then(function (resp) {
             resp = JSON.parse(resp);
             for (key in resp) {
-                self.availableRegions.push(new Region(resp[key],key));
+                self.availableRegions.push(new Region(resp[key][0],key));
             }
             console.log(self.availableRegions());
         }).done(function () {
