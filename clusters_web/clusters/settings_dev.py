@@ -135,12 +135,20 @@ SITE_SETTINGS = {
     'c_site_name': '',
 
     
-    "pages": {
-        "clusters":"Межрегиональные кластеры",
-        "benchmark":"Бенчмаркинг",
-        "product-space":"Пространственное развитие субъектов РФ",
-        "about":"Об авторах",
-    }
+    # ACHTUNG!!! Pages here and below are similar structures for processing!!!!
+    # "pages": {
+    #     "clusters":"Межрегиональные кластеры",
+    #     "benchmark":"Бенчмаркинг",
+    #     "product-space":"Пространственное развитие субъектов РФ",
+    #     "about":"Об авторах",
+    # },
+    # "order_pages": ["clusters", "benchmark", "product-space", "about"],
+    "pages": [
+        ("clusters","Межрегиональные кластеры"),
+        ("benchmark","Бенчмаркинг"),
+        ("product-space","Пространственное развитие субъектов РФ"),
+        ("about","Об авторах"),
+    ],
 
 }
 # # default value for order items statistics

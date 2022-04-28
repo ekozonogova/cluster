@@ -18,9 +18,12 @@ def add_meta(ctx, page_key=None):
 	ctx.update(settings.SITE_SETTINGS)
 	if page_key:
 		pgs = settings.SITE_SETTINGS['pages']
-		current_page = [x[1] for x in pgs.items() if x[0] == page_key][0]
+		current_page = [x[1] for x in pgs if x[0] == page_key][0]
+		# pgs_lst = []
+		# for x,y in pgs.items():
+		# 	pgs_lst[pgs_org.index(x)] = { "link":x, "name":y }
 	ctx.update({
-		'pgs_info': [{"link":x, "name":y} for x,y in pgs.items()],
+		'pgs_info': [{"link":x, "name":y} for x,y in pgs],
 		'page_key': page_key,
 		'current_page': current_page,
 	})

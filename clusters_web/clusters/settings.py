@@ -148,13 +148,20 @@ SITE_SETTINGS = {
     'event_group_id': 7, # 7 is the id of this app
     # non required settings
 
-    "pages": {
-        "clusters":"Межрегиональные кластеры",
-        "benchmark":"Бенчмаркинг",
-        "product-space":"Пространственное развитие субъектов РФ",
-        "about":"Об авторах",
-    }
-
+    # ACHTUNG!!! Pages here and below are similar structures for processing!!!!
+    # "pages": {
+    #     "clusters":"Межрегиональные кластеры",
+    #     "benchmark":"Бенчмаркинг",
+    #     "product-space":"Пространственное развитие субъектов РФ",
+    #     "about":"Об авторах",
+    # },
+    # "order_pages": ["clusters", "benchmark", "product-space", "about"],
+    "pages": [
+        ("clusters","Межрегиональные кластеры"),
+        ("benchmark","Бенчмаркинг"),
+        ("product-space","Пространственное развитие субъектов РФ"),
+        ("about","Об авторах"),
+    ],
 }
 
 INTERNAL_IPS = (
