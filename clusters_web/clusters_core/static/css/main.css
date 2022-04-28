@@ -31,8 +31,8 @@ ul li {
 }
 
 .cropped {
-  width: 100px;
-  height: 100px;
+  width: 160px;
+  height: 160px;
   object-fit: cover; /* Do not scale the image */
   object-position: center; /* Center the image within the element */
   /*background-repeat: no-repeat;*/
@@ -2785,4 +2785,3 @@ a.list-group-item:hover, a.list-group-item:focus {
   left: 0;
   opacity: 0.2;
 }
-

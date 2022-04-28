@@ -4,22 +4,23 @@
 {% block content %}
 	<div class="container">
 		<div class="row">
-			<div class="col-sm-6">
+			<div class="col-sm-6" style="font-size: larger;">
 				<div class="row" style="margin-bottom: 17px;">
-					<h5 class="text-center">Участники проекта</h5>
+					<h5 class="text-center">Участники</h5>
 				</div>
 				{% for d in owners_data %}
 					<div class="row" style="margin-bottom: 7px;">
-						<div class="col-sm-3">
+						<div class="col-sm-4">
 							{% with 'images/about/'|add:d.img_name as image_static %}
 								<img src="{% static image_static %}" class="cropped">
 							{% endwith %}
 						</div>
-						<div class="col-sm-9">
+						<div class="col-sm-8">
 							<div class="row">
 								<a href="{{ d.main_link }}">{{ d.name }}</a>
+								<span>{{ d.text }}</span>
 								{% for l in d.links %}
-								<a href="{{ l.addr }}">{{ l.name }}</a>
+									<a href="{{ l.addr }}">{{ l.name }}</a>
 								{% empty %}
 									<p></p>
 								{% endfor %}
@@ -33,7 +34,7 @@
 			</div>
 			<div class="col-sm-6">
 				<div class="row" style="margin-bottom: 7px;">
-					<h5 class="text-center">Сертификаты на программное обеспечение</h5>
+					<h5 class="text-center">Свидетельства на программное обеспечение</h5>
 					<img class="img-responsive" src="{% static 'cert1.png' %}" width="120">
 					<img class="img-responsive" src="{% static 'cert2.png' %}" width="110">
 					<img class="img-responsive" src="{% static 'cert3.png' %}" width="100">

@@ -210,48 +210,56 @@ def about(request):
 	context = {
 		"owners_data": [
 			{
-				"img_name": "julia.jpg",
-				"name": "Дубровская Ю.В., кандидат экономических наук", 
-				"links": [
-					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=654406"},
-					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=lAFTPBkAAAAJ&hl=en"},
-				],
-				"main_link": "https://pstu.ru/basic/glossary/staff/?sid=1729",
-				"email": "elena.kozonogova@gmail.com",
-			},
-			{
 				"img_name": "elena.jpg",
-				"name": "Козоногова Е.В., кандидат экономических наук", 
+				"text": "кандидат экономических наук",
+				"name": "Козоногова Елена Викторовна", 
 				"links": [
-					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=776901"},
+					{"name":"elibrary", "addr":"https://elibrary.ru/author_profile.asp?authorid=776901"},
 					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=3ZdcuSUAAAAJ&hl=en"},
 				],
 				"main_link": "https://pstu.ru/basic/glossary/staff/mailto:/?sid=-456",
 				"email": "elena.kozonogova@gmail.com",
 			},
 			{
-				"img_name": "maria.jpg",
-				"name": "Русинова М.Р., кандидат экономических наук", 
+				"img_name": "julia.jpg",
+				"text": "кандидат экономических наук",
+				"name": "Дубровская Юлия Владимировна", 
 				"links": [
-					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=911133"},
+					{"name":"elibrary", "addr":"https://elibrary.ru/author_profile.asp?authorid=654406"},
+					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=lAFTPBkAAAAJ&hl=en"},
+				],
+				"main_link": "https://pstu.ru/basic/glossary/staff/?sid=1729",
+				"email": "uliadubrov@mail.ru",
+			},
+			{
+				"img_name": "maria.jpg",
+				"text": "кандидат экономических наук",
+				"name": "Русинова Мария Романовна", 
+				"links": [
+					{"name":"elibrary", "addr":"https://elibrary.ru/author_profile.asp?authorid=911133"},
 					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=xY1cCocAAAAJ&hl=en"},
 				],
 				"main_link": "https://elibrary.ru/author_profile.asp?authorid=911133",
+				"email": "rusinova.mr@gmail.com"
 			},
 			{
 				"img_name": "daniil.jpg",
-				"name": "Курушин Д.C., кандидат технических наук", 
+				"text": "кандидат технических наук",
+				"name": "Курушин Даниил Сергеевич",
 				"links": [
-					{"name":"E Library", "addr":"https://elibrary.ru/author_profile.asp?authorid=101415"},
+					{"name":"elibrary", "addr":"https://elibrary.ru/author_profile.asp?authorid=101415"},
 					{"name":"Orcid", "addr":"https://orcid.org/0000-0003-4798-7423"},
 				],
 				"main_link": "https://github.com/daniel-kurushin",
+				"email": "daniel@kurushin-perm.ru",
 			},
 			{
 				"img_name": "sanya.jpg",
-				"name": "Ларионов А.A., магистр",
+				"text": "магистр",
+				"name": "Ларионов Александр Андреевич",
 				"links": [
 					{"name":"Orcid", "addr":"https://orcid.org/0000-0001-5214-7467"},
+					{"name":"Telegram", "addr":"https://t.me/photoalarionovpro/"},
 				],
 				"main_link": "https://github.com/alarionov93",
 				"email": "alarionov93@yandex.ru",
