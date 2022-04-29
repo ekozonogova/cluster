@@ -29,7 +29,8 @@ function Settings() {
 		},
 		availableRegionsList: "/regions_list",
 		identicalRegionsList: "/i_regions_list/",
-		macroRegionMembers: "/m_region_members/"
+		macroRegionMembers: "/m_region_members/",
+		getKeywords: "/get_keywords/"
 	};
 	this.categoriesHeaderHeight = $("#cat-nav").outerHeight();
 

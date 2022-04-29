@@ -7,12 +7,9 @@ from django.http import HttpResponse
 from bs4 import BeautifulSoup as BS
 from clusters import settings
 
-# from rutermextract import TermExtractor
-# # from json import load, dump
+from rutermextract import TermExtractor
    
-# te = TermExtractor()
-
-# Create your views here.
+te = TermExtractor()
 
 def add_meta(ctx, page_key=None):
 	ctx.update(settings.SITE_SETTINGS)
@@ -153,7 +150,7 @@ def is_there(reg_name, macro_members_list):
 #     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
-	# reg_name = reg_name.split('=')
+	# reg_name = reg_name.split('=')[1]
 	# print(reg_name)
 	macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
 	res = []
@@ -195,10 +192,11 @@ def identical_regions_list(request, reg_name):
 
 def svg_img(path):
 	print(path, file=sys.stderr)
-	# This code makes 500 internal server error only on production (maybe error in paths),
+	# This code makes 500 internal server error only on production (maybe error in paths) with no explanation,
 	# so to update graphs:
-	# 	1. Uncomment lines below, run at localhost, 
+	# 	1. Uncomment lines below, run at localhost, run update_macroregions.sh from path: /Users/sanya/Work/cluster/clusters_web/clusters_core/static/images/region_values
 	#	2. git add all generated files, collect static on production.
+	# TODO: This way is not working because of curl URLs creating in update_macroregions.sh
 	# img = open(path).read()
 
 	# soup = BS(img, features="xml")
@@ -272,4 +270,19 @@ def about(request):
 	add_meta(context, page_key='about')
 
 	return render(request, 'about.html', context=context)
+
+def _filter_term(term):
+    wrong_grammemes = {'ADJF', 'LATN', 'UNKN', 'NUMB', 'NUMR' }
+    
+    word = term.words[0].parsed
+    
+    return len(term.words) > 1 and \
+           len(word.tag.grammemes & wrong_grammemes) == 0
+
+def get_keywords(request, text):
+	kw = [ term.normalized for term in te(text) ]# if _filter_term(term) ]
+	print(kw)
+
+	return HttpResponse(json.dumps(kw, ensure_ascii=0))
+
 

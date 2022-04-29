@@ -160,7 +160,11 @@ function BenchViewModel() {
     self.selectedProfiles = ko.observable([]);
 
     self.selectProfiles = function(arr) {
-        self.selectedProfiles(arr);
+        $.get($settings.urls.getKeywords + arr[0]).then(function (resp) {
+            let keywords = JSON.parse(resp);
+            console.log(keywords);
+            self.selectedProfiles(keywords);
+        });
     }
 
     self.selectedProfiles.isValid = ko.computed(function() {
@@ -179,7 +183,7 @@ function BenchViewModel() {
         console.log(request);
 
         if (self.selectedProfiles.isValid()) {
-            self.updateCompaniesData();
+            self.updateCompaniesData(request);
         }
         return request;
     });
@@ -222,7 +226,7 @@ function BenchViewModel() {
 
     self.waitForResponseParse = function() {
         var t;
-        if (self.requestsHandled == self.requestsCount()) {
+        if (self.requestsHandled >= self.requestsCount()) { // TODO: why requests handled is already 2 after page refresh!???
             console.log('Loaded');
             self.companiesLoaded(true);
             clearTimeout(t);
@@ -232,15 +236,15 @@ function BenchViewModel() {
         }
     };
 
-    self.updateCompaniesData = function() {
+    self.updateCompaniesData = function(request) {
         self.waiter.show();
         self.companiesLoaded(false);
         self.requestsHandled = 0;
         allCompanies = [];
-        self.requestsCount(self.requestData().length);
+        self.requestsCount(request.length);
 
         for (var i = 0; i < self.requestsCount(); i++) {
-            self.sendRequest(self.requestData()[i]);
+            self.sendRequest(request[i]);
         }
 
         var t = setTimeout(self.waitForResponseParse, 100);
