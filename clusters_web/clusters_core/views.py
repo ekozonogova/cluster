@@ -280,8 +280,15 @@ def _filter_term(term):
            len(word.tag.grammemes & wrong_grammemes) == 0
 
 def get_keywords(request, text):
-	kw = [ term.normalized for term in te(text) ]# if _filter_term(term) ]
-	print(kw)
+	try:
+		kw = json.load(open('../../cluster/svg_kw_new.json', 'r'))[' '.join(text.split(' ')[:-1]).strip()]
+	except (KeyError, FileNotFoundError):
+		print('Error with key or finding JSON file, generating kw by TE();', file=sys.stderr)
+		kw = [ term for term in te(text, strings=1) ]
+	except json.decoder.JSONDecodeError as e:
+		print(f'Error in JSON file, {e.pos}, {e.msg}', file=sys.stderr)
+		kw = []
+	print(kw, file=sys.stderr)
 
 	return HttpResponse(json.dumps(kw, ensure_ascii=0))
 
