@@ -286,7 +286,7 @@ def get_keywords(request, text):
 		print('Error with key or finding JSON file, generating kw by TE();', file=sys.stderr)
 		kw = [ term for term in te(text, strings=1) ]
 	except json.decoder.JSONDecodeError as e:
-		print(f'Error in JSON file, {e.pos}, {e.msg}', file=sys.stderr)
+		print('Error in JSON file, %s, %s.'%(e.pos, e.msg), file=sys.stderr)
 		kw = []
 	print(kw, file=sys.stderr)
 
