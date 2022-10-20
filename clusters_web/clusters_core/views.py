@@ -72,7 +72,7 @@ def benchmark(request):
 def macroregions(request):
 	context = {}
 	context.update({'a': 1})
-	add_meta(context, page_key='product-space')
+	add_meta(context, page_key='spatial_development')
 	# data = {}
 
 	# data.update({
@@ -230,7 +230,7 @@ def about(request):
 					{"name":"Google Scholar", "addr":"https://scholar.google.com/citations?user=lAFTPBkAAAAJ&hl=en"},
 				],
 				"main_link": "https://pstu.ru/basic/glossary/staff/?sid=1729",
-				"email": "uliadubrov@mail.ru",
+				"email": "yuliadubrov@mail.ru",
 			},
 			{
 				"img_name": "maria.jpg",
