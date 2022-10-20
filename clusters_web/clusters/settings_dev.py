@@ -142,11 +142,11 @@ SITE_SETTINGS = {
     #     "product-space":"Пространственное развитие субъектов РФ",
     #     "about":"Об авторах",
     # },
-    # "order_pages": ["clusters", "benchmark", "product-space", "about"],
+    # "order_pages": ["clusters", "benchmark", "spatial_development", "about"],
     "pages": [
         ("clusters","Межрегиональные кластеры"),
         ("benchmark","Бенчмаркинг"),
-        ("product-space","Пространственное развитие субъектов РФ"),
+        ("spatial_development","Пространственное развитие РФ"),
         ("about","Об авторах"),
     ],
 

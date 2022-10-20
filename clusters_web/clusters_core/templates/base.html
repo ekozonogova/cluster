@@ -61,14 +61,14 @@
     </div>
 	{% block header %}
         <h1 class="text-center">{{ current_page }}</h1>
-	<h4 class="text-center">(рассчитано на основе данных за 2019 год)</h4>
+        <h4 class="text-center">(рассчитано на основе данных за 2019 год)</h4>
         <div class="container" style="
         /*margin: 0 0;*/
         padding-bottom: 7px;
         width: 100%;
         background-color: #ffffff;">
         <div class="row">
-            <ul class="nav nav-tabs" style="padding: 0 90px; font-weight: 200;">
+            <ul class="nav nav-tabs" style="padding: 0 16%; font-weight: 200;">
                 {% for e in pgs_info %}
                   <li class="nav-item">
                     <a class="nav-link" href="/{{ e.link }}">{{ e.name }}</a>

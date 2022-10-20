@@ -22,6 +22,9 @@ ul li {
   background:inherit;
   text-decoration: underline;
 }*/
+#gmap {
+  top: 190px !important;
+}
 
 .center-cropped {
   width: 100px;
