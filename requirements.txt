@@ -49,7 +49,7 @@ opencv-contrib-python==4.6.0.66
 packaging==21.3
 pandas==1.4.3
 patsy==0.5.2
-Pillow==9.2.0
+Pillow==9.3.0
 pointpats==2.2.0
 PuLP==2.6.0
 pycparser==2.21
