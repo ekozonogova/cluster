@@ -170,9 +170,9 @@ def macro_region_members(request, reg_name): # reg_code?
                     try:
                         nn = "_".join(name.split(" "))
                         # print(nn)
-                        svg_img(f'{app_cur_dir}static/images/macro_new/new_graph.{nn}.svg')
+                        svg_img('%sstatic/images/macro_new/new_graph.%s.svg' % (app_cur_dir, nn))
                     except FileNotFoundError as e:
-                        print(f'[ ERROR ] Wrong filename {e}', file=sys.stderr)
+                        print('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
                 try:
                     res = [{get_reg_data(x): x} for x in macro_regions[r]['состав кластера']]
                 except CodeTypeError as e:
@@ -211,7 +211,7 @@ def svg_img(path):
     #   4. Check js files to new region names line with 'self.getMacroRegionMembers()'
     
     # # TODO: This way is not working because of curl URLs creating in update_macroregions.sh
-    img_name = f'{path.split(".dot")[0].split(".svg")[0]}_clickable.svg'
+    img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
     print(img_name)
     if not os.path.isfile(img_name):
         img = open(path).read()
