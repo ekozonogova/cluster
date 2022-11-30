@@ -216,6 +216,7 @@ def identical_regions_list(request, reg_name):
 
 def svg_img(path):
     print(path, file=sys.stderr)
+    open('/tmp/err.log', 'a').write('219\n')
     # [ WARNING ] !!!
     # This code (below) makes '500 Internal Server Error' only on production 
     # (maybe errors in paths) with no explanation, so to update graphs:
@@ -229,16 +230,20 @@ def svg_img(path):
     
     # # TODO: This way is not working because of curl URLs creating in update_macroregions.sh
     img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
+    open('/tmp/err.log', 'a').write('233\n')
     if not os.path.isfile(img_name):
+        open('/tmp/err.log', 'a').write('235\n')
         img = open(path).read()
-
+        open('/tmp/err.log', 'a').write('237\n')
         soup = BS(img, features="xml")
         for title in soup.findAll('g',  {'class': 'node'}):
             qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
             title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
         # # TODO: shutil.move file to /static where collectstatic saves all files!
+        open('/tmp/err.log', 'a').write('244\n')
         open(img_name, 'w').write(soup.prettify())
+        open('/tmp/err.log', 'a').write('246\n')
 
 def about(request):
     context = {
