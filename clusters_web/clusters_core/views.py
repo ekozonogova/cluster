@@ -150,7 +150,7 @@ def is_there(reg_name, macro_members_list):
 #     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
-    errors = open('err.log', 'a')
+    open('/tmp/err.log', 'a').write('153\n')
     app_cur_dir = ''
     if 'settings_dev' in os.getenv('DJANGO_SETTINGS_MODULE'):
         app_cur_dir = 'clusters_core/'
@@ -158,36 +158,47 @@ def macro_region_members(request, reg_name): # reg_code?
         reg_name = reg_name.split('=')[1]
     except IndexError:
         print(reg_name)
+    open('/tmp/err.log', 'a').write('161\n')
     try:
         macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
     except FileNotFoundError:
-        errors.write('1111')
+        # errors.write('1111')
         macro_regions = json.load(open('/home/cluster/macroregions.json', 'r'))
     res = []
+    open('/tmp/err.log', 'a').write('168\n')
     for r in macro_regions:
+        open('/tmp/err.log', 'a').write('170\n')
         try:
+            open('/tmp/err.log', 'a').write('172\n')
             if is_there(reg_name, macro_regions[r]['состав кластера']):
                 # print(list_names(reg_name))
                 # print(r)
                 # print(macro_regions[r]['состав кластера'])
                 # res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
-                errors.write(app_cur_dir)
+                open('/tmp/err.log', 'a').write('178\n')
                 for name in list_names(reg_name):
+                    open('/tmp/err.log', 'a').write('180\n')
                     try:
+                        open('/tmp/err.log', 'a').write('182\n')
                         nn = "_".join(name.split(" "))
-                        errors.write(nn)
+                        # errors.write(nn)
                         svg_img('%sstatic/images/macro_new/new_graph.%s.svg' % (app_cur_dir, nn))
                     except FileNotFoundError as e:
-                        errors.write('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
+                        open('/tmp/err.log', 'a').write('187\n')
+                        # errors.write('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
                 try:
                     res = [{get_reg_data(x): x} for x in macro_regions[r]['состав кластера']]
+                    open('/tmp/err.log', 'a').write('191\n')
                 except CodeTypeError as e:
                     print(e, file=sys.stderr)
+                    open('/tmp/err.log', 'a').write('194\n')
                     break
         except TypeError as e:
+            open('/tmp/err.log', 'a').write('197\n')
             print(e)
 
     # print(test)
+    open('/tmp/err.log', 'a').write('201\n')
 
     return HttpResponse(json.dumps(res, ensure_ascii=0))
 
