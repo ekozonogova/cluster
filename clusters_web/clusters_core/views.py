@@ -216,18 +216,18 @@ def svg_img(path):
     #   4. Check js files to new region names line with 'self.getMacroRegionMembers()'
     
     # # TODO: This way is not working because of curl URLs creating in update_macroregions.sh
-    img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
-    errors.write('11',img_name)
-    if not os.path.isfile(img_name):
-        img = open(path).read()
+    # img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
+    # errors.write('11',img_name)
+    # if not os.path.isfile(img_name):
+    #     img = open(path).read()
 
-        soup = BS(img, features="xml")
-        for title in soup.findAll('g',  {'class': 'node'}):
-            qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
-            title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
+    #     soup = BS(img, features="xml")
+    #     for title in soup.findAll('g',  {'class': 'node'}):
+    #         qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
+    #         title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
-        # # TODO: shutil.move file to /static where collectstatic saves all files!
-        open(img_name, 'w').write(soup.prettify())
+    #     # # TODO: shutil.move file to /static where collectstatic saves all files!
+    #     open(img_name, 'w').write(soup.prettify())
 
 def about(request):
     context = {
