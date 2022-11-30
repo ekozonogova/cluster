@@ -156,10 +156,10 @@ def macro_region_members(request, reg_name): # reg_code?
         app_cur_dir = 'clusters_core/'
     try:
         reg_name = reg_name.split('=')[1]
-        macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
     except IndexError:
-        macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
         print(reg_name)
+    try:
+        macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
     except FileNotFoundError:
         errors.write('1111')
         macro_regions = json.load(open('/home/cluster/macroregions.json', 'r'))
