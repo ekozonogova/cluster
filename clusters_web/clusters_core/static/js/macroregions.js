@@ -113,7 +113,7 @@ function BenchViewModel() {
                                 name += vals[n].toLowerCase();
                             }
                         }
-                        let img = location.origin + '/static/images/macroregion_values/graph.'+ name +'_clickable.svg';
+                        let img = location.origin + '/static/images/macro_new/new_graph.'+ name +'_clickable.svg';
                         console.log(img);
                         self.selectedRegionImgSrc(img);
                     }
@@ -131,7 +131,7 @@ function BenchViewModel() {
             //                 name += vals[i].toLowerCase();
             //             }
             //         }
-            //         let img = '/static/images/macroregion_values/graph.'+ name +'.dot.svg';
+            //         let img = '/static/images/macro_new/graph.'+ name +'.dot.svg';
             //         console.log(img);
             //         self.selectedRegionImgSrc(img);
             //     }
