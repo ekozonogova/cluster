@@ -236,6 +236,7 @@ def svg_img(path):
         img = open(path).read()
         open('/tmp/err.log', 'a').write('237\n')
         soup = BS(img, features="xml")
+        open('/tmp/soup.xml', 'w').write(soup.prettify())
         for title in soup.findAll('g',  {'class': 'node'}):
             open('/tmp/err.log', 'a').write('240\n')
             qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
