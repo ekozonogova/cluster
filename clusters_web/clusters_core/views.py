@@ -151,11 +151,17 @@ def is_there(reg_name, macro_members_list):
 
 def macro_region_members(request, reg_name): # reg_code?
     errors = open('err.log', 'a')
+    app_cur_dir = ''
+    if 'settings_dev' in os.getenv('DJANGO_SETTINGS_MODULE'):
+        app_cur_dir = 'clusters_core/'
     try:
         reg_name = reg_name.split('=')[1]
+        macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
     except IndexError:
         print(reg_name)
-    macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
+    except FileNotFoundError:
+        print('1111')
+        macro_regions = json.load(open('/home/cluster/macroregions.json', 'r'))
     res = []
     for r in macro_regions:
         try:
@@ -164,9 +170,6 @@ def macro_region_members(request, reg_name): # reg_code?
                 # print(r)
                 # print(macro_regions[r]['состав кластера'])
                 # res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
-                app_cur_dir = ''
-                if 'settings_dev' in os.getenv('DJANGO_SETTINGS_MODULE'):
-                    app_cur_dir = 'clusters_core/'
                 errors.write(app_cur_dir)
                 for name in list_names(reg_name):
                     try:
