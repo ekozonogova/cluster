@@ -234,7 +234,7 @@ def svg_img(path):
     if not os.path.isfile(img_name):
         open('/tmp/err.log', 'a').write('235\n')
         img = open(path).read()
-        open('/tmp/err.log', 'a').write('237\n')
+        open('/tmp/err.log', 'a').write('237, %s\n' % img)
         soup = BS(img, features="xml")
         open('/tmp/soup.xml', 'w').write(soup.prettify())
         for title in soup.findAll('g',  {'class': 'node'}):
