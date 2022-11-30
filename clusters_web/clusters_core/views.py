@@ -182,7 +182,7 @@ def macro_region_members(request, reg_name): # reg_code?
                         open('/tmp/err.log', 'a').write('182\n')
                         nn = "_".join(name.split(" "))
                         # errors.write(nn)
-                        svg_img('%sstatic/images/macro_new/new_graph.%s.svg' % (app_cur_dir, nn))
+                        svg_img('/home/cluster/clusters_web/static/images/macro_new/new_graph.%s.svg' % nn)
                     except FileNotFoundError as e:
                         open('/tmp/err.log', 'a').write('187\n')
                         # errors.write('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
