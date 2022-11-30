@@ -237,13 +237,15 @@ def svg_img(path):
         open('/tmp/err.log', 'a').write('237\n')
         soup = BS(img, features="xml")
         for title in soup.findAll('g',  {'class': 'node'}):
+            open('/tmp/err.log', 'a').write('240\n')
             qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
+            open('/tmp/err.log', 'a').write('242\n')
             title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
         # # TODO: shutil.move file to /static where collectstatic saves all files!
-        open('/tmp/err.log', 'a').write('244\n')
-        open(img_name, 'w').write(soup.prettify())
         open('/tmp/err.log', 'a').write('246\n')
+        open(img_name, 'w').write(soup.prettify())
+        open('/tmp/err.log', 'a').write('248\n')
 
 def about(request):
     context = {
