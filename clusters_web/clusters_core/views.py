@@ -158,9 +158,10 @@ def macro_region_members(request, reg_name): # reg_code?
         reg_name = reg_name.split('=')[1]
         macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
     except IndexError:
+        macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
         print(reg_name)
     except FileNotFoundError:
-        print('1111')
+        errors.write('1111')
         macro_regions = json.load(open('/home/cluster/macroregions.json', 'r'))
     res = []
     for r in macro_regions:
@@ -203,7 +204,7 @@ def identical_regions_list(request, reg_name):
     return HttpResponse(json.dumps(dict(selected_region), ensure_ascii=0))
 
 def svg_img(path):
-    # print(path, file=sys.stderr)
+    print(path, file=sys.stderr)
     # [ WARNING ] !!!
     # This code (below) makes '500 Internal Server Error' only on production 
     # (maybe errors in paths) with no explanation, so to update graphs:
@@ -216,18 +217,17 @@ def svg_img(path):
     #   4. Check js files to new region names line with 'self.getMacroRegionMembers()'
     
     # # TODO: This way is not working because of curl URLs creating in update_macroregions.sh
-    # img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
-    # errors.write('11',img_name)
-    # if not os.path.isfile(img_name):
-    #     img = open(path).read()
+    img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
+    if not os.path.isfile(img_name):
+        img = open(path).read()
 
-    #     soup = BS(img, features="xml")
-    #     for title in soup.findAll('g',  {'class': 'node'}):
-    #         qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
-    #         title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
+        soup = BS(img, features="xml")
+        for title in soup.findAll('g',  {'class': 'node'}):
+            qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
+            title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
-    #     # # TODO: shutil.move file to /static where collectstatic saves all files!
-    #     open(img_name, 'w').write(soup.prettify())
+        # # TODO: shutil.move file to /static where collectstatic saves all files!
+        open(img_name, 'w').write(soup.prettify())
 
 def about(request):
     context = {
