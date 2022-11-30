@@ -150,6 +150,7 @@ def is_there(reg_name, macro_members_list):
 #     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
+    
     app_cur_dir = ''
     if 'settings_dev' in os.getenv('DJANGO_SETTINGS_MODULE'):
         app_cur_dir = 'clusters_core/'
@@ -164,37 +165,29 @@ def macro_region_members(request, reg_name): # reg_code?
         macro_regions = json.load(open('/home/cluster/macroregions.json', 'r'))
     res = []
     for r in macro_regions:
-
         try:
-    
             if is_there(reg_name, macro_regions[r]['состав кластера']):
                 # print(list_names(reg_name))
                 # print(r)
                 # print(macro_regions[r]['состав кластера'])
                 # res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
-        
-                for name in list_names(reg_name):
-            
-                    try:
                 
+                for name in list_names(reg_name):
+                    try:
                         nn = "_".join(name.split(" "))
                         # errors.write(nn)
-                        svg_img('/home/cluster/clusters_web/static/images/macro_new/new_graph.%s.svg' % nn)
+                        svg_img('%sstatic/images/macro_new/new_graph.%s.svg' % (app_cur_dir,nn))
                     except FileNotFoundError as e:
-                
-                        # errors.write('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
+                        print('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
                 try:
                     res = [{get_reg_data(x): x} for x in macro_regions[r]['состав кластера']]
-            
                 except CodeTypeError as e:
                     print(e, file=sys.stderr)
-            
                     break
         except TypeError as e:
-    
             print(e)
-
     # print(test)
+
 
     return HttpResponse(json.dumps(res, ensure_ascii=0))
 
@@ -212,6 +205,7 @@ def identical_regions_list(request, reg_name):
 
 def svg_img(path):
     print(path, file=sys.stderr)
+    
     # [ WARNING ] !!!
     # This code (below) makes '500 Internal Server Error' only on production 
     # (maybe errors in paths) with no explanation, so to update graphs:
@@ -225,22 +219,18 @@ def svg_img(path):
     
     # # TODO: This way is not working because of curl URLs creating in update_macroregions.sh
     img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
+    
     if not os.path.isfile(img_name):
-
         img = open(path).read()
-
+        
         soup = BS(img, features="xml")
         open('/tmp/soup.xml', 'w').write(soup.prettify())
         for title in soup.findAll('g',  {'class': 'node'}):
-    
             qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
-    
             title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
-
         # # TODO: shutil.move file to /static where collectstatic saves all files!
-
         open(img_name, 'w').write(soup.prettify())
-
+        
 
 def about(request):
     context = {
