@@ -150,6 +150,7 @@ def is_there(reg_name, macro_members_list):
 #     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
+    errors = open('err.log', 'a')
     try:
         reg_name = reg_name.split('=')[1]
     except IndexError:
@@ -166,13 +167,14 @@ def macro_region_members(request, reg_name): # reg_code?
                 app_cur_dir = ''
                 if 'settings_dev' in os.getenv('DJANGO_SETTINGS_MODULE'):
                     app_cur_dir = 'clusters_core/'
+                errors.write(app_cur_dir)
                 for name in list_names(reg_name):
                     try:
                         nn = "_".join(name.split(" "))
-                        # print(nn)
+                        errors.write(nn)
                         svg_img('%sstatic/images/macro_new/new_graph.%s.svg' % (app_cur_dir, nn))
                     except FileNotFoundError as e:
-                        print('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
+                        errors.write('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
                 try:
                     res = [{get_reg_data(x): x} for x in macro_regions[r]['состав кластера']]
                 except CodeTypeError as e:
@@ -212,7 +214,7 @@ def svg_img(path):
     
     # # TODO: This way is not working because of curl URLs creating in update_macroregions.sh
     img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
-    print(img_name)
+    errors.write('11',img_name)
     if not os.path.isfile(img_name):
         img = open(path).read()
 
