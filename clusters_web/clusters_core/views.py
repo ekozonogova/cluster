@@ -150,7 +150,6 @@ def is_there(reg_name, macro_members_list):
 #     return _normalize_terms_weights(kw)
 
 def macro_region_members(request, reg_name): # reg_code?
-    open('/tmp/err.log', 'a').write('153\n')
     app_cur_dir = ''
     if 'settings_dev' in os.getenv('DJANGO_SETTINGS_MODULE'):
         app_cur_dir = 'clusters_core/'
@@ -158,47 +157,44 @@ def macro_region_members(request, reg_name): # reg_code?
         reg_name = reg_name.split('=')[1]
     except IndexError:
         print(reg_name)
-    open('/tmp/err.log', 'a').write('161\n')
     try:
         macro_regions = json.load(open('../../cluster/macroregions.json', 'r'))
     except FileNotFoundError:
         # errors.write('1111')
         macro_regions = json.load(open('/home/cluster/macroregions.json', 'r'))
     res = []
-    open('/tmp/err.log', 'a').write('168\n')
     for r in macro_regions:
-        open('/tmp/err.log', 'a').write('170\n')
+
         try:
-            open('/tmp/err.log', 'a').write('172\n')
+    
             if is_there(reg_name, macro_regions[r]['состав кластера']):
                 # print(list_names(reg_name))
                 # print(r)
                 # print(macro_regions[r]['состав кластера'])
                 # res_reg_name = '_'.join(macro_regions[r]['состав кластера'])
-                open('/tmp/err.log', 'a').write('178\n')
+        
                 for name in list_names(reg_name):
-                    open('/tmp/err.log', 'a').write('180\n')
+            
                     try:
-                        open('/tmp/err.log', 'a').write('182\n')
+                
                         nn = "_".join(name.split(" "))
                         # errors.write(nn)
                         svg_img('/home/cluster/clusters_web/static/images/macro_new/new_graph.%s.svg' % nn)
                     except FileNotFoundError as e:
-                        open('/tmp/err.log', 'a').write('187\n')
+                
                         # errors.write('[ ERROR ] Wrong filename %s' % e, file=sys.stderr)
                 try:
                     res = [{get_reg_data(x): x} for x in macro_regions[r]['состав кластера']]
-                    open('/tmp/err.log', 'a').write('191\n')
+            
                 except CodeTypeError as e:
                     print(e, file=sys.stderr)
-                    open('/tmp/err.log', 'a').write('194\n')
+            
                     break
         except TypeError as e:
-            open('/tmp/err.log', 'a').write('197\n')
+    
             print(e)
 
     # print(test)
-    open('/tmp/err.log', 'a').write('201\n')
 
     return HttpResponse(json.dumps(res, ensure_ascii=0))
 
@@ -216,7 +212,6 @@ def identical_regions_list(request, reg_name):
 
 def svg_img(path):
     print(path, file=sys.stderr)
-    open('/tmp/err.log', 'a').write('219\n')
     # [ WARNING ] !!!
     # This code (below) makes '500 Internal Server Error' only on production 
     # (maybe errors in paths) with no explanation, so to update graphs:
@@ -230,23 +225,22 @@ def svg_img(path):
     
     # # TODO: This way is not working because of curl URLs creating in update_macroregions.sh
     img_name = '%s_clickable.svg' % path.split(".dot")[0].split(".svg")[0]
-    open('/tmp/err.log', 'a').write('233\n')
     if not os.path.isfile(img_name):
-        open('/tmp/err.log', 'a').write('235\n')
+
         img = open(path).read()
-        open('/tmp/err.log', 'a').write('237, %s\n' % img)
+
         soup = BS(img, features="xml")
         open('/tmp/soup.xml', 'w').write(soup.prettify())
         for title in soup.findAll('g',  {'class': 'node'}):
-            open('/tmp/err.log', 'a').write('240\n')
+    
             qs = ",".join(["'%s'" % x for x in title.text.split("->") if title.text != "g"])
-            open('/tmp/err.log', 'a').write('242\n')
+    
             title['onclick'] = 'javascript: window.frames.parent.BVM.selectProfiles([%s]);' % qs
 
         # # TODO: shutil.move file to /static where collectstatic saves all files!
-        open('/tmp/err.log', 'a').write('246\n')
+
         open(img_name, 'w').write(soup.prettify())
-        open('/tmp/err.log', 'a').write('248\n')
+
 
 def about(request):
     context = {
