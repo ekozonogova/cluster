@@ -248,7 +248,7 @@ def about(request):
             },
             {
                 "img_name": "julia.jpg",
-                "text": "кандидат экономических наук",
+                "text": "доктор экономических наук",
                 "name": "Дубровская Юлия Владимировна", 
                 "links": [
                     {"name":"elibrary", "addr":"https://elibrary.ru/author_profile.asp?authorid=654406"},
